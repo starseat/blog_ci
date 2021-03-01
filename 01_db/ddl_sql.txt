@@ -1,0 +1,112 @@
+CREATE TABLE `tbl_blog_members` (
+	`seq` BIGINT(11) NOT NULL AUTO_INCREMENT,
+	`user_id` VARCHAR(32) NOT NULL,
+	`email` VARCHAR(64) NOT NULL,
+	`name` VARCHAR(32) NULL DEFAULT NULL,
+	`password` VARCHAR(128) NOT NULL,
+	`provider` VARCHAR(16) NOT NULL DEFAULT 'local',
+	`sns_id` VARCHAR(32) NULL DEFAULT NULL,
+	`phone` VARCHAR(32) NULL DEFAULT NULL,
+	`remember_me_yn` VARCHAR(1) NOT NULL DEFAULT 'N',
+	`enable_yn` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	`member_type` VARCHAR(1) NOT NULL DEFAULT 'B',
+	`introduction` VARCHAR(256) NULL DEFAULT NULL,
+	`created_at` DATETIME NOT NULL,
+	`updated_at` DATETIME NOT NULL,
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`seq`, `user_id`, `email`),
+	UNIQUE INDEX `user_id` (`user_id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+
+CREATE TABLE `tbl_blog_member_extensions` (
+	`seq` BIGINT(11) NOT NULL AUTO_INCREMENT,
+	`member_seq` BIGINT(11) NOT NULL,
+	`github` VARCHAR(128) NULL DEFAULT NULL,
+	`twitter` VARCHAR(128) NULL DEFAULT NULL,
+	`facebook` VARCHAR(128) NULL DEFAULT NULL,
+	`instagram` VARCHAR(128) NULL DEFAULT NULL,
+	`homepage` VARCHAR(128) NULL DEFAULT NULL,
+	`noti_comment_yn` VARCHAR(1) NOT NULL DEFAULT '0',
+	`noti_update_yn` VARCHAR(1) NOT NULL DEFAULT '0',
+	`profile_img` VARCHAR(512) NULL DEFAULT NULL,
+	`introduction` VARCHAR(512) NULL DEFAULT NULL,
+	`blog_title` VARCHAR(512) NULL DEFAULT NULL,
+	`blog_introduction` VARCHAR(512) NULL DEFAULT NULL,
+	`created_at` DATETIME NOT NULL,
+	`updated_at` DATETIME NOT NULL,
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`seq`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+CREATE TABLE `tbl_blog_categories` (
+	`seq` BIGINT(11) NOT NULL AUTO_INCREMENT,
+	`owner_id` VARCHAR(32) NOT NULL,
+	`category_id` VARCHAR(16) NOT NULL,
+	`category_name` VARCHAR(32) NULL DEFAULT NULL,
+	`level` INT(10) UNSIGNED NULL DEFAULT 0,
+	`parent_seq` BIGINT(11) NULL DEFAULT 0,
+	`parent_id` VARCHAR(16) NULL DEFAULT NULL,
+	`parent_name` VARCHAR(32) NULL DEFAULT NULL,
+	`view_type` INT(10) UNSIGNED NULL DEFAULT 0,
+	`sort_index` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`desc` VARCHAR(256) NULL DEFAULT '',
+	`created_at` DATETIME NOT NULL,
+	`updated_at` DATETIME NOT NULL,
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`seq`, `owner_id`, `category_id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+CREATE TABLE `tbl_blog_boards` (
+	`seq` BIGINT(11) NOT NULL AUTO_INCREMENT,
+	`category_seq` BIGINT(11) NOT NULL,
+	`writer` VARCHAR(32) NOT NULL,
+	`title` VARCHAR(64) NOT NULL,
+	`thumbnail` VARCHAR(128) NULL DEFAULT NULL,
+	`view_count` INT(11) NOT NULL DEFAULT 0,
+	`like_count` INT(11) NOT NULL DEFAULT 0,
+	`view_type` INT(10) UNSIGNED NULL DEFAULT 0,
+	`content` TEXT NULL DEFAULT NULL,
+	`created_at` DATETIME NOT NULL,
+	`updated_at` DATETIME NOT NULL,
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`seq`, `category_seq`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+CREATE TABLE `tbl_blog_hashtags` (
+	`title` VARCHAR(64) NOT NULL,
+	`created_at` DATETIME NOT NULL,
+	`updated_at` DATETIME NOT NULL,
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`title`),
+	UNIQUE INDEX `title` (`title`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+CREATE TABLE `tbl_blog_board_hashtag` (
+	`created_at` DATETIME NOT NULL,
+	`updated_at` DATETIME NOT NULL,
+	`tbl_blog_board_seq` BIGINT(11) NOT NULL,
+	`tbl_blog_hashtag_title` VARCHAR(64) NOT NULL,
+	PRIMARY KEY (`tbl_blog_board_seq`, `tbl_blog_hashtag_title`),
+	INDEX `tbl_blog_hashtag_title` (`tbl_blog_hashtag_title`),
+	CONSTRAINT `tbl_blog_board_hashtag_ibfk_1` FOREIGN KEY (`tbl_blog_board_seq`) REFERENCES `tbl_blog_boards` (`seq`) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT `tbl_blog_board_hashtag_ibfk_2` FOREIGN KEY (`tbl_blog_hashtag_title`) REFERENCES `tbl_blog_hashtags` (`title`) ON UPDATE CASCADE ON DELETE CASCADE
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;

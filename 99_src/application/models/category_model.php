@@ -23,17 +23,21 @@ class Category_model extends CI_Model {
 
 		$children_list = $this->db->query($sql)->result_array();
 
-		foreach ($parent_list as $parent) {
-			$parent['CHILDREN'] = array();
+		// 왜 이런지는 모르겠지만.. 이렇게 해야되네...
+		for ($i=0; $i<count($parent_list); $i++) {
+			$parent = $parent_list[$i];
+			$child_temp_list = array();
 
 			foreach ($children_list as $child) {
 				if ($child['PARENT_ID'] == $parent['CATEGORY_ID']) {
-					array_push($parent['CHILDREN'], $child);
-					break;
+					array_push($child_temp_list, $child);
 				}
 			}
+
+			$parent['CHILDREN'] = $child_temp_list;
+			$parent_list[$i] = $parent;
 		}
-		
+
 		return $parent_list;
 	}
 

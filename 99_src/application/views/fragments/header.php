@@ -46,12 +46,18 @@
 			<li class="current"><a href="/" title="">Home</a></li>
 			<?php 
 			foreach($categories as $category) {
-				if(isset($category['CHILDREN'])) {
+				if(isset($category['CHILDREN']) && !is_null($category['CHILDREN']) && count($category['CHILDREN']) > 0) {
 			?>
 			<li class="has-children">
 				<a href="#0" title=""><?= $category['CATEGORY_NAME'] ?></a>
 				<ul class="sub-menu">
-
+			<?php
+				foreach($category['CHILDREN'] as $child) {
+			?>
+					<li><a href="#"><?= $child['CATEGORY_NAME'] ?></a></li>
+			<?php
+				} // end of foreach($category['CHILDREN'] as $child)
+			?>
 				</ul>
 			<?php
 				} else {

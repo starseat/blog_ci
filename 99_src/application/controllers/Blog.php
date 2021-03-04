@@ -13,7 +13,8 @@ class Blog extends CI_Controller {
 		
 		$this->_header();
 
-		$this->load->view('main');
+		$this->load->model('board_model');
+		$this->load->view('index', array('board_list' => $this->board_model->getBoardListByHome()));
 
 		$this->_footer();
 	}
@@ -29,10 +30,13 @@ class Blog extends CI_Controller {
 	}
 
 	private function _category() {
-		$this->load->database();
 		$this->load->model('category_model');
 
 		return $this->category_model->gets();
 	}
 	
+	public function list() {
+		echo '';
+	}
+
 }

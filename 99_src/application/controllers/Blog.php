@@ -14,7 +14,13 @@ class Blog extends CI_Controller {
 		$this->_header();
 
 		$this->load->model('board_model');
-		$this->load->view('index', array('board_list' => $this->board_model->getBoardListByHome()));
+		$this->load->view('index', array(
+			// 'page_category_info' => array(
+			// 	'category_id' => 'home', 
+			// 	'category_name' => 'home'
+			// ), 
+			'board_list' => $this->board_model->getBoardListByHome())
+		);
 
 		$this->_footer();
 	}
@@ -31,12 +37,42 @@ class Blog extends CI_Controller {
 
 	private function _category() {
 		$this->load->model('category_model');
-
 		return $this->category_model->gets();
 	}
 	
-	public function list() {
-		echo '';
+	public function list($categoryId = 'home') {
+		if($categoryId != 'home') {
+			$this->load->model('category_model');
+			$categoryInfo = $this->category_model->getById($categoryId);
+
+			$this->_header();
+
+			if( !empty($categoryInfo) ) {
+				$this->load->model('board_model');
+				$this->load->view(
+					'index',
+					array(
+						'page_result' => true, 
+						'category_info' => $categoryInfo, 
+						'board_list' => $this->board_model->getBoardList($categoryId)
+					)
+				);			
+			}
+			else {
+				$this->load->view(
+					'errors/not_found_category',
+					array(
+						'page_result' => false, 
+					)
+				);
+			}
+
+			$this->_footer();
+		}
+		else {
+			$this->index();
+		}
+		
 	}
 
 }

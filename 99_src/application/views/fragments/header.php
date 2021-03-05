@@ -43,18 +43,18 @@
 	<nav class="header__nav-wrap">
 
 		<ul class="header__nav">
-			<li class="current"><a href="/" title="">Home</a></li>
+			<li class="current"><a href="/" title="home">Home</a></li>
 			<?php 
 			foreach($categories as $category) {
 				if(isset($category['children']) && !is_null($category['children']) && count($category['children']) > 0) {
 			?>
 			<li class="has-children">
-				<a href="#0" title=""><?= $category['category_name'] ?></a>
+				<a href="#0" title="<?= $category['category_name'] ?>"><?= $category['category_name'] ?></a>
 				<ul class="sub-menu">
 			<?php
 				foreach($category['children'] as $child) {
 			?>
-					<li><a href="#"><?= $child['category_name'] ?></a></li>
+					<li><a href="/blog/list/<?= $child['category_id'] ?>"><?= $child['category_name'] ?></a></li>
 			<?php
 				} // end of foreach($category['children'] as $child)
 			?>
@@ -62,7 +62,7 @@
 			<?php
 				} else {
 			?>
-			<li><a href="#" title=""><?= $category['category_name'] ?></a></li>
+			<li><a href="/blog/list/<?= $category['category_id'] ?>" title="<?= $category['category_name'] ?>"><?= $category['category_name'] ?></a></li>
 			<?php 
 				}
 			}

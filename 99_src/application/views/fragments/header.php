@@ -15,7 +15,7 @@
 
 	<div class="header__top">
 		<div class="header__logo">
-			<a class="site-logo" href="index.html">
+			<a class="site-logo" href="/">
 				<img src="/public/template/images/logo.svg" alt="Homepage">
 			</a>
 		</div>

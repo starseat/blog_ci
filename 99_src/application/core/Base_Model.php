@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Base_Model extends CI_Model {
 
 	// 게시굴 수
-	protected $ITEM_ROW_COUNT = 10;
+	protected $ITEM_ROW_COUNT = 12;
 
 	// 하단 페이지 block 수 (1, 2, 3, 4, ...  이런거)
 	protected $PAGE_BLOCK_COUNT = 10;

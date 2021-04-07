@@ -42,11 +42,14 @@ class Category_model extends Base_Model {
 	}
 
 	public function getById($categoryId) {
-		$sql  = "SELECT seq, owner_id, category_id, category_name, level, parent_id, view_type, sort_index, ";
-		$sql .= "DATE_FORMAT(created_at, '%Y-%m-%d') as created_at ";
-		$sql .= "FROM tbl_blog_categories tbc ";
-		$sql .= "WHERE category_id = '" . $categoryId . "'";
-		return $this->db->query($sql)->row();
+		$sql  = "
+			SELECT 
+				seq, owner_id, category_id, category_name, level, parent_id, view_type, sort_index, 
+				DATE_FORMAT(created_at, '%Y-%m-%d') as created_at 
+			FROM tbl_blog_categories tbc 
+			WHERE tbc.category_id = ?
+		";
+		return $this->db->query($sql, array($categoryId))->row();
 	}
 
 }

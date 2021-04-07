@@ -1,14 +1,14 @@
 <div class="s-content">
 
-	<?php 
-	if(!empty($page_category_info)) {
+	<?php
+	if (!empty($category_info)) {
 	?>
-	<header class="listing-header">
-		<h1 class="h2">Category: <?= $page_category_info['category_id'] ?></h1>
-	</header>
+		<header class="listing-header">
+			<h1 class="h2">Category: <?= $category_info->category_name ?></h1>
+		</header>
 	<?php
 	} // end of if(!empty($page_category_id) && $page_category_id == 'home')
-	?>	
+	?>
 
 	<div class="masonry-wrap">
 
@@ -65,22 +65,37 @@
 
 	</div> <!-- end masonry-wrap -->
 
-	<div class="row">
-		<div class="column large-full">
-			<nav class="pgn">
-				<ul>
-					<li><a class="pgn__prev" href="#0">Prev</a></li>
-					<li><a class="pgn__num" href="#0">1</a></li>
-					<li><span class="pgn__num current">2</span></li>
-					<li><a class="pgn__num" href="#0">3</a></li>
-					<li><a class="pgn__num" href="#0">4</a></li>
-					<li><a class="pgn__num" href="#0">5</a></li>
-					<li><span class="pgn__num dots">…</span></li>
-					<li><a class="pgn__num" href="#0">8</a></li>
-					<li><a class="pgn__next" href="#0">Next</a></li>
-				</ul>
-			</nav>
+	<?php
+	if (!empty($category_info)) {
+	?>
+		<div class="row">
+			<div class="column large-full">
+				<nav class="pgn">
+					<ul>
+
+						<?php if ($page_info['page_prev'] > 0) {  ?>
+							<li><a class="pgn__prev" href="<?= base_url('/blog/list/' . $category_info->category_id . '/' . $page_info['page_prev']); ?>">Prev</a></li>
+						<?php } ?>
+
+						<?php 
+							for ($i = $page_info['page_start']; $i <= $page_info['page_end']; $i++) {
+								if ($i == $page_info['page_current']) {
+						?>
+								<li><span class="pgn__num current"><?= $i ?></span></li>
+							<?php } else { ?>
+								<li><a class="pgn__num" href="<?= base_url('/blog/list/' . $category_info->category_id . '/' . $i); ?>"><?= $i ?></a></li>
+							<?php } ?>
+						<?php } ?>
+
+						<?php if ($page_info['page_next'] < $page_info['page_total']) {  ?>
+							<li><a class="pgn__next" href="<?= base_url('/blog/list/' . $category_info->category_id . '/' . $page_info['page_next']); ?>">Next</a></li>
+						<?php } ?>
+					</ul>
+				</nav>
+			</div>
 		</div>
-	</div>
+	<?php
+	} // end of if(!empty($page_category_id) && $page_category_id == 'home')
+	?>
 
 </div> <!-- end s-content -->

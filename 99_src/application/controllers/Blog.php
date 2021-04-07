@@ -21,19 +21,35 @@ class Blog extends Base_Controller {
 	}	
 	
 	public function list($categoryId = 'home') {
+
+		// parameter 로 받은 $categoryId 가 안되서 segment 로 변경함.
+
+		// url 이 http://localhost:81/blog/list/cpp/2 일 경우
+		// $this->uri->segment(0) :: index.php 또는 공백
+		// $this->uri->segment(1) :: blog
+		// $this->uri->segment(2) :: list
+		// $this->uri->segment(3) :: cpp
+		// $this->uri->segment(4) :: 2
+
+		if(!empty($this->uri->segment(3))) {
+			$categoryId = $this->uri->segment(3);
+		}
+
+		$current_page = 1;
+		if (!empty($this->uri->segment(4))) {
+			$current_page = intVal($this->uri->segment(4));
+		}		
+
 		if($categoryId != 'home') {
 			$this->load->model('category_model');
 			$categoryInfo = $this->category_model->getById($categoryId);
 
 			if( !empty($categoryInfo) ) {
-				$this->load->view(
-					'index',
-					array(
-						'page_result' => true, 
-						'category_info' => $categoryInfo, 
-						'board_list' => $this->board_model->getBoardList($categoryId)
-					)
-				);			
+				$boardListData = $this->board_model->getBoardList($categoryId, $current_page);
+				$boardListData['page_result'] = true;
+				$boardListData['category_info'] = $categoryInfo;
+
+				$this->load->view('index', $boardListData);
 			}
 			else {
 				$this->load->view(
@@ -46,8 +62,7 @@ class Blog extends Base_Controller {
 		}
 		else {
 			$this->index();
-		}
-		
+		}		
 	}
 
 	/**

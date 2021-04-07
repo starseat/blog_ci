@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Category_model extends CI_Model {
-	function __construct() {
+class Category_model extends Base_Model {
+	public function __construct() {
 		parent::__construct();
 	}
 

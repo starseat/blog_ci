@@ -1,9 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Board_model extends CI_Model
-{
-	function __construct() {
+class Board_model extends Base_Model {
+	public function __construct() {
 		parent::__construct();
 	}
 

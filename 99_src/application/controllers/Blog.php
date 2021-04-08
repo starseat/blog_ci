@@ -16,6 +16,7 @@ class Blog extends Base_Controller {
 			// 	'category_id' => 'home', 
 			// 	'category_name' => 'home'
 			// ), 
+			'page_type' => 'home', 
 			'board_list' => $this->board_model->getBoardListByHome())
 		);
 	}	
@@ -38,7 +39,7 @@ class Blog extends Base_Controller {
 		$current_page = 1;
 		if (!empty($this->uri->segment(4))) {
 			$current_page = intVal($this->uri->segment(4));
-		}		
+		}
 
 		if($categoryId != 'home') {
 			$this->load->model('category_model');
@@ -47,6 +48,7 @@ class Blog extends Base_Controller {
 			if( !empty($categoryInfo) ) {
 				$boardListData = $this->board_model->getBoardList($categoryId, $current_page);
 				$boardListData['page_result'] = true;
+				$boardListData['page_type'] = 'category';
 				$boardListData['category_info'] = $categoryInfo;
 
 				$this->load->view('index', $boardListData);
@@ -63,6 +65,22 @@ class Blog extends Base_Controller {
 		else {
 			$this->index();
 		}		
+	}
+
+	public function search() {
+		$search_text = $this->input->get('search_text');
+
+		$current_page = 1;
+		if (!empty($this->uri->segment(3))) {
+			$current_page = intVal($this->uri->segment(3));
+		}
+
+		$boardListData = $this->board_model->getBoardListBySearch($search_text, $current_page);
+		$boardListData['page_result'] = true;
+		$boardListData['page_type'] = 'search';
+		$boardListData['search_text'] = $search_text;
+
+		$this->load->view('index', $boardListData);
 	}
 
 	/**

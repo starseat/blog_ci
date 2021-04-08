@@ -61,4 +61,35 @@ class Board_model extends Base_Model {
 		return intVal($this->db->query($sql, array($categoryId))->row()->total_count);
 	}
 
+	public function getBoardListBySearch($search_text, $current_page = 1) {
+		$total_count = $this->_getBoardTotalCountBySearch($search_text);
+		$paging_info = $this->getPagingInfo($current_page, $total_count);
+
+		$sql  = "
+			SELECT 
+				b.seq, b.category_id, c.category_name, b.writer, b.title, b.thumbnail, b.view_count, 
+				b.like_count, b.view_type, DATE_FORMAT(b.created_at, '%Y-%m-%d') as created_at, SUBSTRING(b.content, 1, 40) as content 
+			FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 
+			WHERE b.deleted_at IS NULL 
+			  AND (b.title LIKE concat('%', ?, '%') OR b.content LIKE concat('%', ?, '%') )
+			ORDER BY b.seq DESC
+			LIMIT ?, ?
+		";
+
+		return array(
+			'board_list' => $this->db->query($sql, array($search_text, $search_text, $paging_info['page_db'], $this->ITEM_ROW_COUNT))->result_array(),
+			'page_info' => $paging_info
+		);
+	}
+
+	private function _getBoardTotalCountBySearch($search_text) {
+		$sql = "
+			SELECT count(*) as total_count
+			FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 
+			WHERE b.deleted_at IS NULL 
+			  AND (b.title LIKE concat('%', ?, '%') OR b.content LIKE concat('%', ?, '%') )
+		";
+
+		return intVal($this->db->query($sql, array($search_text, $search_text))->row()->total_count);
+	}
 }

@@ -20,7 +20,7 @@ class Base_Model extends CI_Model {
 		$page_db = ($current_page - 1) * $this->ITEM_ROW_COUNT;
 
 		// 전체 block 수
-		$page_total = ceil($total_item_count / $this->PAGE_BLOCK_COUNT);
+		$page_total = ceil($total_item_count / $this->ITEM_ROW_COUNT);
 		if ($page_total == 0) {
 			$page_total = 1;
 		}

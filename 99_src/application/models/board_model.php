@@ -92,4 +92,67 @@ class Board_model extends Base_Model {
 
 		return intVal($this->db->query($sql, array($search_text, $search_text))->row()->total_count);
 	}
+
+	public function getBoardData($board_seq) {
+		$sql  = "
+			SELECT 
+				b.seq, b.category_id, c.category_name, b.writer, b.title, b.thumbnail, 
+				b.view_count, b.like_count, b.view_type, 
+				DATE_FORMAT(b.created_at, '%Y-%m-%d %H:%i:%s') as created_at, 
+				DATE_FORMAT(b.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at, 
+				b.content
+			FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 
+			WHERE b.seq = ? AND b.deleted_at IS NULL 
+		";
+
+		return $this->db->query($sql, array($board_seq))->row_array();
+	}
+
+	private function _getBoardSimpleData($board_seq) {
+		$sql  = "
+			SELECT 
+				b.seq, b.category_id, c.category_name, b.writer, b.title, b.thumbnail, 
+				DATE_FORMAT(b.created_at, '%Y-%m-%d %H:%i:%s') as created_at, 
+				DATE_FORMAT(b.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at
+			FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 
+			WHERE b.seq = ? AND b.deleted_at IS NULL 
+		";
+
+		return $this->db->query($sql, array($board_seq))->row_array();
+	}
+
+	public function getPrevBoardData($board_seq) {
+		$sql = "
+			SELECT ifnull(max(b.seq), 0) prev_seq
+			FROM tbl_blog_boards b INNER join (
+				SELECT cb.seq, cb.category_id FROM tbl_blog_boards cb WHERE cb.seq = ?
+			) cb2 ON b.category_id = cb2.category_id
+			WHERE b.seq < ? AND b.deleted_at IS NULL 
+		";
+
+		$prevBoardSeq = $this->db->query($sql, array($board_seq, $board_seq))->row()->prev_seq;
+		if($prevBoardSeq > 0) {
+			return $this->_getBoardSimpleData($prevBoardSeq);
+		}
+		else {
+			return null;
+		}
+	}
+
+	public function getNextBoardData($board_seq) {
+		$sql = "
+			SELECT ifnull(min(b.seq), 0) next_seq
+			FROM tbl_blog_boards b INNER join (
+				SELECT cb.seq, cb.category_id FROM tbl_blog_boards cb WHERE cb.seq = ?
+			) cb2 ON b.category_id = cb2.category_id
+			WHERE b.seq > ? AND b.deleted_at IS NULL 
+		";
+
+		$nextBoardSeq = $this->db->query($sql, array($board_seq, $board_seq))->row()->next_seq;
+		if ($nextBoardSeq > 0) {
+			return $this->_getBoardSimpleData($nextBoardSeq);
+		} else {
+			return null;
+		}
+	}
 }

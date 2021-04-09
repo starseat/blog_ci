@@ -17,8 +17,8 @@ class Blog extends Base_Controller {
 			// 	'category_name' => 'home'
 			// ), 
 			'page_type' => 'home', 
-			'board_list' => $this->board_model->getBoardListByHome())
-		);
+			'board_list' => $this->board_model->getBoardListByHome(), 
+		));
 	}	
 	
 	public function list($categoryId = 'home') {
@@ -82,6 +82,38 @@ class Blog extends Base_Controller {
 
 		$this->load->view('index', $boardListData);
 	}
+
+	public function view($board_seq = 0) {
+		if(empty($this->uri->segment(3))) {
+			// 잘못된 접근
+			return $this->load->view('errors/error_404', array(
+					'page_result' => false
+				)
+			);
+		}
+
+		$board_seq = $this->uri->segment(3);
+
+		$this->load->model('category_model');
+		$boardData = $this->board_model->getBoardData($board_seq);
+
+		if(is_null($boardData) || empty($boardData)) {
+			return $this->load->view('errors/error_404', array(
+					'page_result' => false
+				)
+			);
+		}
+
+		//var_dump($boardData);
+		return $this->load->view('view', array(
+					'page_result' => true, 
+					'board_data' => $boardData, 
+					'prev_data' => $this->board_model->getPrevBoardData($board_seq), 
+					'next_data' => $this->board_model->getNextBoardData($board_seq), 
+				)
+			);
+	}
+
 
 	/**
 	 * 사이트 해더, 푸터 자동 추가

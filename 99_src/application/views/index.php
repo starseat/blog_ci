@@ -33,7 +33,9 @@ if(count($board_list) > 0) {
 ?>
 					<article class="masonry__brick entry format-quote animate-this">
 						<div class="entry__thumb" style="height: 100px; min-height: 100px; max-height: 100px;">
-							<blockquote></blockquote>
+							<a href="<?= base_url('/blog/view/' . $board['seq']); ?>">
+								<blockquote></blockquote>
+							</a>
 						</div>
 <?php
 		} 
@@ -42,7 +44,7 @@ if(count($board_list) > 0) {
 ?>
 						<article class="masonry__brick entry format-standard animate-this">
 							<div class="entry__thumb">
-								<a href="#" class="entry__thumb-link">
+								<a href="<?= base_url('/blog/view/' . $board['seq']); ?>" class="entry__thumb-link">
 									<img src="<?= $board['thumbnail'] ?>" alt="<?= $board['title'] . ' - thumbnail' ?>">
 								</a>
 							</div>
@@ -51,14 +53,14 @@ if(count($board_list) > 0) {
 ?>
 						<div class="entry__text">
 							<div class="entry__header">
-								<h2 class="entry__title"><a href="#"><?= $board['title'] ?></a></h2>
+								<h2 class="entry__title"><a href="<?= base_url('/blog/view/' . $board['seq']); ?>"><?= $board['title'] ?></a></h2>
 								<div class="entry__meta">
 									<span class="entry__meta-cat">
-										<a href="#"><?= $board['category_name'] ?></a>
-										<a href="#"><?= $board['writer'] ?></a>
+										<a href="<?= base_url('/blog/view/' . $board['seq']); ?>"><?= $board['category_name'] ?></a>
+										<a href="<?= base_url('/blog/view/' . $board['seq']); ?>"><?= $board['writer'] ?></a>
 									</span>
 									<span class="entry__meta-date">
-										<a href="#"><?= $board['created_at'] ?></a>
+										<a href="<?= base_url('/blog/view/' . $board['seq']); ?>"><?= $board['created_at'] ?></a>
 									</span>
 								</div>
 

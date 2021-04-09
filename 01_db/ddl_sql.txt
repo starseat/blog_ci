@@ -71,7 +71,7 @@ CREATE TABLE `tbl_blog_boards` (
 	`category_id` VARCHAR(16) NOT NULL,
 	`writer` VARCHAR(32) NOT NULL,
 	`title` VARCHAR(64) NOT NULL,
-	`thumbnail` VARCHAR(128) NULL DEFAULT NULL,
+	`thumbnail` VARCHAR(256) NULL DEFAULT NULL,
 	`view_count` INT(11) NOT NULL DEFAULT 0,
 	`like_count` INT(11) NOT NULL DEFAULT 0,
 	`view_type` INT(10) UNSIGNED NULL DEFAULT 0,

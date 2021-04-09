@@ -6,6 +6,9 @@ if ($page_type == 'category') {
 ?>
 		<header class="listing-header">
 			<h1 class="h2">Category: <?= $category_info->category_name ?></h1>
+			<div style="text-align: right;">
+				<a class="btn btn--stroke" href="/write">새글작성</a>
+			</div>
 		</header>
 <?php
 	} // end of if(!empty($page_category_id) && $page_category_id == 'home')
@@ -17,6 +20,15 @@ else if ($page_type == 'search') {
 		</header>
 <?php
 } // end of if ($page_type == 'search') {
+else {
+?>
+		<header class="listing-header">
+			<div style="text-align: right;">
+				<a class="btn btn--stroke" href="/write">새글작성</a>
+			</div>
+		</header>
+<?php
+}
 ?>
 
 	<div class="masonry-wrap">

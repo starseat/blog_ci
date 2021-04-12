@@ -10,7 +10,15 @@ class Write extends Base_Controller {
 	}
 
 	public function index() {
-		$this->load->view('write');
+		$this->load->view('write', array('categories' => $this->_category()));
+	}
+
+	public function insert() {
+
+	}
+
+	public function update() {
+
 	}
 
 	// 필요한 것만 사용하려고 재정의
@@ -20,7 +28,7 @@ class Write extends Base_Controller {
 
 	// 필요한 것만 사용하려고 재정의
 	protected function _footer() {
-		$this->load->view('fragments/tail');
+		$this->load->view('fragments/tail', array('is_write' => true));
 	}
 	/**
 	 * 사이트 해더, 푸터 자동 추가

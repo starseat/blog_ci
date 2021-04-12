@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JW Library Sample</title>
+    <script src="jw.js"></script>
+</head>
+
+<body>
+
+    <script>
+
+        jw.log.enable();
+
+        console.log('---------- jw.log TEST ----------');
+        jw.log.d('TEST-1', 'd');
+        jw.log.l('TEST-1', 'l');
+        jw.log.i('TEST-1', 'i');
+        jw.log.w('TEST-1', 'w');
+        jw.log.e('TEST-1', 'e');
+
+        console.log('---------- jw.log - disable debug ----------');
+        jw.log.setDebugMode(true);
+        jw.log.d('TEST-2', 'd');
+        jw.log.l('TEST-2', 'l');
+        jw.log.i('TEST-2', 'i');
+        jw.log.w('TEST-2', 'w');
+        jw.log.e('TEST-2', 'e');
+
+        console.log('---------- jw.log - add date ----------');
+        jw.log.setAddDate(true);
+        jw.log.d('TEST-3', 'd');
+        jw.log.l('TEST-3', 'l');
+        jw.log.i('TEST-3', 'i');
+        jw.log.w('TEST-3', 'w');
+        jw.log.e('TEST-3', 'e');
+
+        console.log('---------- jw.log - use tag ----------');
+        jw.log.setUseTag(true);
+        jw.log.d('TEST-4', 'd');
+        jw.log.l('TEST-4', 'l');
+        jw.log.i('TEST-4', 'i');
+        jw.log.w('TEST-4', 'w');
+        jw.log.e('TEST-4', 'e');
+
+        console.log('---------- jw.log - multi object ----------');
+        var obj1 = { name: '홍길동', age: 31 };
+        var obj2 = { name: '성춘향', age: 17 };
+        var obj3 = { name: '이몽룡', age: 21 };
+        jw.log.i('TEST-5', obj1, obj2, obj3);
+
+
+    </script>
+
+</body>
+
+</html>

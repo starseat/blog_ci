@@ -1,3 +1,7 @@
+-- drop table 시 안될때
+-- SET foreign_key_checks = 0;
+
+
 CREATE TABLE `tbl_blog_members` (
 	`seq` BIGINT(11) NOT NULL AUTO_INCREMENT,
 	`user_id` VARCHAR(32) NOT NULL,

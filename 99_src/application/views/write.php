@@ -43,6 +43,10 @@
 		line-height: 1.556;
 		color: #7e7e7e;
 	}
+
+	#thumbnail_temp {
+		cursor: pointer;
+	}
 </style>
 <div id="top" class="s-wrap site-wrapper">
 

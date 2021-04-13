@@ -122,14 +122,15 @@ ENGINE=InnoDB
 -- );
 
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
-	session_id varchar(48) DEFAULT '0' NOT NULL,
+	id varchar(48) DEFAULT '0' NOT NULL,
 	ip_address varchar(16) DEFAULT '0' NOT NULL,
+	timestamp int(10) unsigned DEFAULT 0 NOT NULL,
 	user_agent varchar(128) NOT NULL, 
 	last_activity int(10) unsigned default 0 NOT NULL, 
-	timestamp int(10) unsigned DEFAULT 0 NOT NULL,
-	user_data text NOT NULL, 
-	PRIMARY KEY(session_id), 
-	KEY `last_activity_idx` (`last_activity`)
+	data text NOT NULL, 
+	PRIMARY KEY(id), 
+	KEY `ci_sessions_timestamp` (`timestamp`), 
+	-- `last_activity_idx` (`last_activity`), 
 )
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB

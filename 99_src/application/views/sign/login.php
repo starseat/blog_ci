@@ -17,7 +17,7 @@
 
 
 <div id="login-box">
-	<form action="" id="loginForm" name="loginForm">
+	<form action="/sign/in" method="post" id="loginForm" name="loginForm">
 		<div style="text-align: center;">
 			<h1>Login</h1>
 		</div>
@@ -32,6 +32,27 @@
 			<input type="password" class="full-width" placeholder="Password" id="userPwd" name="userPwd" value="">
 		</div>
 
-		<button class="btn btn--stroke full-width" onclick="alert('123');">Login</button>
+		<button class="btn btn--stroke full-width" onclick="loginSubmit(event)">Login</button>
 	</form>
 </div>
+
+<script>
+	function loginSubmit(event) {
+		event.preventDefault();
+		event.stopPropagation();
+
+		if ($('#userId').val() == '') {
+			alert('ID 를 입력해 주세요.');
+			$('#userId').focus();
+			return false;
+		}
+
+		if ($('#userPwd').val() == '') {
+			alert('비밀번호를 입력해 주세요.');
+			$('#userPwd').focus();
+			return false;
+		}
+
+		$('#loginForm').submit();
+	}
+</script>

@@ -1,30 +1,95 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Sign extends Base_Controller
-{
+class Sign extends Base_Controller {
 
 	public function __construct() {
 		parent::__construct();
+
+		// $this->load->library('session');
 	}
 
 	public function index() {
-		
+		$this->in();
 	}
 
 	// 로그인
 	public function in() {
-		$this->load->view('sign/login');
+		if ($this->input->method() == 'get') {
+			$this->load->view('sign/login');
+		}
+		else {
+			// return $this->load->view('errors/error_404', array(
+			// 		'page_result' => false
+			// 	)
+			// );
+
+			$this->_loginAction();
+		}
+	}
+
+	private function _loginAction() {
+		$this->load->library('form_validation');
+		$this->load->helper('alert');
+
+		$this->form_validation->set_rules('userId', 'User ID', 'trim|required|min_length[4]|max_length[12]');
+		$this->form_validation->set_rules('userPwd', 'Password', 'trim|required|min_length[4]|max_length[12]');
+
+		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+
+		if($this->form_validation->run() == TRUE) {
+			$login_data = array(
+				'user_id' => $this->input->post('userId', TRUE), 
+				'password' => $this->input->post('userPwd', TRUE)
+			);
+
+			$this->load->model('member_model');
+			$login_result = $this->member_model->login($login_data);
+
+			if($login_result['result']) {
+				$session_data = array(
+					'is_login' => true,
+					'user_id' => $login_result['data']['user_id'],
+					'email' => $login_result['data']['email'],
+					'name' => $login_result['data']['name'],
+					'provider' => $login_result['data']['provider'],
+					'remember_me_yn' => $login_result['data']['remember_me_yn'],
+					'member_type' => $login_result['data']['member_type']
+				);
+				
+				$this->session->set_userdata($session_data);
+
+				// 로그인 후에 원래 보던 페이지로 이동하는거 추가 필요
+				alert('로그인에 성공하였습니다.', '/');
+				exit;
+			}
+			else {
+				alert($login_result['message'], '/sign/in');
+				exit;
+			}
+		}
+		else {
+			alert('ID 또는 비밀번호를 정확히 입력해 주세요.', '/sign/in');
+			exit;
+		}
 	}
 
 	// 로그아웃
 	public function out() {
+		$this->load->helper('alert');
+		$this->session->sess_destroy();
 
+		alert('로그아웃 되었습니다.', '/');
 	}
 
 	// 회원가입
 	public function up() {
+		
+	}
 
+	public function test() {
+		$this->load->model('member_model');
+		echo $this->member_model->password_encrypt('test123');
 	}
 
 	// 필요한 것만 사용하려고 재정의

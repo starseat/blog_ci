@@ -7,6 +7,7 @@ class Sign extends Base_Controller {
 		parent::__construct();
 
 		// $this->load->library('session');
+		$this->load->helper('form');
 	}
 
 	public function index() {
@@ -15,16 +16,25 @@ class Sign extends Base_Controller {
 
 	// 로그인
 	public function in() {
+		$this->load->helper('alert');
+
 		if ($this->input->method() == 'get') {
-			$this->load->view('sign/login');
+			if($this->session->userdata('is_login')) {
+				return alert('이미 로그인 되어 있습니다.', '/');
+			}
+			else {
+				return $this->load->view('sign/login');
+			}			
 		}
 		else {
-			// return $this->load->view('errors/error_404', array(
-			// 		'page_result' => false
-			// 	)
-			// );
-
-			$this->_loginAction();
+			if ($this->session->userdata('is_login')) {
+				return $this->load->view('errors/error_404', array(
+					'page_result' => false
+				));
+			}
+			else {
+				return $this->_loginAction();
+			}
 		}
 	}
 

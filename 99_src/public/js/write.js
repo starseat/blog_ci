@@ -136,12 +136,12 @@ function form_init() {
     // 	searchbox: false, 
 	// });
 
-	const bv_categoryIdList = new  BVSelect({
-		selector: '#category',
-		searchbox: true,
-        offset: true, 
-		width: '100%'
-	});
+	// const bv_categoryIdList = new  BVSelect({
+	// 	selector: '#category',
+	// 	searchbox: true,
+    //     offset: true, 
+	// 	width: '100%'
+	// });
 
 }
 

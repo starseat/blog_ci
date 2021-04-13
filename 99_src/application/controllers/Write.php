@@ -5,20 +5,53 @@ class Write extends Base_Controller {
     
 	public function __construct() {
         parent::__construct();
-		
+
+		$this->load->helper('form');
 		$this->load->model('board_model');
 	}
 
 	public function index() {
+		if (!$this->session->userdata('is_login')) {
+			return $this->load->view('errors/error_404', array(
+				'page_result' => false
+			));
+		}
+
+		if (!$this->input->method() == 'get') {
+			return $this->load->view('errors/error_404', array(
+				'page_result' => false
+			));
+		}
+
 		$this->load->view('write', array('categories' => $this->_category()));
 	}
 
 	public function insert() {
+		if (!$this->session->userdata('is_login')) {
+			return $this->load->view('errors/error_404', array(
+				'page_result' => false
+			));
+		}
 
+		if (!$this->input->method() == 'post') {
+			return $this->load->view('errors/error_404', array(
+				'page_result' => false
+			));
+		}
 	}
 
 	public function update() {
+		if (!$this->session->userdata('is_login')) {
+			return $this->load->view('errors/error_404', array(
+				'page_result' => false
+			));
+		}
 
+		if (!$this->input->method() == 'post') {
+			return $this->load->view('errors/error_404', array(
+				'page_result' => false
+			));
+		}
 	}
 
 	// 필요한 것만 사용하려고 재정의

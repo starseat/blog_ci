@@ -44,7 +44,7 @@
 		color: #7e7e7e;
 	}
 
-	#thumbnail_temp {
+	.cursor-pointer {
 		cursor: pointer;
 	}
 </style>
@@ -55,22 +55,31 @@
 			<div class="column tab-full">
 				<h1 class="display-1">새 글 작성</h1>
 				<div style="text-align: right;">
-					<cite><span id="writer">By ---로그인 ID---</span></cite>
+					<cite><span id="writer">By <?= $this->session->userdata['name']; ?></span></cite>
 				</div>
 
 				<br>
 
-				<form action="#" method="post" enctype="multipart/form-data" id="writeForm" name="writeForm">
+				<!-- <form action="#" method="post" enctype="multipart/form-data" id="writeForm" name="writeForm"> -->
+				<?php
+				// csrf 
+				$attributes = array(
+					'id' => 'writeForm', 
+					'name' => 'writeForm',
+					'enctype' => 'multipart/form-data'
+				);
+
+				echo form_open('/write/insert', $attributes);
+				?>
 					<div class="row">
 						<div class="column large-6 tab-full">
 							<label for="category">Category</label>
-							<select name="category" id="category">
+							<select name="category" id="category" class="full-width cursor-pointer">
 								<?php
 								foreach ($categories as $category) {
 									if (isset($category['children']) && !is_null($category['children']) && count($category['children']) > 0) {
 								?>
-										<li class="has-children">
-											<option value="##" data-separator="true"><?= $category['category_name'] ?></option>
+										<optgroup label="<?= $category['category_name'] ?>">
 											<?php
 											foreach ($category['children'] as $child) {
 											?>
@@ -78,14 +87,16 @@
 											<?php
 											} // end of foreach($category['children'] as $child)
 											?>
-										<?php
-									} else {
-										?>
-											<option value="<?= $child['category_id'] ?>"><?= $child['category_name'] ?></option>
+										</optgroup>
+
 									<?php
-									}
-								}
+									} else {
 									?>
+										<option value="<?= $category['category_id'] ?>"><?= $category['category_name'] ?></option>
+								<?php
+									}
+								} // end of foreach ($categories as $category)
+								?>
 							</select>
 						</div>
 
@@ -109,7 +120,7 @@
 						<div class="column large-4 tab-full">
 							<label for="viewType">보기 설정</label>
 							<div class="ss-custom-select">
-								<select class="full-width" id="viewType">
+								<select class="full-width cursor-pointer" id="viewType">
 									<option value="0">전체보기</option>
 									<option value="1">친구만 보기</option>
 									<option value="2">나만보기</option>
@@ -122,7 +133,7 @@
 							<label for="thumbnail">썸네일</label>
 							<div class="thumbnail_box" style="width: 64px; height: 64px; margin: 0 auto;">
 								<input type="file" id="thumbnail" name="thumbnail" style="display: none;" accept="image/*" capture="gallery" onchange="loadImage(this);">
-								<img id="thumbnail_temp" src="/public/imgs/thumbnail_box.svg" alt="thumbnail image" onclick='document.all.thumbnail.click();'>
+								<img id="thumbnail_temp" class="cursor-pointer" src=" /public/imgs/thumbnail_box.svg" alt="thumbnail image" onclick='document.all.thumbnail.click();'>
 							</div>
 
 						</div>

@@ -3,6 +3,7 @@
 <?php
 if ($page_type == 'category') {
 	if(!empty($category_info)) {
+		if ($this->session->userdata('is_login')) {
 ?>
 		<header class="listing-header">
 			<h1 class="h2">Category: <?= $category_info->category_name ?></h1>
@@ -11,6 +12,7 @@ if ($page_type == 'category') {
 			</div>
 		</header>
 <?php
+		} // end of if ($this->session->userdata('is_login'))
 	} // end of if(!empty($page_category_id) && $page_category_id == 'home')
 } // end of if ($page_type == 'category')
 else if ($page_type == 'search') {
@@ -21,6 +23,7 @@ else if ($page_type == 'search') {
 <?php
 } // end of if ($page_type == 'search') {
 else {
+	if($this->session->userdata('is_login')) {
 ?>
 		<header class="listing-header">
 			<div style="text-align: right;">
@@ -28,6 +31,7 @@ else {
 			</div>
 		</header>
 <?php
+	} // end of if($this->session->userdata('is_login'))
 }
 ?>
 

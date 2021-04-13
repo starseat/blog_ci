@@ -17,7 +17,16 @@
 
 
 <div id="login-box">
-	<form action="/sign/in" method="post" id="loginForm" name="loginForm">
+	<!-- <form action="/sign/in" method="post" id="loginForm" name="loginForm"> -->
+	<?php
+	// csrf 
+	$attributes = array(
+		'id' => 'loginForm', 
+		'name' => 'loginForm'
+	);
+
+	echo form_open('/sign/in', $attributes);
+	?>
 		<div style="text-align: center;">
 			<h1>Login</h1>
 		</div>

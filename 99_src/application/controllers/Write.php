@@ -38,6 +38,9 @@ class Write extends Base_Controller {
 				'page_result' => false
 			));
 		}
+
+		$this->load->helper('alert');
+		
 	}
 
 	public function update() {
@@ -53,6 +56,16 @@ class Write extends Base_Controller {
 			));
 		}
 	}
+
+	public function addCategory() {
+		$parentCategory = $this->input->post('addCategoryModal_newParent', TRUE);
+		$newCategory = $this->input->post('addCategoryModal_newCategory', TRUE);
+
+		echo 'parent category: ' . $parentCategory;
+		echo '<br>';
+		echo 'new category: ' . $newCategory;
+	}
+
 
 	// 필요한 것만 사용하려고 재정의
 	protected function _header() {

@@ -20,7 +20,7 @@ class Sign extends Base_Controller {
 
 		if ($this->input->method() == 'get') {
 			if($this->session->userdata('is_login')) {
-				return alert('이미 로그인 되어 있습니다.', '/');
+				return alert('이미 로그인 되어 있습니다.', base_url('/'));
 			}
 			else {
 				return $this->load->view('sign/login');
@@ -36,60 +36,14 @@ class Sign extends Base_Controller {
 				return $this->_loginAction();
 			}
 		}
-	}
-
-	private function _loginAction() {
-		$this->load->library('form_validation');
-		$this->load->helper('alert');
-
-		$this->form_validation->set_rules('userId', 'User ID', 'trim|required|min_length[4]|max_length[12]');
-		$this->form_validation->set_rules('userPwd', 'Password', 'trim|required|min_length[4]|max_length[12]');
-
-		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
-
-		if($this->form_validation->run() == TRUE) {
-			$login_data = array(
-				'user_id' => $this->input->post('userId', TRUE), 
-				'password' => $this->input->post('userPwd', TRUE)
-			);
-
-			$this->load->model('member_model');
-			$login_result = $this->member_model->login($login_data);
-
-			if($login_result['result']) {
-				$session_data = array(
-					'is_login' => true,
-					'user_id' => $login_result['data']['user_id'],
-					'email' => $login_result['data']['email'],
-					'name' => $login_result['data']['name'],
-					'provider' => $login_result['data']['provider'],
-					'remember_me_yn' => $login_result['data']['remember_me_yn'],
-					'member_type' => $login_result['data']['member_type']
-				);
-				
-				$this->session->set_userdata($session_data);
-
-				// 로그인 후에 원래 보던 페이지로 이동하는거 추가 필요
-				alert('로그인에 성공하였습니다.', '/');
-				exit;
-			}
-			else {
-				alert($login_result['message'], '/sign/in');
-				exit;
-			}
-		}
-		else {
-			alert('ID 또는 비밀번호를 정확히 입력해 주세요.', '/sign/in');
-			exit;
-		}
-	}
+	}	
 
 	// 로그아웃
 	public function out() {
 		$this->load->helper('alert');
 		$this->session->sess_destroy();
 
-		alert('로그아웃 되었습니다.', '/');
+		return alert('로그아웃 되었습니다.', base_url('/'));
 	}
 
 	// 회원가입
@@ -100,6 +54,48 @@ class Sign extends Base_Controller {
 	public function test() {
 		$this->load->model('member_model');
 		echo $this->member_model->password_encrypt('test123');
+	}
+
+	private function _loginAction()
+	{
+		$this->load->library('form_validation');
+		$this->load->helper('alert');
+
+		$this->form_validation->set_rules('userId', 'User ID', 'trim|required|min_length[4]|max_length[12]');
+		$this->form_validation->set_rules('userPwd', 'Password', 'trim|required|min_length[4]|max_length[12]');
+
+		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+
+		if ($this->form_validation->run() == TRUE) {
+			$login_data = array(
+				'user_id' => $this->input->post('userId', TRUE),
+				'password' => $this->input->post('userPwd', TRUE)
+			);
+
+			$this->load->model('member_model');
+			$login_result = $this->member_model->login($login_data);
+
+			if ($login_result['result']) {
+				$session_data = array(
+					'is_login' => true,
+					'user_id' => $login_result['data']['user_id'],
+					'email' => $login_result['data']['email'],
+					'name' => $login_result['data']['name'],
+					'provider' => $login_result['data']['provider'],
+					'remember_me_yn' => $login_result['data']['remember_me_yn'],
+					'member_type' => $login_result['data']['member_type']
+				);
+
+				$this->session->set_userdata($session_data);
+
+				// 로그인 후에 원래 보던 페이지로 이동하는거 추가 필요
+				return alert('로그인에 성공하였습니다.', '/');
+			} else {
+				return alert($login_result['message'], base_url('/sign/in'));
+			}
+		} else {
+			return alert('ID 또는 비밀번호를 정확히 입력해 주세요.', base_url('/sign/in'));
+		}
 	}
 
 	// 필요한 것만 사용하려고 재정의

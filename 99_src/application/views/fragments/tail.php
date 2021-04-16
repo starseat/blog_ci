@@ -36,6 +36,9 @@
     	<link rel="stylesheet" type="text/css" href="/public/vendor/bvselect/css/bvselect.css" rel="stylesheet">
     	<script src="/public/vendor/bvselect/js/bvselect.js"></script>
 
+    	<!-- jQuery Modal -->
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+		
     	<script src="/public/js/write.js"></script>
     <?php } ?>
 

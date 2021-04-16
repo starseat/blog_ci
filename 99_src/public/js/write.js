@@ -2,6 +2,8 @@ $(document).ready(function() {
 	summernote_init();
 
 	form_init();
+
+	$('#addNewCategorySubmit').on('click', submitAddNewCategory);
 });
 
 
@@ -174,5 +176,19 @@ function showAddCategoryModal(event) {
 	event.preventDefault();
     event.stopPropagation();
 
-	alert('추가');
+	//alert('추가');
+	addCategoryModal
+	$('#addCategoryModal').modal({
+		escapeClose: false,
+		clickClose: false,
+		showClose: true, 
+		fadeDuration: 100
+	});
+}
+
+function submitAddNewCategory(event) {
+	event.preventDefault();
+    event.stopPropagation();
+
+	$('#addNewCategoryForm').submit();
 }

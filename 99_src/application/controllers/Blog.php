@@ -104,6 +104,8 @@ class Blog extends Base_Controller {
 			);
 		}
 
+		$this->board_model->plusViewCount($board_seq);
+
 		//var_dump($boardData);
 		return $this->load->view('view', array(
 					'page_result' => true, 

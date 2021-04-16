@@ -93,6 +93,24 @@ class Board_model extends Base_Model {
 		return intVal($this->db->query($sql, array($search_text, $search_text))->row()->total_count);
 	}
 
+	public function plusViewCount($board_seq) {
+		$this->load->helper('cookie');
+
+		$VIEW_COUNT_COOKIE = 'blog_view_' . $board_seq;
+		$cookie_data = get_cookie($VIEW_COUNT_COOKIE, TRUE);
+
+		// 쿠키가 없으면
+		if( !(isset($cookie_data) && !is_null($cookie_data) && !empty($cookie_data)) ) {
+			$sql = "
+				UPDATE tbl_blog_boards SET view_count = view_count+1 WHERE seq = ?
+			";
+
+			$this->db->query($sql, array($board_seq));
+
+			set_cookie($VIEW_COUNT_COOKIE, '1');
+		}		
+	}
+
 	public function getBoardData($board_seq) {
 		$sql  = "
 			SELECT 

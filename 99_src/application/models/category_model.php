@@ -52,4 +52,33 @@ class Category_model extends Base_Model {
 		return $this->db->query($sql, array($categoryId))->row();
 	}
 
+	public function insertCategory($categoryInfo) {
+		$nextSortIndex = 0;
+
+		if($categoryInfo['parent_id'] == '0') {
+			$nextSortIndex = $this->_getLastSortIndex_parent();
+		}
+		else {
+			$nextSortIndex = $this->_getLastSortIndex($categoryInfo['parent_id']);
+		}
+		$categoryInfo['sort_index'] = $nextSortIndex;
+
+		$categoryInfo['created_at'] = date('Y-m-d H:i:s');
+		$categoryInfo['updated_at'] = date('Y-m-d H:i:s');
+
+		// $this->db->escape() 
+
+		return $this->db->query($this->db->insert_string('tbl_blog_categories', $categoryInfo));
+	}
+
+	private function _getLastSortIndex_parent() {
+		$sql = "SELECT (ifnull(max(sort_index), 0) + 1) new_sort_index FROM tbl_blog_categories WHERE LEVEL = 0";
+		return $this->db->query($sql)->row()->new_sort_index;
+	}
+
+	private function _getLastSortIndex($parentId) {
+		$sql = "SELECT (ifnull(max(sort_index), 0) + 1) new_sort_index FROM tbl_blog_categories WHERE LEVEL = 1 WHERE parent_id = ?";
+		return $this->db->query($sql, array('parent_id', $parentId))->row()->new_sort_index;
+	}
+
 }

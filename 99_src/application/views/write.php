@@ -70,6 +70,18 @@
 		color: black !important;
 		font-weight: bold !important;
 	}
+
+	.padding-0 {
+		padding: 0;
+	}
+
+	.padding-left-10 {
+		padding-left: 10px;
+	}
+
+	.padding-right-10 {
+		padding-right: 10px;
+	}
 </style>
 
 <div id="top" class="s-wrap site-wrapper">
@@ -197,7 +209,11 @@
 					'style' => 'width: 100%;'
 				);
 
-				echo form_open('/write/addCategory', $attributes);
+				$hidden = array(
+					'addCategoryModal_boardSeq' => 0
+				);
+
+				echo form_open('/write/addCategory', $attributes, $hidden);
 				?>
 				<div class="row">
 					<label for="addCategoryModal_newParent">상위 카테고리</label>
@@ -215,8 +231,23 @@
 					</select>
 				</div>
 				<div class="row">
-					<label for="addCategoryModal_newCategory">새 카테고리</label>
-					<input class="full-width" type="text" placeholder="새 카테고리를 추가해 주세요." id="addCategoryModal_newCategory" name="addCategoryModal_newCategory">
+					<div class="column large-6 tab-full padding-0 padding-right-10">
+						<label for="addCategoryModal_newCategoryId">새 카테고리 ID</label>
+						<input class="full-width" type="text" placeholder="새 카테고리 ID 를 입력해 주세요." id="addCategoryModal_newCategoryId" name="addCategoryModal_newCategoryId">
+					</div>
+					<div class="column large-6 tab-full padding-0 padding-left-10">
+						<label for="addCategoryModal_newCategoryViewType">보기 설정</label>
+						<select class="full-width cursor-pointer" id="addCategoryModal_newCategoryViewType" name="addCategoryModal_newCategoryViewType">
+							<option value="0">전체보기</option>
+							<option value="1">친구만 보기</option>
+							<option value="2">나만보기</option>
+							<option value="9">관리자용</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<label for="addCategoryModal_newCategoryName">새 카테고리명</label>
+					<input class="full-width" type="text" placeholder="새 카테고리명을 입력해 주세요." id="addCategoryModal_newCategoryName" name="addCategoryModal_newCategoryName">
 				</div>
 				</form>
 			</div>

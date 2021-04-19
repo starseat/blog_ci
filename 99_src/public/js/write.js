@@ -189,6 +189,71 @@ function showAddCategoryModal(event) {
 function submitAddNewCategory(event) {
 	event.preventDefault();
     event.stopPropagation();
+	
+	if(!checkNewCategory_id()) {
+		return false;
+	}
+
+	if(!checkNewCategory_name()) {
+		return false;
+	}
 
 	$('#addNewCategoryForm').submit();
 }
+
+function checkNewCategory_id() {
+	const newCategoryId = $('#addCategoryModal_newCategoryId').val();
+
+	if (newCategoryId == '') {
+        //alert('Category ID is required and cannot be empty.');
+		alert('카테고리 ID 는 필수로 입력되어야 합니다.');
+		$('#addCategoryModal_newCategoryId').focus();
+        return false;
+    }
+
+	if (!(newCategoryId.length >= 2 && newCategoryId.length <= 16)) {
+        //alert('Category ID must be more than 2 and less than 16 characters long.');
+		alert('카테고리 ID 는 2 ~ 16 글자로 입력되어야 합니다.');
+		$('#addCategoryModal_newCategoryId').focus();
+        return false;
+    }
+
+	if (!newCategoryId.match(/^[a-z]+$/)) {
+        //alert('Category ID can only consist of lowercase alphabetical.');
+		alert('카테고리 ID 는 영문자 소문자만 입력 가능합니다.');
+		$('#addCategoryModal_newCategoryId').focus();
+        return false;
+    }
+
+	return true;
+}
+
+function checkNewCategory_name() {
+	const newCategoryName = $('#addCategoryModal_newCategoryName').val();
+
+    if (newCategoryName == '') {
+        //alert('Category Name is required and cannot be empty.');
+		alert('카테고리 명은 필수로 입력되어야 합니다.');
+		$('#addCategoryModal_newCategoryName').focus();
+        return false;
+    }
+
+    if (!(newCategoryName.length >= 2 && newCategoryName.length <= 32)) {
+		//alert('Category Name must be more than 2 and less than 32 characters long.');
+        alert('카테고리 명은 2 ~ 32 글자로 입력되어야 합니다.');
+		$('#addCategoryModal_newCategoryName').focus();
+        return false;
+    }
+
+    if (!newCategoryName.match(/^[a-zA-Z0-9가-힣\/\-\_\+\@]+$/)) {
+		//alert('Category Name can only consist of alphabetical, number, korean and some special charcters(-, _, +, @).');
+        alert('카테고리 명은 소문자, 대문자, 한글, 숫자로만 입력되어야 합니다.');
+		$('#addCategoryModal_newCategoryName').focus();
+        return false;
+    }
+
+    return true;
+}
+
+
+

@@ -132,10 +132,19 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 	user_agent varchar(128) NOT NULL, 
 	last_activity int(10) unsigned default 0 NOT NULL, 
 	data text NOT NULL, 
-	PRIMARY KEY(id), 
+	PRIMARY KEY(id, ip_address), 
 	KEY `ci_sessions_timestamp` (`timestamp`), 
 	-- `last_activity_idx` (`last_activity`), 
 )
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
+
+-- sess_match_ip = TRUE 일 때 
+ALTER  TABLE  ci_sessions  ADD  PRIMARY  KEY  ( id ,  ip_address );
+
+-- sess_match_ip = FALSE 
+ALTER  TABLE  ci_sessions  ADD  PRIMARY  KEY  ( id );
+
+-- 이전에 생성 된 기본 키 삭제 (설정 변경시 사용) 
+ALTER  TABLE  ci_sessions  DROP  PRIMARY  KEY ;

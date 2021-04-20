@@ -57,17 +57,17 @@
 		event.preventDefault();
 		event.stopPropagation();
 
-		// if ($('#userId').val() == '') {
-		// 	alert('ID 를 입력해 주세요.');
-		// 	$('#userId').focus();
-		// 	return false;
-		// }
+		if ($('#userId').val() == '') {
+			alert('ID 를 입력해 주세요.');
+			$('#userId').focus();
+			return false;
+		}
 
-		// if ($('#userPwd').val() == '') {
-		// 	alert('비밀번호를 입력해 주세요.');
-		// 	$('#userPwd').focus();
-		// 	return false;
-		// }
+		if ($('#userPwd').val() == '') {
+			alert('비밀번호를 입력해 주세요.');
+			$('#userPwd').focus();
+			return false;
+		}
 
 		$('#loginForm').submit();
 	}

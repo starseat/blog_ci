@@ -61,12 +61,12 @@ class Sign extends Base_Controller {
 		$this->load->library('form_validation');
 		$this->load->helper('alert');
 
-		$this->form_validation->set_rules('userId', 'User ID', 'trim|required|min_length[4]|max_length[12]');
-		$this->form_validation->set_rules('userPwd', 'Password', 'trim|required|min_length[4]|max_length[12]');
+		$this->form_validation->set_rules('userId', 'User ID', 'trim|required|min_length[4]|max_length[12]|alpha_numeric|xss_clean');
+		$this->form_validation->set_rules('userPwd', 'Password', 'trim|required|min_length[4]|max_length[12]|xss_clean');
 
 		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
 
-		if ($this->form_validation->run() == TRUE) {
+		if ($this->form_validation->run()) {
 			$login_data = array(
 				'user_id' => $this->input->post('userId', TRUE),
 				'password' => $this->input->post('userPwd', TRUE)

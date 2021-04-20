@@ -33,12 +33,19 @@
 
 		<div>
 			<label for="userId">User ID</label>
-			<input type="text" class="full-width" placeholder="User ID" id="userId" name="userId" value="">
+			<input type="text" class="full-width" placeholder="User ID" id="userId" name="userId" value="<?= set_value('userId'); ?>">
 		</div>
 
 		<div>
 			<label for="userPwd">Password</label>
 			<input type="password" class="full-width" placeholder="Password" id="userPwd" name="userPwd" value="">
+		</div>
+
+		<div>
+			<?php 
+				// Controller 의 $this->form->form_validation->run() 을 실행 한 후 에러가 있을경우 뷰에서 출력하는 부분
+				echo validation_errors(); 
+			?>
 		</div>
 
 		<button class="btn btn--stroke full-width" onclick="loginSubmit(event)">Login</button>
@@ -50,17 +57,17 @@
 		event.preventDefault();
 		event.stopPropagation();
 
-		if ($('#userId').val() == '') {
-			alert('ID 를 입력해 주세요.');
-			$('#userId').focus();
-			return false;
-		}
+		// if ($('#userId').val() == '') {
+		// 	alert('ID 를 입력해 주세요.');
+		// 	$('#userId').focus();
+		// 	return false;
+		// }
 
-		if ($('#userPwd').val() == '') {
-			alert('비밀번호를 입력해 주세요.');
-			$('#userPwd').focus();
-			return false;
-		}
+		// if ($('#userPwd').val() == '') {
+		// 	alert('비밀번호를 입력해 주세요.');
+		// 	$('#userPwd').focus();
+		// 	return false;
+		// }
 
 		$('#loginForm').submit();
 	}

@@ -109,8 +109,8 @@
 				?>
 				<div class="row">
 					<div class="column large-6 tab-full">
-						<label for="category">Category</label>
-						<select name="category" id="category" class="full-width cursor-pointer">
+						<label for="blog_category">Category</label>
+						<select name="blog_category" id="blog_category" class="full-width cursor-pointer">
 							<?php
 							foreach ($categories as $category) {
 								if (isset($category['children']) && !is_null($category['children']) && count($category['children']) > 0) {
@@ -149,14 +149,14 @@
 
 				<div class="row">
 					<div class="column large-6 tab-full">
-						<label for="title">Title</label>
-						<input class="full-width" type="text" placeholder="글 제목을 입력해 주세요." id="title">
+						<label for="blog_title">Title</label>
+						<input class="full-width" type="text" placeholder="글 제목을 입력해 주세요." id="blog_title" name="blog_title">
 					</div>
 
 					<div class="column large-4 tab-full">
-						<label for="viewType">보기 설정</label>
+						<label for="blog_viewType">보기 설정</label>
 						<div class="ss-custom-select">
-							<select class="full-width cursor-pointer" id="viewType">
+							<select class="full-width cursor-pointer" id="blog_viewType" name="blog_viewType">
 								<option value="0">전체보기</option>
 								<option value="1">친구만 보기</option>
 								<option value="2">나만보기</option>
@@ -166,9 +166,9 @@
 					</div>
 
 					<div class="column large-2 tab-full">
-						<label for="thumbnail">썸네일</label>
+						<label for="blog_thumbnail">썸네일</label>
 						<div class="thumbnail_box" style="width: 64px; height: 64px; margin: 0 auto;">
-							<input type="file" id="thumbnail" name="thumbnail" style="display: none;" accept="image/*" capture="gallery" onchange="loadImage(this);">
+							<input type="file" id="blog_thumbnail" name="blog_thumbnail" style="display: none;" accept="image/*" capture="gallery" onchange="loadImage(this);">
 							<img id="thumbnail_temp" class="cursor-pointer" src=" /public/imgs/thumbnail_box.svg" alt="thumbnail image" onclick='document.all.thumbnail.click();'>
 						</div>
 
@@ -176,8 +176,9 @@
 				</div>
 
 				<div class="row" style="padding-left: 20px; padding-right: 20px;">
-					<label for="content">Contents</label>
-					<div id="content"></div>
+					<label for="blog_content_view">Contents</label>
+					<div id="blog_content_view"></div>
+					<textarea id="blog_content" name="blog_content" style="display: none;"></textarea>
 				</div>
 
 				<br>

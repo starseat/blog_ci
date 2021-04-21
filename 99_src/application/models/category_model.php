@@ -55,6 +55,8 @@ class Category_model extends Base_Model {
 	public function insertCategory($categoryInfo) {
 		$nextSortIndex = 0;
 
+		$this->db->trans_start();
+
 		if($categoryInfo['parent_id'] == '0') {
 			$nextSortIndex = $this->_getLastSortIndex_parent();
 		}
@@ -65,10 +67,13 @@ class Category_model extends Base_Model {
 
 		$categoryInfo['created_at'] = date('Y-m-d H:i:s');
 		$categoryInfo['updated_at'] = date('Y-m-d H:i:s');
-
+		
 		// $this->db->escape() 
+		$queryResult = $this->db->query($this->db->insert_string('tbl_blog_categories', $categoryInfo));
 
-		return $this->db->query($this->db->insert_string('tbl_blog_categories', $categoryInfo));
+		$this->db->trans_complete();
+		
+		return $queryResult;
 	}
 
 	private function _getLastSortIndex_parent() {

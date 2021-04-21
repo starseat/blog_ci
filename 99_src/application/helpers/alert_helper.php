@@ -25,7 +25,15 @@ function alert_only($msg, $exit=true) {
 	}	
 }
 
+function alert_history_back($msg) {
+	$CI = &get_instance();
+	echo '<meta http-equiv="content-type" content="text/html; charset="' . $CI->config->item('charset') . '">';
+	echo '<script type="text/javascript"> alert("' . $msg . '"); history.back(); </script>';
+	exit;
+}
+
 function replace($url = '/') {
 	echo '<script type="text/javascript"> location.replace("' . $url . '"); </script>';
 	exit;
 }
+

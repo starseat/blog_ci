@@ -173,4 +173,20 @@ class Board_model extends Base_Model {
 			return null;
 		}
 	}
+
+	public function insertBoard($boardInfo) {
+		$boardInfo['created_at'] = date('Y-m-d H:i:s');
+		$boardInfo['updated_at'] = date('Y-m-d H:i:s');
+
+		$this->db->trans_start();
+		// $this->db->escape() 
+		$insertResult = $this->db->query($this->db->insert_string('tbl_blog_boards', $boardInfo));
+		$newBlogSeq = 0;
+		if($insertResult) {
+			$newBlogSeq = intVal($this->db->insert_id());
+		}
+		$this->db->trans_complete();
+
+		return $newBlogSeq;
+	}
 }

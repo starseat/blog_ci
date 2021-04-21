@@ -15,7 +15,7 @@ function summernote_init() {
     
     document.emojiSource = '/public/vendor/summernote/emoji/tam-emoji/img';
 
-    $('#content').summernote({
+    $('#blog_content_view').summernote({
         height: 360, // set editor height
         minHeight: null, // set minimum height of editor
         maxHeight: null, // set maximum height of editor
@@ -62,20 +62,12 @@ function summernote_init() {
         }, 
 		fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
 		fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'], 
-        callbacks: {
-            onImageUpload: function(files, editor, welEditable) {
-                console.log('[onImageUpload] !!!!!!!!');
-                let categoryInfo = '<%= JSON.stringify(categoryInfo) %>';
-                categoryInfo = JSON.parse(categoryInfo.replaceAll('&#34;', '"'));
-                //boardService.sendImageFile(categoryInfo, files[0], editor, welEditable);
-                //$summernote.summernote('insertNode', imgNode);
-
-                // for(let i=0; i<files.length; i++) {
-                //     boardService.sendImageFile(categoryInfo, this, files[i], editor, welEditable);
-                // }
-                boardService.sendImageFile(categoryInfo, this, files[0], editor, welEditable);
-            }
-        },
+        // callbacks: {
+        //     onImageUpload: function(files, editor, welEditable) {
+        //         console.log('[onImageUpload] !!!!!!!!');
+        //         sendImageFile(this, files[0], editor, welEditable);
+        //     }
+        // },
     });
 
 	$('.note-editable').css('font-size','18px');
@@ -164,12 +156,21 @@ function submitBlog(event) {
 	event.preventDefault();
     event.stopPropagation();
 
-	console.log('category: ', $('#category').val());
-	console.log('title: ', $('#title').val());
-	console.log('viewType: ', $('#viewType').val());
-	console.log('category: ', $('#content').summernote('code'));
-	return false;
-	
+	if($('#blog_title').val() == '') {
+		alert('제목은 필수로 입력해야 합니다.');
+		$('#blog_title').focus();
+		return false;
+	}
+
+	const blog_content = $('#blog_content_view').summernote('code');
+	if(blog_content == '') {
+		alert('내용이 비어있습니다.');
+		return false;
+	}
+
+	$('#blog_content').val(blog_content);
+
+	$('#writeForm').submit();	
 }
 
 function showAddCategoryModal(event) {
@@ -177,7 +178,6 @@ function showAddCategoryModal(event) {
     event.stopPropagation();
 
 	//alert('추가');
-	addCategoryModal
 	$('#addCategoryModal').modal({
 		escapeClose: false,
 		clickClose: false,
@@ -255,5 +255,26 @@ function checkNewCategory_name() {
     return true;
 }
 
+// 참고
+// https://devofhwb.tistory.com/67
+// https://github.com/summernote/summernote/issues/72
+function sendImageFile(element, file, editor, welEditable) {
+	const formData = new FormData();
+    formData.append('uploadFile', file);
 
+	const url = '/write/upload/image';
+	$.ajax({
+		data : formData,
+		type : 'post',
+		url : url,
+		cache : false,
+		processData : false,
+		contentType : false,
+		enctype: 'multipart/form-data',
+		// contentType: 'multipart/form-data',
+		success : function(uploadFileUrl) {
+			$(element).summernote('insertImage', uploadFileUrl);
+		}
+	});
+}
 

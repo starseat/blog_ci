@@ -7,7 +7,6 @@ class Write extends Base_Controller {
         parent::__construct();
 
 		$this->load->helper('form');
-		$this->load->model('board_model');
 	}
 
 	public function index() {

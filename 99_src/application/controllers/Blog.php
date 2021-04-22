@@ -7,6 +7,9 @@ class Blog extends Base_Controller {
         parent::__construct();
 		
 		$this->load->model('board_model');
+
+		// view page 에서 delete button 할때 필요
+		$this->load->helper('form');
 	}
 
 	public function index() {
@@ -94,7 +97,14 @@ class Blog extends Base_Controller {
 
 		$board_seq = $this->uri->segment(3);
 
-		$this->load->model('category_model');
+		if(!is_numeric($board_seq)) {
+			// 잘못된 접근
+			return $this->load->view('errors/error_404', array(
+					'page_result' => false
+				)
+			);
+		}
+
 		$boardData = $this->board_model->getBoardData($board_seq);
 
 		if(is_null($boardData) || empty($boardData)) {
@@ -114,6 +124,55 @@ class Blog extends Base_Controller {
 					'next_data' => $this->board_model->getNextBoardData($board_seq), 
 				)
 			);
+	}
+
+	public function delete() {
+		if (!$this->session->userdata('is_login')) {
+			return $this->load->view('errors/error_404', array(
+				'page_result' => false
+			));
+		}
+
+		if ($this->input->method() != 'post') {
+			return $this->load->view('errors/error_404', array(
+				'page_result' => false
+			));
+		}
+
+		if(empty($this->uri->segment(3))) {
+			// 잘못된 접근
+			return $this->load->view('errors/error_404', array(
+					'page_result' => false
+				)
+			);
+		}
+
+		$board_seq = $this->uri->segment(3);
+
+		if(!is_numeric($board_seq)) {
+			// 잘못된 접근
+			return $this->load->view('errors/error_404', array(
+					'page_result' => false
+				)
+			);
+		}
+
+		$boardData = $this->board_model->getBoardData($board_seq);
+		$deleteResult = $this->board_model->deleteBoard($board_seq);
+
+		$resultUrl = '';
+		$resultMessage = '';
+		if($deleteResult) {
+			$resultUrl = '/blog/list/' . $boardData['category_id'];
+			$resultMessage = '게시글이 삭제되었습니다.';
+		}
+		else {
+			$resultUrl = '/blog/view/' . $board_seq;
+			$resultMessage = '게시글 삭제가 실패하였습니다.';
+		}
+
+		$this->load->helper('alert');
+		return alert($resultMessage, $resultUrl);
 	}
 
 

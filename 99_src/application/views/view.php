@@ -24,10 +24,26 @@
 						<a href="/blog/list/<?= $board_data['category_id'] ?>"><?= $board_data['category_name'] ?></a>
 					</li>
 				</ul>
+
+				<?php if($this->session->userdata('is_login')) { ?>
 				<ul class="entry__header-meta" style="text-align: right;">
 					<li><a href="#0">수정</a></li>
-					<li><a href="#0">삭제</a></li>
+					<li>
+						<?php
+							// csrf 
+							$attributes = array(
+								'id' => 'deleteBlogForm',
+								'name' => 'deleteBlogForm'
+							);
+
+							echo form_open('/blog/delete/' . $board_data['seq'], $attributes);
+						?>
+							<a href="javascript:void(0);" onclick="deleteBlog(event)">삭제</a>
+						</form>
+					</li>
 				</ul>
+				<?php } ?>
+
 			</div> <!-- end entry__header -->
 
 			<div class="entry__content">
@@ -92,3 +108,9 @@
 	</main>
 
 </div> <!-- end s-content -->
+
+<script>
+	function deleteBlog() {
+
+	}
+</script>

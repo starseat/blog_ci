@@ -105,8 +105,10 @@ class Board_model extends Base_Model {
 				UPDATE tbl_blog_boards SET view_count = view_count+1 WHERE seq = ?
 			";
 
+			$this->db->trans_start();
 			$this->db->query($sql, array($board_seq));
-
+			$this->db->trans_complete();
+			
 			set_cookie($VIEW_COUNT_COOKIE, '1');
 		}		
 	}
@@ -188,5 +190,24 @@ class Board_model extends Base_Model {
 		$this->db->trans_complete();
 
 		return $newBlogSeq;
+	}
+
+	public function deleteBoard($boardSeq) {
+		// $update_data = array(
+		// 	'deleted_at' => date('Y-m-d H:i:s')
+		// );
+
+		// $this->db->trans_start();
+		// $this->db->where('seq', $boardSeq);
+		// $deleteResult = $this->db->update('tbl_blog_boards', $update_data);
+		// $this->db->trans_complete();
+
+		
+		$sql = "UPDATE tbl_blog_boards SET deleted_at = now() WHERE seq = ?";
+		$this->db->trans_start();
+		$deleteResult = $this->db->query($sql, array($boardSeq));
+		$this->db->trans_complete();
+
+		return $deleteResult;
 	}
 }

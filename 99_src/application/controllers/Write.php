@@ -22,7 +22,23 @@ class Write extends Base_Controller {
 			));
 		}
 
-		$this->load->view('write', array('categories' => $this->_category()));
+		// /write?seq=3  형식
+		// /write/3  으로 가져오자니 upload, insert, update 등 다른것들과 꼬일 수 있으므로 이렇게 함.
+		$isModify = false;
+		$board_seq = $this->input->get('seq');
+		if(!empty($board_seq) && is_numeric($board_seq)) {
+			$isModify = true;
+		}
+
+		$viewInfo = array('categories' => $this->_category());
+		$viewInfo['is_modify'] = $isModify;	
+		if($isModify) {
+			$this->load->model('board_model');
+			$boardData = $this->board_model->getBoardData($board_seq);
+			$viewInfo['board_data'] = $boardData;
+		}
+
+		$this->load->view('write', $viewInfo);
 	}
 
 	public function upload() {

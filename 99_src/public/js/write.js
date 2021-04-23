@@ -137,6 +137,20 @@ function form_init() {
 	// 	width: '100%'
 	// });
 
+	load_data();
+}
+
+function load_data() {
+	if($('#saved_blog_seq').val() == 0) {
+		return;
+	}
+
+	$('#blog_category').val($('#saved_blog_category').val());
+	$('#blog_title').val($('#saved_blog_title').val());
+	$('#blog_viewType').val($('#saved_blog_view_type').val());
+	$('#blog_thumbnail_temp').attr('src', $('#saved_blog_thumbnail').val());
+	
+	$('#blog_content_view').summernote('code', $('#blog_content').val());
 }
 
 

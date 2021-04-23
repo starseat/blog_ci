@@ -27,7 +27,7 @@
 
 				<?php if($this->session->userdata('is_login')) { ?>
 				<ul class="entry__header-meta" style="text-align: right;">
-					<li><a href="#0">수정</a></li>
+					<li><a href="/write?seq=<?= $board_data['seq']; ?>">수정</a></li>
 					<li>
 						<?php
 							// csrf 

@@ -209,14 +209,19 @@
 					<input type="hidden" id="saved_blog_view_type" value="<?= $board_data['view_type']; ?>" />
 					<input type="hidden" id="saved_blog_thumbnail" value="<?= $board_data['thumbnail']; ?>" />
 					<input type="hidden" id="saved_blog_seq" name="blog_seq" value="<?= $board_data['seq']; ?>" />
+					<input type="hidden" name="blog_writer" value="<?= $board_data['writer']; ?>" />
 				<?php } else { ?>
-					<input type="hidden" id="saved_blog_seq" value="0" />
+					<input type="hidden" id="saved_blog_seq" name="blog_seq" value="0" />
 				<?php } ?>
 
 				<div class="row">
 					<div class="column large-3 tab-full">
-						<!-- <button class="btn full-width" onclick="javascript: location.history.go(-1); ">나가기</button> -->
+					<?php if ($is_modify) { ?>
 						<button class="btn full-width" onclick="javascript: location.href='/blog/list/<?= $board_data['category_id']; ?>';">목록</button>
+					<?php } else { ?>
+						<button class="btn full-width" onclick="javascript: location.history.go(-1); ">나가기</button>
+					<?php } ?>
+						
 					</div>
 					<div class="column large-3 tab-full"></div>
 					<div class="column large-6 tab-full">

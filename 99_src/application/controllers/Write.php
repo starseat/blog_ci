@@ -70,7 +70,6 @@ class Write extends Base_Controller {
 		return alert('잘못된 업로드 요청입니다.', '/write');
 	}
 
-
 	public function insert() {
 		if (!$this->session->userdata('is_login')) {
 			return $this->load->view('errors/error_404', array(
@@ -84,83 +83,7 @@ class Write extends Base_Controller {
 			));
 		}
 
-		$this->load->library('form_validation');
-		$this->load->helper('alert');
-
-		$this->form_validation->set_rules('blog_category', 'Blog Category', 'required');
-		$this->form_validation->set_rules('blog_title', 'Blog Title', 'required|min_length[2]|max_length[64]');
-		$this->form_validation->set_rules('blog_viewType', 'Blog View Type', 'required');
-		$this->form_validation->set_rules('blog_content', 'Blog Contents', 'required|min_length[1]');
-
-		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
-
-		if ($this->form_validation->run()) {
-
-			$category_id = $this->input->post('blog_category', TRUE);
-			$title = $this->input->post('blog_title', TRUE);
-			$view_type = $this->input->post('blog_title', TRUE);
-			$content = $this->input->post('blog_content', TRUE);
-
-			$uploadThumbnailSeq = 0;
-			// thumbnail 등록 여부 검사
-			if($_FILES['blog_thumbnail']['name'] != '') {
-
-				$upload_path = 'uploads/' . $category_id . '/thumbnail/';
-				if (!is_dir($upload_path)) {
-					mkdir($upload_path, 766, true);
-				}
-
-				$upload_config = array(
-					'upload_path' => $upload_path,
-					'allowed_types' => 'gif|png|jpg|jpeg',
-					'encrypt_name' => TRUE, 
-					'max_size' => (1024 * 10)  // (kb)
-				);
-
-				$this->load->library('upload', $upload_config);
-
-				if($this->upload->do_upload('blog_thumbnail')) {
-					$uploadResultData = $this->upload->data();
-
-					$uploadThumbnailInfo = array(
-						'type' => 'thumbnail', 
-						'name' => $uploadResultData['orig_name'],
-						'saved_name' => $uploadResultData['file_name'],
-						'upload_path' => '/' . $upload_path,
-						'saved_path' => $uploadResultData['file_path']
-					);
-
-					$this->load->model('image_model');
-					$uploadThumbnailSeq = $this->image_model->insertImage($uploadThumbnailInfo);
-				}
-				else {
-					// $uploadErrorData = $this->upload->display_errors();
-					return alert_history_back('썸네일 등록이 실패하였습니다.');
-				}
-			}			
-			
-			$boardInfo = array(
-				'writer' => $this->session->userdata('user_id'),
-				'category_id' => $category_id,
-				'title' => $title,
-				//'thumbnail' => $thumbnail,
-				'thumbnail_seq' => $uploadThumbnailSeq, 
-				'view_type' => $view_type,
-				'content' => $content
-			);
-
-			$this->load->model('board_model');
-			$resultInsertId = $this->board_model->insertBoard($boardInfo);
-
-			if($resultInsertId > 0) {
-				return alert('블로그 게시글이 등록 되었습니다.', '/blog/view/' . $resultInsertId);
-			}
-			else {
-				return alert_history_back('블로그 게시글 등록이 실패하였습니다.');
-			}
-		} // end of if ($this->form_validation->run())
-
-		return alert_history_back('글 정보가 올바르지 않습니다.');
+		return $this->_submitBlog('insert');
 	}
 
 	public function update() {
@@ -176,6 +99,146 @@ class Write extends Base_Controller {
 			));
 		}
 
+		$writer = $this->input->post('blog_writer', TRUE);
+		if(empty($writer)) {
+			return $this->load->view('errors/error_404', array(
+				'page_result' => false
+			));
+		}
+
+		if($writer != $this->session->userdata('user_id')) {
+			return $this->load->view('errors/error_404', array(
+				'page_result' => false
+			));
+		}
+
+		return $this->_submitBlog('update');
+	}
+
+	private function _submitBlog($submit_type) {
+
+		$this->load->library('form_validation');
+		$this->load->helper('alert');
+
+		$this->form_validation->set_rules('blog_seq', 'seq', 'required');
+		$this->form_validation->set_rules('blog_category', 'Blog Category', 'required');
+		$this->form_validation->set_rules('blog_title', 'Blog Title', 'required|min_length[2]|max_length[64]');
+		$this->form_validation->set_rules('blog_viewType', 'Blog View Type', 'required');
+		$this->form_validation->set_rules('blog_content', 'Blog Contents', 'required|min_length[1]');
+
+		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+
+		if (!$this->form_validation->run()) {
+			return alert_history_back('글 정보가 올바르지 않습니다.');
+		}
+
+		$seved_seq = $this->input->post('blog_seq', TRUE);  // 0: wirte, other: modify
+		if($submit_type == 'update') {
+			// if(!isset($saved_seq)) {
+			// 	return alert_history_back('게시글 번호가 존재하지 않습니다.');
+			// }
+			if(!is_numeric($seved_seq)) {
+				return alert_history_back('게시글 번호가 올바르지 않습니다.');
+			}
+		} 
+
+		$seved_seq = intVal($seved_seq);
+		$category_id = $this->input->post('blog_category', TRUE);
+		$title = $this->input->post('blog_title', TRUE);
+		$view_type = intVal($this->input->post('blog_viewType', TRUE));
+		$content = $this->input->post('blog_content', TRUE);
+
+		$uploadThumbnailSeq = $this->_insertThumbnail($category_id);
+		if($uploadThumbnailSeq < 0) {				
+			return alert_history_back('썸네일 등록이 실패하였습니다.');
+		}
+
+		$boardInfo = array(
+			'category_id' => $category_id,
+			'title' => $title,
+			'view_type' => $view_type,
+			'thumbnail_seq' => $uploadThumbnailSeq, 
+			'content' => $content
+		);
+
+		$resultSubmitId = 0;
+		$resultMessage = '';
+		$resultUrl = '';
+
+		$this->load->model('board_model');
+		if($submit_type == 'update') {
+			$boardInfo['seq'] = $seved_seq;
+
+			$resultSubmitId = $this->board_model->updateBoard($boardInfo);
+
+			if ($resultSubmitId > 0) {
+				$resultMessage = '블로그 게시글이 수정 되었습니다.';
+				$resultUrl = '/blog/view/' . $resultSubmitId;
+			} else {
+				$resultMessage = '블로그 게시글 수정이 실패하였습니다.';
+			}
+		}
+		else {
+			$boardInfo['writer'] = $this->session->userdata('user_id');
+			$resultSubmitId = $this->board_model->insertBoard($boardInfo);
+
+			if ($resultSubmitId > 0) {
+				$resultMessage = '블로그 게시글이 등록 되었습니다.';
+				$resultUrl = '/blog/view/' . $resultSubmitId;
+			} else {
+				$resultMessage = '블로그 게시글 등록이 실패하였습니다.';
+			}
+		}
+
+		if ($resultSubmitId > 0) {
+			return alert($resultMessage, $resultUrl);
+		} else {
+			return alert_history_back($resultMessage);
+		}
+	}
+
+	private function _insertThumbnail($category_id) {
+		$uploadThumbnailSeq = 0;
+
+		// thumbnail 등록 여부 검사
+		if ($_FILES['blog_thumbnail']['name'] == '') {
+			return 0;
+		}
+
+		$upload_path = 'uploads/' . $category_id . '/thumbnail/';
+		if (!is_dir($upload_path)) {
+			mkdir($upload_path, 766, true);
+		}
+
+		$upload_config = array(
+			'upload_path' => $upload_path,
+			'allowed_types' => 'gif|png|jpg|jpeg',
+			'encrypt_name' => TRUE,
+			'max_size' => (1024 * 10)  // (kb)
+		);
+
+		$this->load->library('upload', $upload_config);
+
+		if ($this->upload->do_upload('blog_thumbnail')) {
+			$uploadResultData = $this->upload->data();
+
+			$uploadThumbnailInfo = array(
+				'type' => 'thumbnail',
+				'name' => $uploadResultData['orig_name'],
+				'saved_name' => $uploadResultData['file_name'],
+				'upload_path' => '/' . $upload_path,
+				'saved_path' => $uploadResultData['file_path']
+			);
+
+			$this->load->model('image_model');
+			$uploadThumbnailSeq = $this->image_model->insertImage($uploadThumbnailInfo);
+		}
+		else {
+			$uploadErrorData = $this->upload->display_errors();
+			$uploadThumbnailSeq = -1;
+		}
+
+		return $uploadThumbnailSeq;
 	}
 
 	public function addCategory() {

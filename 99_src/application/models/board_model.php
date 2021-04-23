@@ -192,6 +192,38 @@ class Board_model extends Base_Model {
 		return $newBlogSeq;
 	}
 
+	public function updateBoard($boardInfo) {
+		$resultId = 0;		
+
+		$sql = "
+			UPDATE tbl_blog_boards SET 
+			category_id = ?, 
+			title = ?,
+			view_type = ? ";
+
+		if($boardInfo['thumbnail_seq'] > 0) {
+			$sql .= ', thumbnail_seq = ' . $boardInfo['thumbnail_seq'];
+		}
+
+		$sql .= ", updated_at = now(), content = ? WHERE seq = ?";
+
+		$this->db->trans_start();
+		$updateResult = $this->db->query($sql, array(
+			$boardInfo['category_id'],
+			$boardInfo['title'],
+			$boardInfo['view_type'],
+			$boardInfo['content'],
+			$boardInfo['seq']
+		));
+		$this->db->trans_complete();
+
+		if($updateResult) {
+			$resultId = $boardInfo['seq'];
+		}
+
+		return $resultId;
+	}
+
 	public function deleteBoard($boardSeq) {
 		// $update_data = array(
 		// 	'deleted_at' => date('Y-m-d H:i:s')

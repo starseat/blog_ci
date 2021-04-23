@@ -62,12 +62,11 @@ function summernote_init() {
         }, 
 		fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
 		fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'], 
-        // callbacks: {
-        //     onImageUpload: function(files, editor, welEditable) {
-        //         console.log('[onImageUpload] !!!!!!!!');
-        //         sendImageFile(this, files[0], editor, welEditable);
-        //     }
-        // },
+        callbacks: {
+            onImageUpload: function(files, editor, welEditable) {
+                sendImageFile(this, files[0], editor, welEditable);
+            }
+        },
     });
 
 	$('.note-editable').css('font-size','18px');
@@ -288,6 +287,9 @@ function sendImageFile(element, file, editor, welEditable) {
 		// contentType: 'multipart/form-data',
 		success : function(uploadFileUrl) {
 			$(element).summernote('insertImage', uploadFileUrl);
+		}, 
+		error: function (jqXHR, textStatus, errorThrown) {
+			console.lot('[sendImageFile] ajax error :: ', textStatus + ' ' + errorThrown);
 		}
 	});
 }

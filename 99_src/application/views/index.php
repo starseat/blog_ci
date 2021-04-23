@@ -3,16 +3,21 @@
 <?php
 if ($page_type == 'category') {
 	if(!empty($category_info)) {
-		if ($this->session->userdata('is_login')) {
 ?>
 		<header class="listing-header">
 			<h1 class="h2">Category: <?= $category_info->category_name ?></h1>
+<?php
+		if ($this->session->userdata('is_login')) {
+?>
 			<div style="text-align: right;">
 				<a class="btn btn--stroke" href="/write">새글작성</a>
 			</div>
-		</header>
 <?php
 		} // end of if ($this->session->userdata('is_login'))
+?>
+		</header>
+<?php
+		
 	} // end of if(!empty($page_category_id) && $page_category_id == 'home')
 } // end of if ($page_type == 'category')
 else if ($page_type == 'search') {

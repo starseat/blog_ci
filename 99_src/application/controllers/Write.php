@@ -290,7 +290,9 @@ class Write extends Base_Controller {
 	}
 
 	private function _uploadImage() {
-
+		// 파일 저장 처리 후
+		// ajax response 로 url 만 전송
+		return var_dump($_FILE);
 	}
 
 

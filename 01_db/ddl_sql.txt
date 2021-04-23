@@ -75,7 +75,8 @@ CREATE TABLE `tbl_blog_boards` (
 	`category_id` VARCHAR(16) NOT NULL,
 	`writer` VARCHAR(32) NOT NULL,
 	`title` VARCHAR(64) NOT NULL,
-	`thumbnail` VARCHAR(256) NULL DEFAULT NULL,
+--	`thumbnail` VARCHAR(256) NULL DEFAULT NULL,
+	`thumbnail_seq` BIGINT(11) NOT NULL DEFAULT 0, 
 	`view_count` INT(11) NOT NULL DEFAULT 0,
 	`like_count` INT(11) NOT NULL DEFAULT 0,
 	`view_type` INT(10) UNSIGNED NULL DEFAULT 0,
@@ -88,6 +89,8 @@ CREATE TABLE `tbl_blog_boards` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
+
+-- ALTER TABLE tbl_blog_boards ADD COLUMN thumbnail_seq BIGINT(11) NOT NULL DEFAULT 0;
 
 CREATE TABLE `tbl_blog_hashtags` (
 	`title` VARCHAR(64) NOT NULL,
@@ -102,14 +105,31 @@ ENGINE=InnoDB
 ;
 
 CREATE TABLE `tbl_blog_board_hashtag` (
-	`created_at` DATETIME NOT NULL,
-	`updated_at` DATETIME NOT NULL,
 	`tbl_blog_board_seq` BIGINT(11) NOT NULL,
 	`tbl_blog_hashtag_title` VARCHAR(64) NOT NULL,
+	`created_at` DATETIME NOT NULL,
+	`updated_at` DATETIME NOT NULL,	
 	PRIMARY KEY (`tbl_blog_board_seq`, `tbl_blog_hashtag_title`),
 	INDEX `tbl_blog_hashtag_title` (`tbl_blog_hashtag_title`),
 	CONSTRAINT `tbl_blog_board_hashtag_ibfk_1` FOREIGN KEY (`tbl_blog_board_seq`) REFERENCES `tbl_blog_boards` (`seq`) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT `tbl_blog_board_hashtag_ibfk_2` FOREIGN KEY (`tbl_blog_hashtag_title`) REFERENCES `tbl_blog_hashtags` (`title`) ON UPDATE CASCADE ON DELETE CASCADE
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+CREATE TABLE `tbl_blog_images` (
+	`seq` BIGINT(11) NOT NULL AUTO_INCREMENT,
+	`target_seq` BIGINT(11), 
+	`type` VARCHAR(16) NOT NULL DEFAULT '',
+	`name` VARCHAR(128) NOT NULL, 
+	`saved_name` VARCHAR(128) NOT NULL, 
+	`saved_path` VARCHAR(128) NOT NULL,
+	`upload_path` VARCHAR(128) NOT NULL, 
+	`created_at` DATETIME NOT NULL,
+	`updated_at` DATETIME NOT NULL,
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`seq`, `type`, `name`)
 )
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB

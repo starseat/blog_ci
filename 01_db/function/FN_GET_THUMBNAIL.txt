@@ -1,0 +1,15 @@
+CREATE FUNCTION blogdb.FN_GET_THUMBNAIL(P_THUMBNAIL_SEQ BIGINT(11)) RETURNS varchar(256) CHARSET utf8 COLLATE utf8_unicode_ci
+begin
+	DECLARE RET_THUMBNAIL VARCHAR(256) DEFAULT  '';
+	--  RET_THUMBNAIL = '';
+	
+	if P_THUMBNAIL_SEQ > 0 then
+		select
+			case when storage_type = 'L' then CONCAT(upload_path, saved_name)
+				 when storage_type = 'W' then upload_path 
+			else '' end INTO RET_THUMBNAIL
+		from tbl_blog_images where seq = P_THUMBNAIL_SEQ and deleted_at is null;
+	END IF;
+
+	RETURN RET_THUMBNAIL;
+end;

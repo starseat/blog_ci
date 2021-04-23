@@ -126,6 +126,7 @@ CREATE TABLE `tbl_blog_images` (
 	`saved_name` VARCHAR(128) NOT NULL, 
 	`saved_path` VARCHAR(128) NOT NULL,
 	`upload_path` VARCHAR(128) NOT NULL, 
+	`storage_type` VARCHAR(1) NOT NULL DEFAULT 'L', -- L: local, W: Web
 	`created_at` DATETIME NOT NULL,
 	`updated_at` DATETIME NOT NULL,
 	`deleted_at` DATETIME NULL DEFAULT NULL,

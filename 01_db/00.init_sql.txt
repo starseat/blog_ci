@@ -1,0 +1,6 @@
+# root 계정, pw 변경 필요
+create user blog_user@localhost identified by 'blog_user_pw';
+#select * from user;
+create database blogdb default character set utf8 COLLATE utf8_general_ci;
+GRANT ALL privileges ON blogdb.* TO blog_user@localhost;
+flush privileges;

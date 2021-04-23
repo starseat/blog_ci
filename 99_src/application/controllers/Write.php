@@ -74,7 +74,6 @@ class Write extends Base_Controller {
 		$this->form_validation->set_rules('blog_category', 'Blog Category', 'required');
 		$this->form_validation->set_rules('blog_title', 'Blog Title', 'required|min_length[2]|max_length[64]');
 		$this->form_validation->set_rules('blog_viewType', 'Blog View Type', 'required');
-		// $this->form_validation->set_rules('blog_thumbnail', 'Blog Thumbnail', 'required');		
 		$this->form_validation->set_rules('blog_content', 'Blog Contents', 'required|min_length[1]');
 
 		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
@@ -83,15 +82,53 @@ class Write extends Base_Controller {
 
 			$category_id = $this->input->post('blog_category', TRUE);
 			$title = $this->input->post('blog_title', TRUE);
-			//$thumbnail = $this->input->post('blog_thumbnail', TRUE);
 			$view_type = $this->input->post('blog_title', TRUE);
 			$content = $this->input->post('blog_content', TRUE);
 
+			$uploadThumbnailSeq = 0;
+			// thumbnail 등록 여부 검사
+			if($_FILES['blog_thumbnail']['name'] != '') {
+
+				$upload_path = 'uploads/' . $category_id . '/thumbnail/';
+				if (!is_dir($upload_path)) {
+					mkdir($upload_path, 766, true);
+				}
+
+				$upload_config = array(
+					'upload_path' => $upload_path,
+					'allowed_types' => 'gif|png|jpg|jpeg',
+					'encrypt_name' => TRUE, 
+					'max_size' => (1024 * 10)  // (kb)
+				);
+
+				$this->load->library('upload', $upload_config);
+
+				if($this->upload->do_upload('blog_thumbnail')) {
+					$uploadResultData = $this->upload->data();
+
+					$uploadThumbnailInfo = array(
+						'type' => 'thumbnail', 
+						'name' => $uploadResultData['orig_name'],
+						'saved_name' => $uploadResultData['file_name'],
+						'upload_path' => '/' . $upload_path,
+						'saved_path' => $uploadResultData['file_path']
+					);
+
+					$this->load->model('image_model');
+					$uploadThumbnailSeq = $this->image_model->insertImage($uploadThumbnailInfo);
+				}
+				else {
+					// $uploadErrorData = $this->upload->display_errors();
+					return alert_history_back('썸네일 등록이 실패하였습니다.');
+				}
+			}			
+			
 			$boardInfo = array(
 				'writer' => $this->session->userdata('user_id'),
 				'category_id' => $category_id,
 				'title' => $title,
 				//'thumbnail' => $thumbnail,
+				'thumbnail_seq' => $uploadThumbnailSeq, 
 				'view_type' => $view_type,
 				'content' => $content
 			);

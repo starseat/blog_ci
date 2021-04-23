@@ -144,7 +144,7 @@ function loadImage(_this) {
 	if (_this.files && _this.files[0]) {
 		const fr = new FileReader();
 		fr.onload = function(_e) {
-			$('#thumbnail_temp').attr('src', _e.target.result);
+			$('#blog_thumbnail_temp').attr('src', _e.target.result);
 			//$('#product_temp_image_remove').show();
 		}
 		fr.readAsDataURL(_this.files[0]);

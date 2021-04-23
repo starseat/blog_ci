@@ -169,7 +169,7 @@
 						<label for="blog_thumbnail">썸네일</label>
 						<div class="thumbnail_box" style="width: 64px; height: 64px; margin: 0 auto;">
 							<input type="file" id="blog_thumbnail" name="blog_thumbnail" style="display: none;" accept="image/*" capture="gallery" onchange="loadImage(this);">
-							<img id="thumbnail_temp" class="cursor-pointer" src=" /public/imgs/thumbnail_box.svg" alt="thumbnail image" onclick='document.all.thumbnail.click();'>
+							<img id="blog_thumbnail_temp" class="cursor-pointer" src=" /public/imgs/thumbnail_box.svg" alt="thumbnail image" onclick='document.all.blog_thumbnail.click();'>
 						</div>
 
 					</div>

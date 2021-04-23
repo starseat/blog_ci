@@ -12,7 +12,7 @@ class Board_model extends Base_Model {
 
 		$sql = "
 		SELECT r1.* FROM (
-			SELECT b1.seq, b1.category_id, c1.category_name, b1.writer, b1.title, b1.thumbnail, b1.view_count, 
+			SELECT b1.seq, b1.category_id, c1.category_name, b1.writer, b1.title, b1.view_count, FN_GET_THUMBNAIL(b1.thumbnail_seq) thumbnail, 
 			b1.like_count, b1.view_type, DATE_FORMAT(b1.created_at, '%Y-%m-%d') as created_at, SUBSTRING(b1.content, 1, 40) as content 
 			FROM tbl_blog_boards b1 INNER JOIN tbl_blog_categories c1 ON b1.category_id = c1.category_id 
 			WHERE b1.deleted_at IS NULL 
@@ -20,7 +20,7 @@ class Board_model extends Base_Model {
 		) r1 
 			UNION ALL 
 		SELECT r2.* FROM (
-			SELECT b2.seq, b2.category_id, c2.category_name, b2.writer, b2.title, b2.thumbnail, b2.view_count, 
+			SELECT b2.seq, b2.category_id, c2.category_name, b2.writer, b2.title, b2.view_count, FN_GET_THUMBNAIL(b2.thumbnail_seq) thumbnail, 
 			b2.like_count, b2.view_type, DATE_FORMAT(b2.created_at, '%Y-%m-%d') as created_at, SUBSTRING(b2.content, 1, 40) as content 
 			FROM tbl_blog_boards b2 INNER JOIN tbl_blog_categories c2 ON b2.category_id = c2.category_id 
 			WHERE b2.deleted_at IS NULL 
@@ -37,7 +37,7 @@ class Board_model extends Base_Model {
 
 		$sql  = "
 			SELECT 
-				b.seq, b.category_id, c.category_name, b.writer, b.title, b.thumbnail, b.view_count, 
+				b.seq, b.category_id, c.category_name, b.writer, b.title,b.view_count, FN_GET_THUMBNAIL(b.thumbnail_seq) thumbnail, 
 				b.like_count, b.view_type, DATE_FORMAT(b.created_at, '%Y-%m-%d') as created_at, SUBSTRING(b.content, 1, 40) as content 
 				FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 
 			WHERE b.deleted_at IS NULL AND b.category_id = ? 
@@ -67,7 +67,7 @@ class Board_model extends Base_Model {
 
 		$sql  = "
 			SELECT 
-				b.seq, b.category_id, c.category_name, b.writer, b.title, b.thumbnail, b.view_count, 
+				b.seq, b.category_id, c.category_name, b.writer, b.title, b.view_count, FN_GET_THUMBNAIL(b.thumbnail_seq) thumbnail, 
 				b.like_count, b.view_type, DATE_FORMAT(b.created_at, '%Y-%m-%d') as created_at, SUBSTRING(b.content, 1, 40) as content 
 			FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 
 			WHERE b.deleted_at IS NULL 
@@ -116,7 +116,7 @@ class Board_model extends Base_Model {
 	public function getBoardData($board_seq) {
 		$sql  = "
 			SELECT 
-				b.seq, b.category_id, c.category_name, b.writer, b.title, b.thumbnail, 
+				b.seq, b.category_id, c.category_name, b.writer, b.title, FN_GET_THUMBNAIL(b.thumbnail_seq) thumbnail, 
 				b.view_count, b.like_count, b.view_type, 
 				DATE_FORMAT(b.created_at, '%Y-%m-%d %H:%i:%s') as created_at, 
 				DATE_FORMAT(b.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at, 
@@ -131,7 +131,7 @@ class Board_model extends Base_Model {
 	private function _getBoardSimpleData($board_seq) {
 		$sql  = "
 			SELECT 
-				b.seq, b.category_id, c.category_name, b.writer, b.title, b.thumbnail, 
+				b.seq, b.category_id, c.category_name, b.writer, b.title, FN_GET_THUMBNAIL(b.thumbnail_seq) thumbnail, 
 				DATE_FORMAT(b.created_at, '%Y-%m-%d %H:%i:%s') as created_at, 
 				DATE_FORMAT(b.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at
 			FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 

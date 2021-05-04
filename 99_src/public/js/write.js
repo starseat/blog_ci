@@ -274,23 +274,31 @@ function checkNewCategory_name() {
 function sendImageFile(element, file, editor, welEditable) {
 	const formData = new FormData();
     formData.append('uploadFile', file);
+	formData.append('categoryId', $('#blog_category').val());
+	formData.append('csrf_token_starseat_blog', $('input[name="csrf_token_starseat_blog"]').val());
 
-	const url = '/write/upload/image';
+	const _url = '/upload/image';
 	$.ajax({
 		data : formData,
 		type : 'post',
-		url : url,
+		url : _url,
 		cache : false,
 		processData : false,
 		contentType : false,
 		enctype: 'multipart/form-data',
 		// contentType: 'multipart/form-data',
-		success : function(uploadFileUrl) {
-			$(element).summernote('insertImage', uploadFileUrl);
+		success : function(resultData) {
+			const resultObj = JSON.parse(resultData);
+
+			if(resultObj.result) {
+				$(element).summernote('insertImage', resultObj.data);
+			}
 		}, 
 		error: function (jqXHR, textStatus, errorThrown) {
 			console.lot('[sendImageFile] ajax error :: ', textStatus + ' ' + errorThrown);
 		}
 	});
+
+
 }
 

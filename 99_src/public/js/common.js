@@ -95,3 +95,30 @@ function stoppingBubblingEvent(event) {
 
     return false;
 }
+
+function getCookie(_name) {
+	let cookie_name = _name + '=';
+	
+	let x = 0;
+
+	while(x <= document.cookie.length) {
+		let y = (x + cookie_name.length);
+
+		if(document.cookie.substring(x, y) == cookie_name) {
+			let endOfCookie = document.cookie.indexOf(';', y);
+			if( endOfCookie == -1) {
+				endOfCookie = document.cookie.length;
+			}
+
+			return unescape(document.cookie.substring(y, endOfCookie));
+		}
+
+		x = document.cookie.indexOf(' ', x) + 1;
+
+		if(x == 0) {
+			break;
+		}
+	}
+
+	return '';
+}

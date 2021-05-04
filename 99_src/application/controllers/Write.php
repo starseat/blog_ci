@@ -41,35 +41,6 @@ class Write extends Base_Controller {
 		$this->load->view('write', $viewInfo);
 	}
 
-	public function upload() {
-		if (!$this->session->userdata('is_login')) {
-			return $this->load->view('errors/error_404', array(
-				'page_result' => false
-			));
-		}
-
-		if ($this->input->method() != 'post') {
-			return $this->load->view('errors/error_404', array(
-				'page_result' => false
-			));
-		}
-
-		// $this->uri->segment(0) :: index.php 또는 공백
-		// $this->uri->segment(1) :: write
-		// $this->uri->segment(2) :: upload
-		// $this->uri->segment(3) :: image
-
-		$uploadType = $this->uri->segment(3);
-
-		if($uploadType == 'image') {
-			return $this->_uploadImage();
-		}
-
-
-		$this->load->helper('alert');
-		return alert('잘못된 업로드 요청입니다.', '/write');
-	}
-
 	public function insert() {
 		if (!$this->session->userdata('is_login')) {
 			return $this->load->view('errors/error_404', array(
@@ -288,13 +259,7 @@ class Write extends Base_Controller {
 
 		return alert($result_message, $result_url);
 	}
-
-	private function _uploadImage() {
-		// 파일 저장 처리 후
-		// ajax response 로 url 만 전송
-		return var_dump($_FILE);
-	}
-
+	
 
 	// 필요한 것만 사용하려고 재정의
 	protected function _header() {

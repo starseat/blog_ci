@@ -274,7 +274,6 @@ function checkNewCategory_name() {
 function sendImageFile(element, file, editor, welEditable) {
 	const formData = new FormData();
     formData.append('uploadFile', file);
-	formData.append('categoryId', $('#blog_category').val());
 	formData.append('csrf_token_starseat_blog', $('input[name="csrf_token_starseat_blog"]').val());
 
 	const _url = '/upload/image';

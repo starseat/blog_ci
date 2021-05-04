@@ -57,22 +57,14 @@ class Upload extends Base_Controller {
 			exit();
 		}
 
-		// 파일 저장 처리 후
-		// ajax response 로 url 만 전송
-
-		$category_id = $this->input->post('categoryId', TRUE);
-
-		// 카테고리가 없을 시 오늘날짜로 등록
-		if (!(isset($category_id) && !empty($category_id))) {
-			$category_id = date("Ymd");
-		}
-		
 		// thumbnail 등록 여부 검사
 		if ($_FILES['uploadFile']['name'] == '') {
 			return 0;
 		}
+		
+		$today = date("Ymd");
 		//log_message('error', '[_uploadImage] upload file name : ' . $_FILES['uploadFile']['name']);
-		$upload_path = 'uploads/' . $category_id . '/';
+		$upload_path = 'uploads/' . $today . '/_temp/';
 		if (!is_dir($upload_path)) {
 			mkdir($upload_path, 766, true);
 		}
@@ -91,7 +83,7 @@ class Upload extends Base_Controller {
 		if ($this->upload->do_upload('uploadFile')) {
 			$uploadResultData = $this->upload->data();
 
-			$uploadThumbnailInfo = array(
+			$uploadImageInfo = array(
 				'type' => 'board',
 				'name' => $uploadResultData['orig_name'],
 				'saved_name' => $uploadResultData['file_name'],
@@ -99,10 +91,11 @@ class Upload extends Base_Controller {
 				'saved_path' => $uploadResultData['file_path']
 			);
 
-			$this->load->model('image_model');
-			$this->image_model->insertImage($uploadThumbnailInfo);
+			// 이미지 정보를 db 에 insert 하는게 무의미함...
+			// $this->load->model('image_model');
+			// $this->image_model->insertImage($uploadImageInfo);
 
-			$retUploadPath = $uploadThumbnailInfo['upload_path'] . $uploadThumbnailInfo['saved_name'];
+			$retUploadPath = $uploadImageInfo['upload_path'] . $uploadImageInfo['saved_name'];
 
 			$result_array['result'] = true;
 			$result_array['code'] = 0;

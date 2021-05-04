@@ -27,8 +27,6 @@ class Upload extends Base_Controller {
 	 */
 	public function image() {
 
-		log_message('error', '[upload.image] start..');
-
 		// $result_array = [
 		// 	'result' => false, 
 		// 	'code' => -1, 

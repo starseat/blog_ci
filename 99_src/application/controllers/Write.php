@@ -7,13 +7,12 @@ class Write extends Base_Controller {
         parent::__construct();
 
 		$this->load->helper('form');
+		$this->load->helper('alert');
 	}
 
 	public function index() {
 		if (!$this->session->userdata('is_login')) {
-			return $this->load->view('errors/error_404', array(
-				'page_result' => false
-			));
+			return alert('로그아웃 되어 로그인 페이지로 이동합니다.', '/sign/in');
 		}
 
 		if ($this->input->method() != 'get') {
@@ -43,9 +42,7 @@ class Write extends Base_Controller {
 
 	public function insert() {
 		if (!$this->session->userdata('is_login')) {
-			return $this->load->view('errors/error_404', array(
-				'page_result' => false
-			));
+			return alert('로그아웃 되어 로그인 페이지로 이동합니다.', '/sign/in');
 		}
 
 		if ($this->input->method() != 'post') {
@@ -59,9 +56,7 @@ class Write extends Base_Controller {
 
 	public function update() {
 		if (!$this->session->userdata('is_login')) {
-			return $this->load->view('errors/error_404', array(
-				'page_result' => false
-			));
+			return alert('로그아웃 되어 로그인 페이지로 이동합니다.', '/sign/in');
 		}
 
 		if ($this->input->method() != 'post') {
@@ -86,10 +81,14 @@ class Write extends Base_Controller {
 		return $this->_submitBlog('update');
 	}
 
+	// blog 게시글 저장시
+	// 이미지 업로드때는 /upload/temp/{날짜}/{이미지_파일} 형식으로 저장하고
+	// 실제 게시글 저장시에는 /upload/{category_id}/{이미지_파일} 형식으로 변경
+	//  - 사용 안하는 이미지들은 나중에 crontab 으로 삭제 처리 하여 파일 수 줄이기
+	//  - 사용 안하는 기준: /upload/temp 에서 하루전(내지 이틀전) 디렉토리 삭제
 	private function _submitBlog($submit_type) {
 
 		$this->load->library('form_validation');
-		$this->load->helper('alert');
 
 		$this->form_validation->set_rules('blog_seq', 'seq', 'required');
 		$this->form_validation->set_rules('blog_category', 'Blog Category', 'required');
@@ -123,7 +122,7 @@ class Write extends Base_Controller {
 		if($uploadThumbnailSeq < 0) {				
 			return alert_history_back('썸네일 등록이 실패하였습니다.');
 		}
-
+		
 		$boardInfo = array(
 			'category_id' => $category_id,
 			'title' => $title,
@@ -131,10 +130,12 @@ class Write extends Base_Controller {
 			'thumbnail_seq' => $uploadThumbnailSeq, 
 			'content' => $content
 		);
-
+		
 		$resultSubmitId = 0;
 		$resultMessage = '';
 		$resultUrl = '';
+
+		//log_message('debug', '[write._submitBlog] saved board info: ' . json_encode($boardInfo));
 
 		$this->load->model('board_model');
 		if($submit_type == 'update') {
@@ -151,8 +152,8 @@ class Write extends Base_Controller {
 		}
 		else {
 			$boardInfo['writer'] = $this->session->userdata('user_id');
+			
 			$resultSubmitId = $this->board_model->insertBoard($boardInfo);
-
 			if ($resultSubmitId > 0) {
 				$resultMessage = '블로그 게시글이 등록 되었습니다.';
 				$resultUrl = '/blog/view/' . $resultSubmitId;
@@ -214,7 +215,6 @@ class Write extends Base_Controller {
 
 	public function addCategory() {
 		$this->load->library('form_validation');
-		$this->load->helper('alert');
 
 		$this->form_validation->set_rules('addCategoryModal_newParent', 'Parent Category ID', 'required');
 		$this->form_validation->set_rules('addCategoryModal_newCategoryId', 'New Category ID', 'trim|required|min_length[2]|max_length[12]|alpha');

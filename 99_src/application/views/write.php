@@ -214,6 +214,15 @@
 					<input type="hidden" id="saved_blog_seq" name="blog_seq" value="0" />
 				<?php } ?>
 
+				<?php
+				// config.php 의 $config['csrf_protection'] = FALSE; 로 설정되어 있을경우 아래와 같이 사용
+				$csrf = array(
+					'name' => $this->security->get_csrf_token_name(),
+					'hash' => $this->security->get_csrf_hash()
+				);
+				?>
+				<input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
+
 				<div class="row">
 					<div class="column large-3 tab-full">
 					<?php if ($is_modify) { ?>

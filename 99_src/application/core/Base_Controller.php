@@ -186,4 +186,5 @@ class Base_Controller extends CI_Controller {
 			return true;
 		}
 	}
+	
 }

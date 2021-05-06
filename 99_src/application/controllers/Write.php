@@ -128,7 +128,7 @@ class Write extends Base_Controller {
 			'title' => $title,
 			'view_type' => $view_type,
 			'thumbnail_seq' => $uploadThumbnailSeq, 
-			'content' => $content
+			'content' => $this->_changeTempImagePath($category_id, $content)
 		);
 		
 		$resultSubmitId = 0;
@@ -259,6 +259,67 @@ class Write extends Base_Controller {
 
 		return alert($result_message, $result_url);
 	}
+
+	private function _changeTempImagePath($_categoryId, $_contents) {
+		mb_internal_encoding("UTF-8");
+
+		$retContents = '';
+
+		$_find_keyword = '<img src="';
+		$contents_split = explode($_find_keyword, $_contents);
+		$split_count = count($contents_split);
+
+		for($i=0; $i<$split_count; $i++) {
+			$split_temp = $contents_split[$i];
+
+			$temp_dir_prefix = '/uploads/_temp/';
+			$check_len = mb_strlen($temp_dir_prefix, 'utf-8');
+
+			// 문자열 길이가 '/uploads/_temp/' 를 포함하지 않는 길이라면 pass
+			if(mb_strlen($split_temp, 'utf-8') <= $check_len) {
+				$retContents = $retContents . $split_temp;
+				continue;
+			}
+
+			$check_str = mb_substr($split_temp, 0, $check_len, 'utf-8');
+
+			if(!strcmp($check_str, $temp_dir_prefix)) {  // strcmp: 문자열 같으면 false, 다르면 true
+				
+				// 이미지 임시 경로 구하기
+				$pos = mb_strpos($split_temp, '"', 0, 'utf-8');
+				$temp_img_path = mb_substr($split_temp, 0, $pos, 'utf-8');
+
+				// 새로운 경로로 변환
+				$temp_new_dir_path = '/uploads/' . $_categoryId . '/';
+				$temp_new_path = $temp_new_dir_path . mb_substr($temp_img_path, mb_strlen($temp_dir_prefix . '/yyyymmdd', 'utf-8'), mb_strlen($temp_img_path, 'utf-8'), 'utf-8');
+
+				// 새로운 경로로 이미지 이동
+				$temp_dir_path = mb_substr($temp_new_dir_path, 1, mb_strlen($temp_new_dir_path, 'utf-8'), 'utf-8');  // 맨 앞에 '/' 제거				
+				if (!is_dir($temp_dir_path)) {
+					mkdir($temp_dir_path, 766, true);
+				}
+
+				$server_root_path = $_SERVER['DOCUMENT_ROOT'];
+				rename($server_root_path . $temp_img_path, $server_root_path . $temp_new_path);
+
+				// 변경된 경로로 블로그 다시 저장
+				$replace_contents = str_replace($temp_img_path, $temp_new_path, $split_temp);
+				$retContents = $retContents . $_find_keyword . $replace_contents;
+				
+			}
+			else {
+				$retContents = $retContents . $_find_keyword . $split_temp;
+			}
+
+		} // end of for($i=0; $i<$split_count; $i++)
+
+		return $retContents;		
+	}
+
+	// public function test() {
+	// 	$test_str = '<p>test 1</p><p><img src="/uploads/20210506/_temp/14e529841825e89cc98135f1046a3e9a.PNG" xss=removed></p><p>test 2</p><p><img src="/uploads/20210506/_temp/e56b8bf69369e92c292e9cfc9975d0e2.PNG" xss=removed></p><p>test 3</p><p><img src="/uploads/20210506/_temp/668894dee2291d6c3f44ab984ea8ee13.PNG" xss=removed></p><p>test 4 - url</p><p><img src="https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg" xss=removed></p><p>test 5</p><p><img src="/uploads/20210506/_temp/b095cfac6bc35092c2481aa21b69b873.png" xss=removed><br></p>';
+	// 	$this->_changeTempImagePath('cpp', $test_str);
+	// }
 	
 
 	// 필요한 것만 사용하려고 재정의

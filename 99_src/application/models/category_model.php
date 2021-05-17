@@ -86,4 +86,12 @@ class Category_model extends Base_Model {
 		return $this->db->query($sql, array('parent_id', $parentId))->row()->new_sort_index;
 	}
 
+	public function getCategoryNaviId($categoryId) {
+		$sql = "
+		WITH temp_category AS ( SELECT category_id, parent_id, level FROM tbl_blog_categories tbc WHERE category_id  = ?)  
+		SELECT (CASE WHEN temp_category.level = 0 THEN temp_category.category_id ELSE temp_category.parent_id END) AS navi_id FROM temp_category
+		";
+		return $this->db->query($sql, array($categoryId))->row()->navi_id;
+	}
+
 }

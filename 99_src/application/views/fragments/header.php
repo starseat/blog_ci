@@ -52,12 +52,12 @@
 		<nav class="header__nav-wrap">
 
 			<ul class="header__nav">
-				<li class="current"><a href="/" title="home">Home</a></li>
+				<li class="<?= $navi_id == 'home' ? 'current' : ''; ?>"><a href="/" title="home">Home</a></li>
 				<?php
 				foreach ($categories as $category) {
 					if (isset($category['children']) && !is_null($category['children']) && count($category['children']) > 0) {
 				?>
-						<li class="has-children">
+						<li class="has-children <?= $navi_id == $category['category_id'] ? 'current' : '' ?>">
 							<a href="#0" title="<?= $category['category_name'] ?>"><?= $category['category_name'] ?></a>
 							<ul class="sub-menu">
 								<?php
@@ -71,7 +71,7 @@
 						<?php
 					} else {
 						?>
-						<li><a href="/blog/list/<?= $category['category_id'] ?>" title="<?= $category['category_name'] ?>"><?= $category['category_name'] ?></a></li>
+						<li class="<?= $navi_id == $category['category_id'] ? 'current' : '' ?>"><a href="/blog/list/<?= $category['category_id'] ?>" title="<?= $category['category_name'] ?>"><?= $category['category_name'] ?></a></li>
 				<?php
 					}
 				}

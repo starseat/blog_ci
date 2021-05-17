@@ -11,8 +11,13 @@ class Base_Controller extends CI_Controller {
 	}
 
 	protected function _header() {
+		$categoryId = 'home';
+		if (!empty($this->uri->segment(3))) {
+			$categoryId = $this->uri->segment(3);
+		}
+
 		$this->load->view('fragments/head');
-		$this->load->view('fragments/header', array('categories' => $this->_category()));
+		$this->load->view('fragments/header', array('categories' => $this->_categories(), 'navi_id' => $this->_getCategoryNaviId($categoryId)));
 	}
 
 	protected function _footer() {
@@ -20,9 +25,17 @@ class Base_Controller extends CI_Controller {
 		$this->load->view('fragments/tail', array('is_write' => false));
 	}
 
-	protected function _category() {
+	protected function _categories() {
 		$this->load->model('category_model');
 		return $this->category_model->gets();
+	}
+
+	protected function _getCategoryNaviId($categoryId) {
+		if($categoryId == 'home') {
+			return $categoryId;
+		}
+		$this->load->model('category_model');
+		return $this->category_model->getCategoryNaviId($categoryId);
 	}
 
 	/**

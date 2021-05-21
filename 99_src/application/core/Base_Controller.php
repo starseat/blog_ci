@@ -12,10 +12,21 @@ class Base_Controller extends CI_Controller {
 
 	protected function _header() {
 		$categoryId = 'home';
-		if (!empty($this->uri->segment(3))) {
-			$categoryId = $this->uri->segment(3);
-		}
 
+		// view page 에서는 category 를 가져올 수 없으므로 새롭게 구함.
+		$pageType = $this->uri->segment(2);
+		if($pageType == 'view') {
+			$boardSeq = intVal($this->uri->segment(3));
+			$this->load->model('category_model');
+			$categoryId = $this->category_model->getCategoryIdByBoardSeq($boardSeq);
+		}
+		else {  // if($pageType == 'list')
+			if (!empty($this->uri->segment(3))) {
+				$categoryId = $this->uri->segment(3);
+			}
+		}
+		
+		//log_message('blog', 'categoryId: ' . $categoryId);
 		$this->load->view('fragments/head');
 		$this->load->view('fragments/header', array('categories' => $this->_categories(), 'navi_id' => $this->_getCategoryNaviId($categoryId)));
 	}

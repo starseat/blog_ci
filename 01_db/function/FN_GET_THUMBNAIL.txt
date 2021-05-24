@@ -13,3 +13,35 @@ begin
 
 	RETURN RET_THUMBNAIL;
 end;
+
+
+
+
+----------
+-- Mysql 5.7 용
+
+DELIMITER $$
+
+DROP FUNCTION IF EXISTS FN_GET_THUMBNAIL;
+
+CREATE FUNCTION FN_GET_THUMBNAIL(P_THUMBNAIL_SEQ BIGINT(11)) RETURNS varchar(256) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+	DECLARE RET_THUMBNAIL VARCHAR(256);    
+        SET RET_THUMBNAIL = '';
+        
+	IF P_THUMBNAIL_SEQ > 0 THEN
+    	SELECT 
+        	CASE WHEN storage_type = 'L' THEN CONCAT(upload_path, saved_name) 
+            	 WHEN storage_type = 'W' THEN upload_path 
+            ELSE ''
+        END INTO RET_THUMBNAIL
+      	FROM tbl_blog_images
+        WHERE seq = P_THUMBNAIL_SEQ AND deleted_at IS NULL;
+     END IF; 
+     
+     RETURN RET_THUMBNAIL;
+
+END $$
+ 
+DELIMITER ;
+

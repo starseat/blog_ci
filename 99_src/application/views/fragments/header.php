@@ -104,11 +104,12 @@
 			</ul> <!-- end header__nav -->
 
 			<ul class="header__social">
+				<!-- 
 				<li class="ss-facebook">
 					<a href="https://facebook.com/">
 						<span class="screen-reader-text">Facebook</span>
 					</a>
-				</li>
+				</li> 
 				<li class="ss-twitter">
 					<a href="#0">
 						<span class="screen-reader-text">Twitter</span>
@@ -122,6 +123,27 @@
 				<li class="ss-pinterest">
 					<a href="#0">
 						<span class="screen-reader-text">Behance</span>
+					</a>
+				</li>
+				-->
+				<li style="text-align: center;">
+					<a href="https://github.com/" target="_blank">
+						<i class="fa fa-github" aria-hidden="true"></i>
+					</a>
+				</li>
+				<li style="text-align: center;">
+					<a href="https://www.google.co.kr/" target="_blank">
+						<i class="fa fa-google" aria-hidden="true"></i>
+					</a>
+				</li>
+				<li style="text-align: center;">
+					<a href="https://www.instagram.com/" target="_blank">
+						<i class="fa fa-instagram" aria-hidden="true"></i>
+					</a>
+				</li>
+				<li style="text-align: center;">
+					<a href="https://twitter.com/" target="_blank">
+						<i class="fa fa-twitter" aria-hidden="true"></i>
 					</a>
 				</li>
 			</ul>

@@ -30,6 +30,7 @@
 	<link rel="stylesheet" href="/public/template/css/base.css">
 	<link rel="stylesheet" href="/public/template/css/vendor.css">
 	<link rel="stylesheet" href="/public/template/css/main.css">
+	<link rel="stylesheet" href="/public/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
 
 	<!-- script
     ================================================== -->

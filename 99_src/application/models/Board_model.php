@@ -7,6 +7,21 @@ class Board_model extends Base_Model {
 	}
 
 	public function getBoardListByHome() {
+		// 최신 Post 12개
+		$main_view_count = 12;
+
+		$sql = "
+		SELECT b1.seq, b1.category_id, c1.category_name, b1.writer, b1.title, b1.view_count, FN_GET_THUMBNAIL(b1.thumbnail_seq) thumbnail, 
+			b1.like_count, b1.view_type, DATE_FORMAT(b1.created_at, '%Y-%m-%d') as created_at, SUBSTRING(b1.content, 1, 40) as content 
+			FROM tbl_blog_boards b1 INNER JOIN tbl_blog_categories c1 ON b1.category_id = c1.category_id 
+			WHERE b1.deleted_at IS NULL 
+			ORDER BY b1.created_at DESC LIMIT $main_view_count 
+		";
+
+		return $this->db->query($sql)->result_array();
+	}
+
+	public function getBoardListByHome_bak() {
 		// 메인에는 최신 Post 6개, 인기많은 Post 6개 => 총 12개 뿌림.
 		$main_view_count = 6;
 

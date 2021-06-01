@@ -29,7 +29,7 @@ class Write extends Base_Controller {
 			$isModify = true;
 		}
 
-		$viewInfo = array('categories' => $this->_category());
+		$viewInfo = array('categories' => $this->_categories());
 		$viewInfo['is_modify'] = $isModify;	
 		if($isModify) {
 			$this->load->model('board_model');

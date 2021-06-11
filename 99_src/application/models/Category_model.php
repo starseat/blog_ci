@@ -87,9 +87,16 @@ class Category_model extends Base_Model {
 	}
 
 	public function getCategoryNaviId($categoryId) {
+		// dothome 의 mysql 에서 with 절 안먹음.
+		// $sql = "
+		// WITH temp_category AS ( SELECT category_id, parent_id, level FROM tbl_blog_categories tbc WHERE category_id = ?)  
+		// SELECT (CASE WHEN temp_category.level = 0 THEN temp_category.category_id ELSE temp_category.parent_id END) AS navi_id FROM temp_category
+		// ";
+		// dlfjgrp tnwjd
 		$sql = "
-		WITH temp_category AS ( SELECT category_id, parent_id, level FROM tbl_blog_categories tbc WHERE category_id = ?)  
-		SELECT (CASE WHEN temp_category.level = 0 THEN temp_category.category_id ELSE temp_category.parent_id END) AS navi_id FROM temp_category
+		SELECT (CASE WHEN temp_category.level = 0 THEN temp_category.category_id ELSE temp_category.parent_id END) AS navi_id FROM (
+			SELECT tbc.category_id, tbc.parent_id, tbc.level FROM tbl_blog_categories tbc WHERE tbc.category_id = 'it'
+		) temp_category
 		";
 		return $this->db->query($sql, array($categoryId))->row()->navi_id;
 	}

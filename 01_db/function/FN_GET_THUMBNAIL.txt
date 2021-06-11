@@ -19,6 +19,8 @@ end;
 
 ----------
 -- Mysql 5.7 용
+-- 생성 오류시 root 계정으로 아래 명령어 실행
+-- SET GLOBAL  log_bin_trust_function_creators=ON;
 
 DELIMITER $$
 

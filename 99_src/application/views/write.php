@@ -228,7 +228,7 @@
 					<?php if ($is_modify) { ?>
 						<button class="btn full-width" onclick="javascript: location.href='/blog/list/<?= $board_data['category_id']; ?>';">목록</button>
 					<?php } else { ?>
-						<button class="btn full-width" onclick="javascript: location.history.go(-1); ">나가기</button>
+						<button class="btn full-width" onclick="javascript: location.href='/'; ">나가기</button>
 					<?php } ?>
 						
 					</div>

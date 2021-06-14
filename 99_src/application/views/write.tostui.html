@@ -1,0 +1,26 @@
+<!--
+	* Tost Editor 2.5.2
+	https://ui.toast.com/
+	https://nhn.github.io/tui.editor/latest/tutorial-example01-editor-basic
+	https://docs.toast.com/ko/Open%20Source/ToastUI%20Editor/ko/overview/
+	https://blog.danggun.net/8183
+	http://forward.nhnent.com/hands-on-labs/toastui.editor-ext/01.html
+
+-->
+
+<!-- Toast Editor 2.5.2 의존성 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/2.5.2/toastui-editor.min.css" />
+
+<div id="editor"></div>
+
+<!-- Toast Editor 2.5.2 -->
+<script src="https://uicdn.toast.com/editor/2.5.2/toastui-editor-all.min.js"></script>
+<script>
+	const editor = new toastui.Editor({
+		el: document.querySelector('#editor'),
+		previewStyle: 'vertical',
+		height: '500px',
+		initialValue: 'test'
+	});
+</script>

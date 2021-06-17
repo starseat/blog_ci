@@ -52,6 +52,16 @@ class Category_model extends Base_Model {
 		return $this->db->query($sql, array($categoryId))->row();
 	}
 
+	public function getParnets() {
+		$sql  = "
+			SELECT seq, owner_id, category_id, category_name, level, parent_id, view_type, sort_index 
+			FROM tbl_blog_categories tbc 
+			WHERE deleted_at IS NULL AND level = 0 
+			ORDER BY sort_index, seq
+		";
+		return $this->db->query($sql)->result_array();
+	}
+
 	public function insertCategory($categoryInfo) {
 		$nextSortIndex = 0;
 

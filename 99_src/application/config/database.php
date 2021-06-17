@@ -80,7 +80,7 @@ $db['default'] = array(
 	'password' => 'blog_user_pw',
 	'database' => 'blogdb',
 	'dbdriver' => 'mysqli',
-	// 'port' => '3307',
+	'port' => '3307',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),

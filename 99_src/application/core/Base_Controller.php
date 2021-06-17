@@ -7,7 +7,9 @@ class Base_Controller extends CI_Controller {
 		parent::__construct();
 
 		$this->load->database();
-		$this->load->helper(array('url', 'date'));
+		$this->load->model('category_model');
+		
+		$this->load->helper(array('url', 'date', 'result'));
 	}
 
 	protected function _header() {
@@ -17,7 +19,6 @@ class Base_Controller extends CI_Controller {
 		$pageType = $this->uri->segment(2);
 		if($pageType == 'view') {
 			$boardSeq = intVal($this->uri->segment(3));
-			$this->load->model('category_model');
 			$categoryId = $this->category_model->getCategoryIdByBoardSeq($boardSeq);
 		}
 		else {  // if($pageType == 'list')
@@ -37,7 +38,6 @@ class Base_Controller extends CI_Controller {
 	}
 
 	protected function _categories() {
-		$this->load->model('category_model');
 		return $this->category_model->gets();
 	}
 
@@ -45,7 +45,6 @@ class Base_Controller extends CI_Controller {
 		if($categoryId == 'home') {
 			return $categoryId;
 		}
-		$this->load->model('category_model');
 		return $this->category_model->getCategoryNaviId($categoryId);
 	}
 

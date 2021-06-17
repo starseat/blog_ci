@@ -190,7 +190,17 @@ function showAddCategoryModal(event) {
 	event.preventDefault();
     event.stopPropagation();
 
-	//alert('추가');
+	// $.get('/api/admin/category/parents', function(_resultData) {
+	// 	const resultObj = JSON.parse(_resultData);
+	// 	console.log('[showAddCategoryModal] resultObj:: ', resultObj);
+	// 	$('#addCategoryModal').modal({
+	// 		escapeClose: false,
+	// 		clickClose: false,
+	// 		showClose: true, 
+	// 		fadeDuration: 100
+	// 	});
+	// })
+	
 	$('#addCategoryModal').modal({
 		escapeClose: false,
 		clickClose: false,
@@ -276,7 +286,7 @@ function sendImageFile(element, file, editor, welEditable) {
     formData.append('uploadFile', file);
 	formData.append('csrf_token_starseat_blog', $('input[name="csrf_token_starseat_blog"]').val());
 
-	const _url = '/upload/image';
+	const _url = '/api/admin/upload/image';
 	$.ajax({
 		data : formData,
 		type : 'post',

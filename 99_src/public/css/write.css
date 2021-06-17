@@ -1,0 +1,68 @@
+@charset "utf-8";
+
+#write-content {
+	padding: 60px;
+	margin: 0 auto;
+}
+
+li.nofocus {
+	height: 38px;
+}
+
+#writer {
+	color: #33998a;
+	transition: all 0.3s ease-in-out;
+}
+
+#addCategory {
+	height: 42px;
+	width: 42px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+#category_comment {
+	display: inline-block;
+	font-family: "IBM Plex Sans", sans-serif;
+	font-weight: 400;
+	font-size: 1.6rem;
+	line-height: 1.556;
+	color: #7e7e7e;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.addCategoryModal_bottom_box {
+	display: flex;
+	justify-content: space-between;
+}
+
+.addCategoryModal_bottom_close {
+	color: #afafaf !important;
+}
+
+.addCategoryModal_bottom_close:hover {
+	color: #da5260;
+	font-weight: bold !important;
+}
+
+.addCategoryModal_bottom_close:hover {
+	color: black !important;
+	font-weight: bold !important;
+}
+
+.padding-0 {
+	padding: 0;
+}
+
+.padding-left-10 {
+	padding-left: 10px;
+}
+
+.padding-right-10 {
+	padding-right: 10px;
+}

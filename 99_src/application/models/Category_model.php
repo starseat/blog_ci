@@ -92,8 +92,8 @@ class Category_model extends Base_Model {
 	}
 
 	private function _getLastSortIndex($parentId) {
-		$sql = "SELECT (ifnull(max(sort_index), 0) + 1) new_sort_index FROM tbl_blog_categories WHERE LEVEL = 1 WHERE parent_id = ?";
-		return $this->db->query($sql, array('parent_id', $parentId))->row()->new_sort_index;
+		$sql = "SELECT (ifnull(max(sort_index), 0) + 1) new_sort_index FROM tbl_blog_categories WHERE level = 1 AND parent_id = ?";
+		return $this->db->query($sql, array($parentId))->row()->new_sort_index;
 	}
 
 	public function getCategoryNaviId($categoryId) {
@@ -105,7 +105,7 @@ class Category_model extends Base_Model {
 		// dlfjgrp tnwjd
 		$sql = "
 		SELECT (CASE WHEN temp_category.level = 0 THEN temp_category.category_id ELSE temp_category.parent_id END) AS navi_id FROM (
-			SELECT tbc.category_id, tbc.parent_id, tbc.level FROM tbl_blog_categories tbc WHERE tbc.category_id = 'it'
+			SELECT tbc.category_id, tbc.parent_id, tbc.level FROM tbl_blog_categories tbc WHERE tbc.category_id = ?
 		) temp_category
 		";
 		return $this->db->query($sql, array($categoryId))->row()->navi_id;

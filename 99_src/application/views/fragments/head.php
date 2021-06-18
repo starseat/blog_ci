@@ -7,12 +7,12 @@
     ================================================== -->
 	<meta charset="utf-8">
 	<title>Scribble - jw's blog.</title>
-	<meta name="description" content="개인 블로그 입니다.">
+	<meta name="description" content="IT 정보 및 여러가지를 작성한 개인 블로그 입니다.">
 	<meta name="author" content="starseat">
 
 	<meta property="og:type" content="website">
 	<meta property="og:title" content="Scribble - jw's blog.">
-	<meta property="og:description" content="개인 블로그 입니다.">
+	<meta property="og:description" content="IT 정보 및 여러가지를 작성한 개인 블로그 입니다.">
 	<meta property="og:url" content="http://starseat.net/">
 	<meta property="og:image" content="/public/imgs/og-image.png" />
 
@@ -42,6 +42,11 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="/public/imgs/favicon/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/public/imgs/favicon/favicon-16x16.png">
 	<link rel="manifest" href="/public/imgs/favicon/site.webmanifest">
+
+
+	<!-- custom
+    ================================================== -->
+	<link rel="stylesheet" href="/public/css/common.css">
 
 </head>
 

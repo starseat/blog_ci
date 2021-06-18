@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+/* list thumbnail */
+.masonry .entry__thumb {
+	text-align: center;
+}
+
+/* view thumbnail */
+.entry__post-thumb {
+	text-align: center;
+}

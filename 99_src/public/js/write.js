@@ -322,7 +322,7 @@ function sendImageFile(element, file, editor, welEditable) {
 			}
 		}, 
 		error: function (jqXHR, textStatus, errorThrown) {
-			console.lot('[sendImageFile] ajax error :: ', textStatus + ' ' + errorThrown);
+			console.log('[sendImageFile] ajax error :: ', textStatus + ' ' + errorThrown);
 		}
 	});
 

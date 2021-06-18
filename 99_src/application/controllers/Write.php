@@ -94,7 +94,7 @@ class Write extends Base_Controller {
 		$this->form_validation->set_rules('blog_category', 'Blog Category', 'required');
 		$this->form_validation->set_rules('blog_title', 'Blog Title', 'required|min_length[2]|max_length[64]');
 		$this->form_validation->set_rules('blog_viewType', 'Blog View Type', 'required');
-		$this->form_validation->set_rules('blog_content', 'Blog Contents', 'required|min_length[1]');
+		// $this->form_validation->set_rules('blog_content', 'Blog Contents', 'required|min_length[1]');
 
 		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
 
@@ -129,7 +129,7 @@ class Write extends Base_Controller {
 			'view_type' => $view_type,
 			'thumbnail_seq' => $uploadThumbnailSeq, 
 			'content' => $this->_changeTempImagePath($category_id, $content)
-		);
+		);		
 		
 		$resultSubmitId = 0;
 		$resultMessage = '';
@@ -179,7 +179,7 @@ class Write extends Base_Controller {
 
 		$upload_path = 'uploads/' . $category_id . '/thumbnail/';
 		if (!is_dir($upload_path)) {
-			mkdir($upload_path, 766, true);
+			mkdir($upload_path, 0755, true);
 		}
 
 		$upload_config = array(
@@ -262,39 +262,40 @@ class Write extends Base_Controller {
 
 	private function _changeTempImagePath($_categoryId, $_contents) {
 		mb_internal_encoding("UTF-8");
-
 		$retContents = '';
 
 		$_find_keyword = '<img src="';
 		$contents_split = explode($_find_keyword, $_contents);
+		//log_message('blog', '[write._changeTempImagePath] contents_split : ' . json_encode($contents_split, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 		$split_count = count($contents_split);
-
 		for($i=0; $i<$split_count; $i++) {
 			$split_temp = $contents_split[$i];
-
 			$temp_dir_prefix = '/uploads/_temp/';
 			$check_len = mb_strlen($temp_dir_prefix, 'utf-8');
-
 			// 문자열 길이가 '/uploads/_temp/' 를 포함하지 않는 길이라면 pass
 			if(mb_strlen($split_temp, 'utf-8') <= $check_len) {
 				$retContents = $retContents . $split_temp;
 				continue;
 			}
+			// 문자열에 '/uploads/_temp/' 가 없으면 pass
+			if(mb_strpos($split_temp, $temp_dir_prefix, 0, 'utf-8') === false) {
+				$retContents = $retContents . $split_temp;
+				continue;
+			}
 
 			$check_str = mb_substr($split_temp, 0, $check_len, 'utf-8');
-
 			if(!strcmp($check_str, $temp_dir_prefix)) {  // strcmp: 문자열 같으면 false, 다르면 true
 				
 				// 이미지 임시 경로 구하기
 				$pos = mb_strpos($split_temp, '"', 0, 'utf-8');
 				$temp_img_path = mb_substr($split_temp, 0, $pos, 'utf-8');
-
+				
 				// 새로운 경로로 변환
 				$temp_new_dir_path = '/uploads/' . $_categoryId . '/';
 				$temp_new_path = $temp_new_dir_path . mb_substr($temp_img_path, mb_strlen($temp_dir_prefix . '/yyyymmdd', 'utf-8'), mb_strlen($temp_img_path, 'utf-8'), 'utf-8');
-
+				
 				// 새로운 경로로 이미지 이동
-				$temp_dir_path = mb_substr($temp_new_dir_path, 1, mb_strlen($temp_new_dir_path, 'utf-8'), 'utf-8');  // 맨 앞에 '/' 제거				
+				$temp_dir_path = mb_substr($temp_new_dir_path, 1, mb_strlen($temp_new_dir_path, 'utf-8'), 'utf-8');  // 맨 앞에 '/' 제거
 				if (!is_dir($temp_dir_path)) {
 					mkdir($temp_dir_path, 766, true);
 				}
@@ -305,12 +306,10 @@ class Write extends Base_Controller {
 				// 변경된 경로로 블로그 다시 저장
 				$replace_contents = str_replace($temp_img_path, $temp_new_path, $split_temp);
 				$retContents = $retContents . $_find_keyword . $replace_contents;
-				
 			}
 			else {
 				$retContents = $retContents . $_find_keyword . $split_temp;
 			}
-
 		} // end of for($i=0; $i<$split_count; $i++)
 
 		return $retContents;		

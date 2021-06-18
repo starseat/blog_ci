@@ -153,16 +153,16 @@
 					'hash' => $this->security->get_csrf_hash()
 				);
 				?>
-				<input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
+				<input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>" />
 
 				<div class="row">
 					<div class="column large-3 tab-full">
-					<?php if ($is_modify) { ?>
-						<button class="btn full-width" onclick="javascript: location.href='/blog/list/<?= $board_data['category_id']; ?>';">목록</button>
-					<?php } else { ?>
-						<button class="btn full-width" onclick="javascript: location.href='/'; ">나가기</button>
-					<?php } ?>
-						
+						<?php if ($is_modify) { ?>
+							<button class="btn full-width" onclick="javascript: location.href='/blog/list/<?= $board_data['category_id']; ?>';">목록</button>
+						<?php } else { ?>
+							<button class="btn full-width" onclick="javascript: location.href='/'; ">나가기</button>
+						<?php } ?>
+
 					</div>
 					<div class="column large-3 tab-full"></div>
 					<div class="column large-6 tab-full">

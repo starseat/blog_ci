@@ -65,11 +65,30 @@ function summernote_init() {
         callbacks: {
             onImageUpload: function(files, editor, welEditable) {
                 sendImageFile(this, files[0], editor, welEditable);
-            }
+            }, 
+			// onPaste 함수(복붙에 대한 콜백) 는 기본값을 사용하면 복붙시 base64로 인코딩된 src 이미지 파일과 
+			// onImageUpload에서 구현한 url 기반의 이미지 파일이 두개가 들어가는 버그가 생기므로 재정의
+			onPaste: function (e) {
+				const clipboardData = e.originalEvent.clipboardData;
+				if (clipboardData && clipboardData.items && clipboardData.items.length) {
+					let item = clipboardData.items[0];
+					if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+						e.preventDefault();
+					}
+				}
+			}
         },
     });
 
 	$('.note-editable').css('font-size','18px');
+
+	// 드래그 앤 드랍이 안되는 경우
+	$("div.note-editable").on('drop',function(e){
+         for(i=0; i< e.originalEvent.dataTransfer.files.length; i++) {
+			sendImageFile($('#blog_content_view')[0], e.originalEvent.dataTransfer.files[i]);
+         }
+        e.preventDefault();
+   });
 }
 
 function summernote_init_addTextTags() {
@@ -182,8 +201,7 @@ function submitBlog(event) {
 	}
 
 	$('#blog_content').val(blog_content);
-
-	$('#writeForm').submit();	
+	$('#writeForm').submit();
 }
 
 function showAddCategoryModal(event) {

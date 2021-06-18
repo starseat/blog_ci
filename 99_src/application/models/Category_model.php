@@ -115,7 +115,12 @@ class Category_model extends Base_Model {
 		$sql = "
 		SELECT category_id AS navi_id FROM tbl_blog_boards WHERE seq = ? AND deleted_at IS NULL
 		";
-		return $this->db->query($sql, array($boardSeq))->row()->navi_id;
+
+		$retCategoryId = $this->db->query($sql, array($boardSeq))->row()->navi_id;
+		if( !isset($retCategoryId) ) {
+			$retCategoryId = '';
+		}
+		return $retCategoryId;
 	}
 
 }

@@ -48,7 +48,7 @@ class Upload extends Base_Controller {
 		//log_message('error', '[_uploadImage] upload file name : ' . $_FILES['uploadFile']['name']);
 		$upload_path = 'uploads' . '/_temp/' . $today . '/';
 		if (!is_dir($upload_path)) {
-			mkdir($upload_path, 766, true);
+			mkdir($upload_path, 0755, true);
 		}
 
 		$upload_config = array(

@@ -116,7 +116,8 @@ class Write extends Base_Controller {
 		$category_id = $this->input->post('blog_category', TRUE);
 		$title = $this->input->post('blog_title', TRUE);
 		$view_type = intVal($this->input->post('blog_viewType', TRUE));
-		$content = $this->input->post('blog_content', TRUE);
+		//$content = $this->input->post('blog_content', TRUE);
+		$content = $this->input->post('blog_content');  // 내용 내 태그 존재시 attribute 없어져서 xss_clean 제거... xss_clean 처리 추가 필요...
 		// log_message('blog', '[_submitBlog] content: ' . $content);
 
 		$uploadThumbnailSeq = $this->_insertThumbnail($category_id);

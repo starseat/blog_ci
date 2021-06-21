@@ -117,6 +117,7 @@ class Write extends Base_Controller {
 		$title = $this->input->post('blog_title', TRUE);
 		$view_type = intVal($this->input->post('blog_viewType', TRUE));
 		$content = $this->input->post('blog_content', TRUE);
+		// log_message('blog', '[_submitBlog] content: ' . $content);
 
 		$uploadThumbnailSeq = $this->_insertThumbnail($category_id);
 		if($uploadThumbnailSeq < 0) {				

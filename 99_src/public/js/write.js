@@ -14,6 +14,21 @@ function summernote_init() {
     // });
     
     document.emojiSource = '/public/vendor/summernote/emoji/tam-emoji/img';
+	const codeButton = function(context) {
+		const ui = $.summernote.ui;
+
+		// create button
+		const button = ui.button({
+			contents: '<i class="note-icon-code"></i> Code',
+			className: 'note-btn-code',
+            tooltip: 'Code block',
+			click: function () {
+				$('#blog_content_view').summernote('pasteHTML', '<pre><code class="code"><xmp>Place your code here.</xmp></code></pre>');
+			}
+		});
+
+		return button.render();   // return button as jquery object 
+	}
 
     $('#blog_content_view').summernote({
         height: 360, // set editor height
@@ -25,10 +40,10 @@ function summernote_init() {
         codemirror: { theme: 'monokai' },  
         // tabsize: 2,
         
-        toolbar: [             
-            // ['style', ['emoji', 'style', 'add-text-tags' ]],
-			['style', ['emoji', 'style', 'add-text-tags', 'bold', 'italic', 'underline','strikethrough', 'clear']],
-            ['font', ['bold', 'underline', 'clear', 'strikethrough', 'superscript', 'subscript']],
+        toolbar: [
+			['style', ['emoji', 'style', 'bold', 'italic', 'underline','strikethrough', 'clear']],  // 'add-text-tags'
+			['mybutton', ['code']],
+            ['font', ['superscript', 'subscript']], // 'bold', 'underline', 'clear', 'strikethrough', 
             ['fontsize', ['fontsize']],
             ['fontname', ['fontname']],
             // ['color', ['color']],
@@ -37,8 +52,11 @@ function summernote_init() {
             ['height', ['height']], 
             ['table', ['table']],
             ['insert', ['link', 'picture', 'video']],
-            ['view', ['fullscreen', 'codeview', 'help']],
+            ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']],
         ],
+		buttons: {
+			code: codeButton
+		}, 
         popover: {
             air: [
                 ['color', ['color']],
@@ -60,6 +78,7 @@ function summernote_init() {
                 ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
             ],
         }, 
+		styleTags: ['p', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'], // 기본 styleTags 에선 'code' 가 <pre><code></code></pre> 가 아닌 <pre></pre> 만 있어 제외시킴.
 		fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
 		fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'], 
         callbacks: {
@@ -83,7 +102,7 @@ function summernote_init() {
 	$('.note-editable').css('font-size','18px');
 
 	// 드래그 앤 드랍이 안되는 경우
-	$("div.note-editable").on('drop',function(e){
+	$("div.note-editable").on('drop', function(e){
          for(i=0; i< e.originalEvent.dataTransfer.files.length; i++) {
 			sendImageFile($('#blog_content_view')[0], e.originalEvent.dataTransfer.files[i]);
          }
@@ -199,7 +218,7 @@ function submitBlog(event) {
 		alert('내용이 비어있습니다.');
 		return false;
 	}
-
+	
 	$('#blog_content').val(blog_content);
 	$('#writeForm').submit();
 }

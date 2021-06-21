@@ -66,3 +66,12 @@ li.nofocus {
 .padding-right-10 {
 	padding-right: 10px;
 }
+
+.emoji-menu-tabs td {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.note-editable code {
+	border: 0;
+}

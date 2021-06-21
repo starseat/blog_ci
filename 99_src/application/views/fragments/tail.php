@@ -1,5 +1,18 @@
     </div> <!-- end s-wrap -->
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TD0TMFV81J"></script>
+    <script>
+    	window.dataLayer = window.dataLayer || [];
+
+    	function gtag() {
+    		dataLayer.push(arguments);
+    	}
+    	gtag('js', new Date());
+
+    	gtag('config', 'G-TD0TMFV81J');
+    </script>
+	
     <!-- Java Script ================================================== -->
     <script src="/public/template/js/jquery-3.2.1.min.js"></script>
     <script src="/public/template/js/plugins.js"></script>
@@ -46,7 +59,7 @@
     	<?php
 		} // end of if ($is_write)
 		?>
-		
+
     	<script src="/public/js/blog.js"></script>
     <?php
 	} // end of if ($this->session->userdata('is_login'))
@@ -54,4 +67,4 @@
 
     </body>
 
-</html>
+    </html>

@@ -61,7 +61,7 @@
 		gtag('config', 'G-5DBT2TNTEJ');
 	</script>
 
-	<!-- Global site tag (gtag.js) - Google Analytics (이전버전) -->
+	<!-- Global site tag (gtag.js) - Google Analytics (유니버셜) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-200366886-1"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];

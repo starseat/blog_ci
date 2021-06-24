@@ -1,17 +1,4 @@
     </div> <!-- end s-wrap -->
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TD0TMFV81J"></script>
-    <script>
-    	window.dataLayer = window.dataLayer || [];
-
-    	function gtag() {
-    		dataLayer.push(arguments);
-    	}
-    	gtag('js', new Date());
-
-    	gtag('config', 'G-TD0TMFV81J');
-    </script>
 	
     <!-- Java Script ================================================== -->
     <script src="/public/template/js/jquery-3.2.1.min.js"></script>

@@ -48,6 +48,18 @@
     ================================================== -->
 	<link rel="stylesheet" href="/public/css/common.css">
 
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-5DBT2TNTEJ"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+
+		gtag('config', 'G-5DBT2TNTEJ');
+	</script>
 </head>
 
 <body>

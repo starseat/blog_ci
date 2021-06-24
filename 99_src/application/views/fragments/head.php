@@ -48,7 +48,7 @@
     ================================================== -->
 	<link rel="stylesheet" href="/public/css/common.css">
 
-	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<!-- Global site tag (gtag.js) - Google Analytics4 -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-5DBT2TNTEJ"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
@@ -60,6 +60,23 @@
 
 		gtag('config', 'G-5DBT2TNTEJ');
 	</script>
+
+	<!-- Global site tag (gtag.js) - Google Analytics (이전버전) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-200366886-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-200366886-1');
+	</script>
+
+
+	<!-- Google AdSense -->
+	<script data-ad-client="ca-pub-1835044006045704" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 
 <body>

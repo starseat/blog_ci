@@ -108,7 +108,13 @@ class Category_model extends Base_Model {
 			SELECT tbc.category_id, tbc.parent_id, tbc.level FROM tbl_blog_categories tbc WHERE tbc.category_id = ?
 		) temp_category
 		";
-		return $this->db->query($sql, array($categoryId))->row()->navi_id;
+
+		$tempNavRow = $this->db->query($sql, array($categoryId))->row();
+		$retNaviId = 0;
+		if(!empty($tempNavRow)) {
+			$retNaviId = $this->db->query($sql, array($categoryId))->row()->navi_id;
+		}
+		return $retNaviId;
 	}
 
 	public function getCategoryIdByBoardSeq($boardSeq) {
@@ -116,7 +122,7 @@ class Category_model extends Base_Model {
 		SELECT category_id AS navi_id FROM tbl_blog_boards WHERE seq = ? AND deleted_at IS NULL
 		";
 
-		$retCategoryId = $this->db->query($sql, array($boardSeq))->row()->navi_id;
+		$retCategoryId = $this->db->query($sql, array($boardSeq))->row();
 		if( !isset($retCategoryId) ) {
 			$retCategoryId = '';
 		}

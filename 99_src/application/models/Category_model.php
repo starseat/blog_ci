@@ -102,18 +102,20 @@ class Category_model extends Base_Model {
 		// WITH temp_category AS ( SELECT category_id, parent_id, level FROM tbl_blog_categories tbc WHERE category_id = ?)  
 		// SELECT (CASE WHEN temp_category.level = 0 THEN temp_category.category_id ELSE temp_category.parent_id END) AS navi_id FROM temp_category
 		// ";
-		// dlfjgrp tnwjd
+		
+		// 아래와 같이 수정
 		$sql = "
 		SELECT (CASE WHEN temp_category.level = 0 THEN temp_category.category_id ELSE temp_category.parent_id END) AS navi_id FROM (
 			SELECT tbc.category_id, tbc.parent_id, tbc.level FROM tbl_blog_categories tbc WHERE tbc.category_id = ?
 		) temp_category
 		";
-
-		$tempNavRow = $this->db->query($sql, array($categoryId))->row();
-		$retNaviId = 0;
-		if(!empty($tempNavRow)) {
-			$retNaviId = $this->db->query($sql, array($categoryId))->row()->navi_id;
+		
+		$query = $this->db->query($sql, array($categoryId));
+		$retNaviId = '__empty_navi_id';
+		if($query->num_rows() > 0) {
+			$retNaviId = $query->row()->navi_id;
 		}
+		// log_message('blog', '[getCategoryNaviId] retNaviId: '. $retNaviId);
 		return $retNaviId;
 	}
 
@@ -122,10 +124,12 @@ class Category_model extends Base_Model {
 		SELECT category_id AS navi_id FROM tbl_blog_boards WHERE seq = ? AND deleted_at IS NULL
 		";
 
-		$retCategoryId = $this->db->query($sql, array($boardSeq))->row();
-		if( !isset($retCategoryId) ) {
-			$retCategoryId = '';
+		$query = $this->db->query($sql, array($boardSeq));
+		$retCategoryId = '__empty_category_id';
+		if ($query->num_rows() > 0) {
+			$retCategoryId = $query->row()->navi_id;
 		}
+		// log_message('blog', '[getCategoryIdByBoardSeq] retCategoryId: ' . $retCategoryId);
 		return $retCategoryId;
 	}
 

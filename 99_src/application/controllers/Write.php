@@ -330,7 +330,7 @@ class Write extends Base_Controller {
 
 	// 필요한 것만 사용하려고 재정의
 	protected function _footer() {
-		$this->load->view('fragments/tail', array('is_write' => true));
+		$this->load->view('fragments/tail');
 	}
 	/**
 	 * 사이트 해더, 푸터 자동 추가

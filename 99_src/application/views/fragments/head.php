@@ -77,6 +77,18 @@
 
 	<!-- Google AdSense -->
 	<script data-ad-client="ca-pub-1835044006045704" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+	<!-- ==================================================================================================== -->
+	<!-- ==================================================================================================== -->
+	<!-- ==================================================================================================== -->
+
+	<!-- Java Script
+	================================================== -->
+	<script src="/public/template/js/jquery-3.2.1.min.js"></script>
+	<script src="/public/template/js/plugins.js"></script>
+
+	<script src="/public/js/common.js"></script>
+
 </head>
 
 <body>

@@ -34,7 +34,7 @@ class Base_Controller extends CI_Controller {
 
 	protected function _footer() {
 		$this->load->view('fragments/footer');
-		$this->load->view('fragments/tail', array('is_write' => false));
+		$this->load->view('fragments/tail');
 	}
 
 	protected function _categories() {

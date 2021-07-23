@@ -1,179 +1,48 @@
 $(document).ready(function() {	
-	summernote_init();
+	toastui_init();
 
 	form_init();
 
 	$('#addNewCategorySubmit').on('click', submitAddNewCategory);
+	$(document).on('click.modal', 'a[rel~="modal:close"]', closeAddCategoryModal); 
 });
 
+function exitWritePage(event, categoryId) {
+	event.preventDefault();
+    event.stopPropagation();
 
-function summernote_init() {
-    // 그냥 보내면 multer 에러 발생하므로 files 관련 element 제거
-    // $('#writeForm').submit(function(){
-    //     $('input[name=files]').remove();
-    // });
-    
-    document.emojiSource = '/public/vendor/summernote/emoji/tam-emoji/img';
-	const codeButton = function(context) {
-		const ui = $.summernote.ui;
-
-		// create button
-		const button = ui.button({
-			contents: '<i class="note-icon-code"></i> Code',
-			className: 'note-btn-code',
-            tooltip: 'Code block',
-			click: function () {
-				$('#blog_content_view').summernote('pasteHTML', '<pre><code class="code"><xmp>Place your code here.</xmp></code></pre>');
-			}
-		});
-
-		return button.render();   // return button as jquery object 
+	let next = '/';
+	if(typeof categoryId != 'undefined' && categoryId != null && categoryId != '') {
+		next = '/blog/list/' + categoryId;
 	}
 
-    $('#blog_content_view').summernote({
-        height: 360, // set editor height
-        minHeight: null, // set minimum height of editor
-        maxHeight: null, // set maximum height of editor
-        focus: true,  // set focus to editable area after initializing summernote
-        lang: 'ko-KR', // default: 'en-US', 
-        placeholder: 'input your message...',
-        codemirror: { theme: 'monokai' },  
-        // tabsize: 2,
-        
-        toolbar: [
-			['style', ['emoji', 'style', 'bold', 'italic', 'underline','strikethrough', 'clear']],  // 'add-text-tags'
-			['mybutton', ['code']],
-            ['font', ['superscript', 'subscript']], // 'bold', 'underline', 'clear', 'strikethrough', 
-            ['fontsize', ['fontsize']],
-            ['fontname', ['fontname']],
-            // ['color', ['color']],
-			['color', ['forecolor','color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']], 
-            ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']],
-            ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']],
-        ],
-		buttons: {
-			code: codeButton
-		}, 
-        popover: {
-            air: [
-                ['color', ['color']],
-                ['font', ['bold', 'underline', 'clear']], 
-                ['para', ['ul', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture']]
-            ], 
-            image: [
-                ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
-                ['float', ['floatLeft', 'floatRight', 'floatNone']],
-                ['remove', ['removeMedia']]
-            ],
-            link: [
-                ['link', ['linkDialogShow', 'unlink']]
-            ],
-            table: [
-                ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
-                ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
-            ],
-        }, 
-		styleTags: ['p', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'], // 기본 styleTags 에선 'code' 가 <pre><code></code></pre> 가 아닌 <pre></pre> 만 있어 제외시킴.
-		fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
-		fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'], 
-        callbacks: {
-            onImageUpload: function(files, editor, welEditable) {
-                sendImageFile(this, files[0], editor, welEditable);
-            }, 
-			// onPaste 함수(복붙에 대한 콜백) 는 기본값을 사용하면 복붙시 base64로 인코딩된 src 이미지 파일과 
-			// onImageUpload에서 구현한 url 기반의 이미지 파일이 두개가 들어가는 버그가 생기므로 재정의
-			onPaste: function (e) {
-				const clipboardData = e.originalEvent.clipboardData;
-				if (clipboardData && clipboardData.items && clipboardData.items.length) {
-					let item = clipboardData.items[0];
-					if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
-						e.preventDefault();
-					}
-				}
-			}
-        },
-    });
-
-	$('.note-editable').css('font-size','18px');
-
-	// 드래그 앤 드랍이 안되는 경우
-	$("div.note-editable").on('drop', function(e){
-         for(i=0; i< e.originalEvent.dataTransfer.files.length; i++) {
-			sendImageFile($('#blog_content_view')[0], e.originalEvent.dataTransfer.files[i]);
-         }
-        e.preventDefault();
-   });
+	location.href = next;
 }
 
-function summernote_init_addTextTags() {
-    $('.add-text-tags').attr('title', 'Additional text styles');
-    
-    const addTextTagBtns = $('.note-add-text-tags-btn');
-    for(let i=0; i<addTextTagBtns.length; i++) {
-        let $tempTag = $(addTextTagBtns[i]);
-        let classSplit = (($tempTag).attr('class')).split(' ');
-        let curItemName = classSplit[classSplit.length - 1];
-        let titleMsg = '';
 
-        switch(curItemName) {
-            case 'type-del': { titleMsg = 'Deleted text'; } break;
-            case 'type-ins': { titleMsg = 'Inserted text'; } break;
-            case 'type-small': { titleMsg = 'Fine print'; } break;
-            case 'type-mark': { titleMsg = 'Highlighted text'; } break;
-            case 'type-var': { titleMsg = 'Variable'; } break;
-            case 'type-kbd': { titleMsg = 'User input'; } break;
-            case 'type-code': { titleMsg = 'Inline code'; } break;
-            case 'type-samp': { titleMsg = 'Sample output'; } break;
-            case 'type-cap': { titleMsg = 'First letter large'; } break;
-        }
-        $tempTag.attr('title', titleMsg);    
-    } // end of for(i in addTextTagBtns)
-}
+function toastui_init() {
+	const Editor = toastui.Editor;
 
-function summernote_init_emoji() {
-    $('.emoji-menu-tabs td').css('padding', 0);
-    $('.emoji-menu .emoji-items-wrap img').css('margin-top', 0).css('margin-bottom', 0);
+	const colorSyntax = Editor.plugin.colorSyntax;
+	const codeSyntaxHighlight = Editor.plugin.codeSyntaxHighlight ;
+	const tableMergedCell = Editor.plugin.tableMergedCell;
+	const uml = Editor.plugin.uml;
+	const chart = Editor.plugin.chart;
 
-    $('.emoji-picker').parent().attr('title', 'emoji');
+	const editor = new Editor({
+		el: document.querySelector('#blog_content_view'),
+		height: '600px',
+		initialEditType: 'markdown',
+		// initialEditType: 'wysiwyg',
+		previewStyle: 'vertical', 
+		// plugins: [colorSyntax, [codeSyntaxHighlight, { highlighter: Prism } ], tableMergedCell], 
+		plugins: [colorSyntax, [codeSyntaxHighlight, { highlighter: Prism } ], tableMergedCell, uml, chart ], 
+		
+		language: 'ko-KR',
+	});
 }
 
 function form_init() {
-    // const formType = '<%= writeFormType %>';
-    // console.log('[form_init] formType :: ', formType);
-
-    // $('#blog_board_form_type').text(formType);
-    // if(formType.toLocaleLowerCase() == 'modify') {
-    //     let boardData = '<%= JSON.stringify(boardData) %>';
-    //     boardData = boardData.replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&#34;', '"'); 
-    //     boardData = JSON.parse(boardData);
-    //     boardData.content = boardData.content.replaceAll('@-_-@', '"');
-
-    //     $('#blog_board_write_title').val(boardData.title);
-    //     $('#blog_board_write_view_type').val(boardData.view_type);
-    //     $('#blog_board_write_content').summernote('code', boardData.content);
-    //     $('#blog_board_write_seq').val(boardData.seq);
-    //     if(boardData.thumbnail != '') {
-    //         loadThumbnailImage(boardData.thumbnail);
-    //     }
-    // }
-
-    // $('#viewType').BVSelect({
-    // 	width: '180px', 
-    // 	searchbox: false, 
-	// });
-
-	// const bv_categoryIdList = new  BVSelect({
-	// 	selector: '#category',
-	// 	searchbox: true,
-    //     offset: true, 
-	// 	width: '100%'
-	// });
-
 	load_data();
 }
 
@@ -237,6 +106,13 @@ function showAddCategoryModal(event) {
 	// 		fadeDuration: 100
 	// 	});
 	// })
+
+	// $('.toastui-editor-defaultUI').hide();
+	// $('.toastui-editor-ww-container').hide();
+	// $('#blog_content_view').hide();
+
+	$('.toastui-editor-md-mode .toastui-editor-md-container').css('z-index', 0);
+	$('.toastui-editor-ww-mode .toastui-editor-ww-container').css('z-index', 0);	
 	
 	$('#addCategoryModal').modal({
 		escapeClose: false,
@@ -244,6 +120,19 @@ function showAddCategoryModal(event) {
 		showClose: true, 
 		fadeDuration: 100
 	});
+}
+
+function closeAddCategoryModal(event) {
+	event.preventDefault();
+
+	// $('.toastui-editor-defaultUI').show();
+	// $('.toastui-editor-ww-container').show();
+	// $('#blog_content_view').show();
+
+	$('.toastui-editor-md-mode .toastui-editor-md-container').css('z-index', 100);
+	$('.toastui-editor-ww-mode .toastui-editor-ww-container').css('z-index', 100);	
+	
+	$.modal.close();
 }
 
 function submitAddNewCategory(event) {
@@ -314,37 +203,3 @@ function checkNewCategory_name() {
 
     return true;
 }
-
-// 참고
-// https://devofhwb.tistory.com/67
-// https://github.com/summernote/summernote/issues/72
-function sendImageFile(element, file, editor, welEditable) {
-	const formData = new FormData();
-    formData.append('uploadFile', file);
-	formData.append('csrf_token_starseat_blog', $('input[name="csrf_token_starseat_blog"]').val());
-
-	const _url = '/api/admin/upload/image';
-	$.ajax({
-		data : formData,
-		type : 'post',
-		url : _url,
-		cache : false,
-		processData : false,
-		contentType : false,
-		enctype: 'multipart/form-data',
-		// contentType: 'multipart/form-data',
-		success : function(resultData) {
-			const resultObj = JSON.parse(resultData);
-
-			if(resultObj.result) {
-				$(element).summernote('insertImage', resultObj.data);
-			}
-		}, 
-		error: function (jqXHR, textStatus, errorThrown) {
-			console.log('[sendImageFile] ajax error :: ', textStatus + ' ' + errorThrown);
-		}
-	});
-
-
-}
-

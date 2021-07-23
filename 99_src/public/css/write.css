@@ -36,6 +36,10 @@ li.nofocus {
 	cursor: pointer;
 }
 
+#addCategoryModal {
+	z-index: 120;
+}
+
 .addCategoryModal_bottom_box {
 	display: flex;
 	justify-content: space-between;
@@ -74,4 +78,21 @@ li.nofocus {
 
 .note-editable code {
 	border: 0;
+}
+
+
+/** toast ui 적용 후 변경사항 **/
+.tui-colorpicker-clearfix .btn, button, input[type="button"] {
+	line-height: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+#blog_content_view {
+	background-color: white;
+}
+
+.row {
+	width: 100%;
+	max-width: 100%;
 }

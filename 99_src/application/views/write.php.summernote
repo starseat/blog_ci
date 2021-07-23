@@ -1,19 +1,15 @@
-<!-- TOAST UI Editor -->
-<link rel="stylesheet" href="https://uicdn.toast.com/editor/3.0.1/toastui-editor.css" />
+<!-- include codemirror (codemirror.css, codemirror.js, xml.js, formatting.js) -->
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.css">
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/theme/monokai.css">
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/mode/xml/xml.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/codemirror/2.36.0/formatting.js"></script>
 
-<!-- TOAST UI Editor's Plugin -->
-<link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/v2.2.6/tui-color-picker.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/3.0.1/toastui-editor-plugin-color-syntax.min.css" />
-<!-- TOAST UI Editor's Plugin - Prismjs Languages -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/3.0.0/toastui-editor-plugin-code-syntax-highlight.min.css" />
+<!-- include summernote css -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-table-merged-cell/3.0.0/toastui-editor-plugin-table-merged-cell.min.css" />
-
-<!-- TOAST UI Editor's Plugin - Chart -->
-<link rel="stylesheet" href="https://uicdn.toast.com/chart/v4.1.4/toastui-chart.min.css" />
-
+<!-- include bvselect css (jquery plugin) -->
+<link rel="stylesheet" href="/public/vendor/bvselect/css/bvselect.css">
 
 <!-- jQuery Modal / https://www.npmjs.com/package/jquery-modal -->
 <!-- https://stove99.github.io/javascript/2019/04/16/jquery-modal-plugin/ -->
@@ -127,9 +123,7 @@
 
 				<div class="row" style="padding-left: 20px; padding-right: 20px;">
 					<label for="blog_content_view">Contents</label>
-				</div>
-				<div class="row" style="padding-left: 20px; padding-right: 20px;">
-					<div id="blog_content_view" class="full-width"></div>
+					<div id="blog_content_view"></div>
 					<textarea id="blog_content" name="blog_content" style="display: none;">
 					<?php
 					if ($is_modify) {
@@ -137,9 +131,9 @@
 					}
 					?>
 					</textarea>
-
-					<br>
 				</div>
+
+				<br>
 
 				<?php if ($is_modify) { ?>
 					<input type="hidden" id="saved_blog_category" value="<?= $board_data['category_id']; ?>" />
@@ -160,8 +154,6 @@
 				);
 				?>
 				<input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>" />
-
-				<br>
 
 				<div class="row">
 					<div class="column large-3 tab-full">
@@ -248,30 +240,31 @@
 		</div>
 	<?php } ?>
 
+	<!-- include codemirror (codemirror.css, codemirror.js, xml.js, formatting.js) use summernote codeview -->
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.css">
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/theme/monokai.css">
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/mode/xml/xml.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/codemirror/2.36.0/formatting.js"></script>
 
-	<!-- TOAST UI Editor -->
-	<!-- https://github.com/nhn/tui.editor/tree/v3.0.0 -->
-	<script src="https://uicdn.toast.com/editor/3.0.1/toastui-editor-all.min.js"></script>
-	<script src="https://uicdn.toast.com/editor/3.0.1/i18n/ko-kr.js"></script>
+	<!-- include summernote js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
+	<!-- include summernote-ko-KR -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/lang/summernote-ko-KR.js"></script>
 
-	<!-- TOAST UI Editor's Plugin -->
-	<!-- https://github.com/nhn/tui.editor/tree/v3.0.0/plugins -->
+	<!-- include summernote plugins - add-text-tags -->
+	<link rel="stylesheet" type="text/css" href="/public/vendor/summernote/add-text-tags/summernote-add-text-tags.css">
+	<script src="/public/vendor/summernote/add-text-tags/summernote-add-text-tags.js"></script>
 
-	<script src="https://uicdn.toast.com/tui-color-picker/v2.2.6/tui-color-picker.min.js"></script>
-	<script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
+	<!-- include summernote plugins - emoji -->
+	<script src="https://use.fontawesome.com/52e183519a.js"></script>
+	<link rel="stylesheet" type="text/css" href="/public/vendor/summernote/emoji/tam-emoji/css/emoji.css" rel="stylesheet">
+	<script src="/public/vendor/summernote/emoji/tam-emoji/js/config.js"></script>
+	<script src="/public/vendor/summernote/emoji/tam-emoji/js/tam-emoji.min.js?v=1.1"></script>
 
-	<!-- TOAST UI Editor's Plugin - Prismjs Languages -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-clojure.min.js"></script>
-	<script src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/3.0.0/toastui-editor-plugin-code-syntax-highlight.min.js"></script>
-
-	<script src="https://uicdn.toast.com/editor-plugin-table-merged-cell/3.0.0/toastui-editor-plugin-table-merged-cell.min.js"></script>
-	<script src="https://uicdn.toast.com/editor-plugin-uml/3.0.1/toastui-editor-plugin-uml.min.js"></script>
-
-	<!-- TOAST UI Editor's Plugin - Chart -->
-	<script src="https://uicdn.toast.com/chart/v4.1.4/toastui-chart.js"></script>
-	<script src="https://uicdn.toast.com/editor-plugin-chart/3.0.1/toastui-editor-plugin-chart.min.js"></script>
-
+	<!-- include bvselect (jquery plugin) -->
+	<link rel="stylesheet" type="text/css" href="/public/vendor/bvselect/css/bvselect.css" rel="stylesheet">
+	<script src="/public/vendor/bvselect/js/bvselect.js"></script>
 
 	<!-- jQuery Modal -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>

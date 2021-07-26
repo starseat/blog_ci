@@ -88,7 +88,7 @@ if(count($board_list) > 0) {
 							</div>
 							<div class="entry__excerpt">
 								<p>
-									<?php echo mb_strimwidth(strip_tags($board['content']), '0', '100', '...', 'utf-8'); ?>
+									<?php echo mb_strimwidth(strip_tags($board['content']), '0', '56', ' ...', 'utf-8'); ?>
 								</p>
 							</div>
 						</div>

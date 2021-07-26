@@ -108,18 +108,16 @@ function submitBlog(event) {
 		return false;
 	}
 
-	// const blog_content = $('#blog_content_view').summernote('code');
-	// if(blog_content == '') {
-	// 	alert('내용이 비어있습니다.');
-	// 	return false;
-	// }
+	// console.log('[submitBlog] contents getHTML :: ', __editor.getHTML());
+	// console.log('[submitBlog] contents getMarkdown:: ', __editor.getMarkdown());
+	const blog_content = __editor.getHTML();
+	if(blog_content == '') {
+		alert('내용이 비어있습니다.');
+		return false;
+	}
 	
-	// $('#blog_content').val(blog_content);
-	// $('#writeForm').submit();
-
-	console.log('[submitBlog] contents value :: ', __editor.value());
-	console.log('[submitBlog] contents getHTML :: ', __editor.getHTML());
-	console.log('[submitBlog] contents getMarkdown:: ', __editor.getMarkdown());	
+	$('#blog_content').val(blog_content);
+	$('#writeForm').submit();
 	
 }
 

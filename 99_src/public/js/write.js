@@ -7,6 +7,8 @@ $(document).ready(function() {
 	$(document).on('click.modal', 'a[rel~="modal:close"]', closeAddCategoryModal); 
 });
 
+let __editor = null;
+
 function exitWritePage(event, categoryId) {
 	event.preventDefault();
     event.stopPropagation();
@@ -29,17 +31,41 @@ function toastui_init() {
 	const uml = Editor.plugin.uml;
 	const chart = Editor.plugin.chart;
 
-	const editor = new Editor({
+	const chartOptions = {
+		minWidth: 100,
+		maxWidth: 600,
+		minHeight: 100,
+		maxHeight: 300
+    };
+
+	__editor = new Editor({
 		el: document.querySelector('#blog_content_view'),
 		height: '600px',
 		initialEditType: 'markdown',
 		// initialEditType: 'wysiwyg',
 		previewStyle: 'vertical', 
-		// plugins: [colorSyntax, [codeSyntaxHighlight, { highlighter: Prism } ], tableMergedCell], 
-		plugins: [colorSyntax, [codeSyntaxHighlight, { highlighter: Prism } ], tableMergedCell, uml, chart ], 
-		
+		//initialValue: '<p>sdfsdfsdf<br>\nsdfsdafsdf<br>\n.</p>\n<h1>123</h1>\n<h2>456</h2>', 
+		plugins: [colorSyntax, [codeSyntaxHighlight, { highlighter: Prism } ], tableMergedCell, uml, [chart, chartOptions] ], 
+		hooks: {
+			addImageBlobHook: (blob, callback) => {
+				// console.log('[addImageBlobHook] blob:: ', blob);
+				sendImageFile(blob, (resultData) => {
+					// console.log('[addImageBlobHook.sendImageFile] callback resultData:: ', resultData);
+					if(resultData.result) {
+						callback(resultData.data, blob.name);
+					}
+				});
+				return false;
+			}
+		}, 
 		language: 'ko-KR',
 	});
+
+	//__editor.setHTML('<p>sdfsdfsdf<br>\nsdfsdafsdf .</p>\n<p><br>\nasss</p>\n<p>asdf</p>\n<p>fbfgbfb<br>\nsdfsda<br>\nfsda<br>\nfsdaf<br>\naa</p>\n<p><br>\n<br>\n<br>\n<br>\n<br></p>\n<h1>123</h1>\n<h2>456</h2>\n<blockquote>\n<p>fghfgh</p>\n</blockquote>');
+
+	console.log('[toastui_init] __editor :: ', __editor);
+	// console.log('[toastui_init] __editor contents getHtml :: ', __editor.getHtml());
+	// console.log('[toastui_init] __editor contents getMarkdown :: ', __editor.getMarkdown());
 }
 
 function form_init() {
@@ -82,19 +108,27 @@ function submitBlog(event) {
 		return false;
 	}
 
-	const blog_content = $('#blog_content_view').summernote('code');
-	if(blog_content == '') {
-		alert('내용이 비어있습니다.');
-		return false;
-	}
+	// const blog_content = $('#blog_content_view').summernote('code');
+	// if(blog_content == '') {
+	// 	alert('내용이 비어있습니다.');
+	// 	return false;
+	// }
 	
-	$('#blog_content').val(blog_content);
-	$('#writeForm').submit();
+	// $('#blog_content').val(blog_content);
+	// $('#writeForm').submit();
+
+	console.log('[submitBlog] contents value :: ', __editor.value());
+	console.log('[submitBlog] contents getHTML :: ', __editor.getHTML());
+	console.log('[submitBlog] contents getMarkdown:: ', __editor.getMarkdown());	
+	
 }
 
 function showAddCategoryModal(event) {
 	event.preventDefault();
     event.stopPropagation();
+
+	$('.toastui-editor-md-mode .toastui-editor-md-container').css('z-index', 0);
+	$('.toastui-editor-ww-mode .toastui-editor-ww-container').css('z-index', 0);
 
 	// $.get('/api/admin/category/parents', function(_resultData) {
 	// 	const resultObj = JSON.parse(_resultData);
@@ -107,13 +141,6 @@ function showAddCategoryModal(event) {
 	// 	});
 	// })
 
-	// $('.toastui-editor-defaultUI').hide();
-	// $('.toastui-editor-ww-container').hide();
-	// $('#blog_content_view').hide();
-
-	$('.toastui-editor-md-mode .toastui-editor-md-container').css('z-index', 0);
-	$('.toastui-editor-ww-mode .toastui-editor-ww-container').css('z-index', 0);	
-	
 	$('#addCategoryModal').modal({
 		escapeClose: false,
 		clickClose: false,
@@ -124,10 +151,6 @@ function showAddCategoryModal(event) {
 
 function closeAddCategoryModal(event) {
 	event.preventDefault();
-
-	// $('.toastui-editor-defaultUI').show();
-	// $('.toastui-editor-ww-container').show();
-	// $('#blog_content_view').show();
 
 	$('.toastui-editor-md-mode .toastui-editor-md-container').css('z-index', 100);
 	$('.toastui-editor-ww-mode .toastui-editor-ww-container').css('z-index', 100);	
@@ -202,4 +225,31 @@ function checkNewCategory_name() {
     }
 
     return true;
+}
+
+function sendImageFile(file, callback) {
+	const formData = new FormData();
+    formData.append('uploadFile', file);
+	formData.append('csrf_token_starseat_blog', $('input[name="csrf_token_starseat_blog"]').val());
+
+	const _url = '/api/admin/upload/image';
+	$.ajax({
+		data : formData,
+		type : 'post',
+		url : _url,
+		cache : false,
+		processData : false,
+		contentType : false,
+		enctype: 'multipart/form-data',
+		// contentType: 'multipart/form-data',
+		success : function(resultData) {
+			const resultObj = JSON.parse(resultData);
+			callback(resultObj);
+		}, 
+		error: function (jqXHR, textStatus, errorThrown) {
+			console.log('[sendImageFile] ajax error :: ', textStatus + ' ' + errorThrown);
+		}
+	});
+
+
 }

@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// header('Content-Type: text/plain; charset=utf-8');
+
 class Write extends Base_Controller {
     
 	public function __construct() {
@@ -262,6 +264,26 @@ class Write extends Base_Controller {
 		return alert($result_message, $result_url);
 	}
 
+	/**
+	 * temp 파일 category 로 이동 및 경로 변경하여 contents 변경
+	 * 
+	 * [/uploads/_temp/20210726/4b4e4b9da91143ff2d8b6c344b89b282.png]
+	 *         -> [/uploads/php/4b4e4b9da91143ff2d8b6c344b89b282.png]
+	 * 
+	 * 즉 /uploads/_temp/{날짜}/{saved file 명}
+	 *   -> /uploads/{category}/{saved file 명}
+	 */
+	// private function _changeTempImagePath_temp($_categoryId, $_contents) {
+	// 	$today = date("Ymd");
+	// 	$retContents = str_replace('/uploads/_temp/' . $today, '/uploads/' . $_categoryId, $_contents);
+
+	// 	// 자정에 글을 작성할 수 있으므로 어제 날짜까지 변환
+	// 	// $yesterday = date('Ymd', strtotime('-1 day'));
+	// 	$yesterday = date('Ymd', $_SERVER['REQUEST_TIME']-86400);
+	// 	$retContents = str_replace('/uploads/_temp/' . $yesterday, '/uploads/' . $_categoryId, $retContents);
+
+	// 	return $retContents;
+	// }
 	private function _changeTempImagePath($_categoryId, $_contents) {
 		mb_internal_encoding("UTF-8");
 		$retContents = '';

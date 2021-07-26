@@ -80,9 +80,15 @@ function load_data() {
 	$('#blog_category').val($('#saved_blog_category').val());
 	$('#blog_title').val($('#saved_blog_title').val());
 	$('#blog_viewType').val($('#saved_blog_view_type').val());
-	$('#blog_thumbnail_temp').attr('src', $('#saved_blog_thumbnail').val());
-	
-	$('#blog_content_view').summernote('code', $('#blog_content').val());
+	const savedThumbnail = $('#saved_blog_thumbnail').val();
+	if(savedThumbnail) {
+		$('#blog_thumbnail_temp').attr('src', savedThumbnail);
+	}
+	else {
+		$('#blog_thumbnail_temp').attr('src', '/public/imgs/thumbnail_box.svg');		
+	}
+
+	__editor.setHTML($('#blog_content').val())
 }
 
 

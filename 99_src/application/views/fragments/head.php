@@ -43,6 +43,9 @@
 	<link rel="icon" type="image/png" sizes="16x16" href="/public/imgs/favicon/favicon-16x16.png">
 	<link rel="manifest" href="/public/imgs/favicon/site.webmanifest">
 
+	<!-- spinner - loading progress
+    ================================================== -->
+	<link rel="stylesheet" href="/public/vendor/spin/jquery.spin/css/jquery.spin.css" />
 
 	<!-- custom
     ================================================== -->
@@ -87,8 +90,17 @@
 	<script src="/public/template/js/jquery-3.2.1.min.js"></script>
 	<script src="/public/template/js/plugins.js"></script>
 
+	<!-- spinner - loading progress
+    ================================================== -->
+	<script src="/public/vendor/spin/jquery.spin/js/jquery.spin.js"></script>
+
 	<script src="/public/js/common.js"></script>
 
 </head>
 
 <body>
+
+	<!-- spinner - loading progress ================================================== -->
+	<div id="spinner-bk">
+		<div id="spinner" class="spin" data-spin></div>
+	</div>

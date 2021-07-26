@@ -2,6 +2,7 @@ $(document).ready(function() {
 	toastui_init();
 
 	form_init();
+	spin_init();
 
 	$('#addNewCategorySubmit').on('click', submitAddNewCategory);
 	$(document).on('click.modal', 'a[rel~="modal:close"]', closeAddCategoryModal); 
@@ -63,13 +64,38 @@ function toastui_init() {
 
 	//__editor.setHTML('<p>sdfsdfsdf<br>\nsdfsdafsdf .</p>\n<p><br>\nasss</p>\n<p>asdf</p>\n<p>fbfgbfb<br>\nsdfsda<br>\nfsda<br>\nfsdaf<br>\naa</p>\n<p><br>\n<br>\n<br>\n<br>\n<br></p>\n<h1>123</h1>\n<h2>456</h2>\n<blockquote>\n<p>fghfgh</p>\n</blockquote>');
 
-	console.log('[toastui_init] __editor :: ', __editor);
+	// console.log('[toastui_init] __editor :: ', __editor);
 	// console.log('[toastui_init] __editor contents getHtml :: ', __editor.getHtml());
 	// console.log('[toastui_init] __editor contents getMarkdown :: ', __editor.getMarkdown());
 }
 
 function form_init() {
 	load_data();
+}
+
+// let __spinner = null;
+function spin_init() {
+	// const opts = {
+	// 	lines: 13, // The number of lines to draw
+	// 	length: 7, // The length of each line
+	// 	width: 4, // The line thickness
+	// 	radius: 10, // The radius of the inner circle
+	// 	rotate: 0, // The rotation offset
+	// 	color: '#000', // #rgb or #rrggbb
+	// 	speed: 1, // Rounds per second
+	// 	trail: 60, // Afterglow percentage
+	// 	shadow: false, // Whether to render a shadow
+	// 	hwaccel: false, // Whether to use hardware acceleration
+	// 	className: 'spinner', // The CSS class to assign to the spinner
+	// 	zIndex: 2e9, // The z-index (defaults to 2000000000)
+	// 	top: 'auto', // Top position relative to parent in px
+	// 	left: 'auto' // Left position relative to parent in px
+	// };
+
+	// const target = document.getElementById('spinner');
+	// __spinner = new Spinner(opts).spin(target);
+
+	hideSpinner();
 }
 
 function load_data() {
@@ -93,11 +119,13 @@ function load_data() {
 
 
 function loadImage(_this) {
+	setSpinner(1);
 	if (_this.files && _this.files[0]) {
 		const fr = new FileReader();
 		fr.onload = function(_e) {
 			$('#blog_thumbnail_temp').attr('src', _e.target.result);
 			//$('#product_temp_image_remove').show();
+			setSpinner(0);
 		}
 		fr.readAsDataURL(_this.files[0]);
 	}
@@ -108,8 +136,10 @@ function submitBlog(event) {
 	event.preventDefault();
     event.stopPropagation();
 
+	setSpinner(1);
 	if($('#blog_title').val() == '') {
 		alert('제목은 필수로 입력해야 합니다.');
+		setSpinner(0);
 		$('#blog_title').focus();
 		return false;
 	}
@@ -119,12 +149,13 @@ function submitBlog(event) {
 	const blog_content = __editor.getHTML();
 	if(blog_content == '') {
 		alert('내용이 비어있습니다.');
+		setSpinner(0);
 		return false;
 	}
 	
 	$('#blog_content').val(blog_content);
 	$('#writeForm').submit();
-	
+	setSpinner(0);
 }
 
 function showAddCategoryModal(event) {
@@ -165,16 +196,20 @@ function closeAddCategoryModal(event) {
 function submitAddNewCategory(event) {
 	event.preventDefault();
     event.stopPropagation();
-	
+	setSpinner(1);
+
 	if(!checkNewCategory_id()) {
+		setSpinner(0);
 		return false;
 	}
 
 	if(!checkNewCategory_name()) {
+		setSpinner(0);
 		return false;
 	}
-
+	
 	$('#addNewCategoryForm').submit();
+	setSpinner(0);
 }
 
 function checkNewCategory_id() {
@@ -232,6 +267,8 @@ function checkNewCategory_name() {
 }
 
 function sendImageFile(file, callback) {
+	setSpinner(1);
+
 	const formData = new FormData();
     formData.append('uploadFile', file);
 	formData.append('csrf_token_starseat_blog', $('input[name="csrf_token_starseat_blog"]').val());
@@ -252,8 +289,10 @@ function sendImageFile(file, callback) {
 		}, 
 		error: function (jqXHR, textStatus, errorThrown) {
 			console.log('[sendImageFile] ajax error :: ', textStatus + ' ' + errorThrown);
+		},
+		complete: function () {
+			setSpinner(0);
 		}
 	});
-
 
 }

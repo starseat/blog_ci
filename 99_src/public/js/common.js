@@ -122,3 +122,29 @@ function getCookie(_name) {
 
 	return '';
 }
+
+
+function setSpinner(isView /* 1/true: show / 0/false: hide */) {
+	if(isView) { showSpinner(); }
+	else { hideSpinner(); }
+}
+
+function showSpinner() {
+	$('#spinner-bk').show();
+	$('#spinner').spin('show');
+	$('body').off('scroll touchmove mousewheel');
+	// $('body').on('scroll touchmove mousewheel', function(event) {
+	// 	event.preventDefault();
+	// 	event.stopPropagation();
+	// 	return false;
+	// });
+}
+
+function hideSpinner() {
+	$('#spinner-bk').hide();
+	$('#spinner').spin('hide');
+	$('body').on('scroll touchmove mousewheel');
+	// $('body').on('scroll touchmove mousewheel', function(event) {		
+	// 	return true;
+	// });
+}

@@ -148,3 +148,10 @@ function hideSpinner() {
 	// 	return true;
 	// });
 }
+
+document.addEventListener("DOMContentLoaded", function(){
+	// Handler when the DOM is fully loaded
+	setSpinner(0);
+});
+
+

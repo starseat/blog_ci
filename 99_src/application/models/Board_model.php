@@ -14,7 +14,7 @@ class Board_model extends Base_Model {
 		SELECT b1.seq, b1.category_id, c1.category_name, b1.writer, b1.title, b1.view_count, FN_GET_THUMBNAIL(b1.thumbnail_seq) thumbnail, 
 			b1.like_count, b1.view_type, DATE_FORMAT(b1.created_at, '%Y-%m-%d') as created_at, SUBSTRING(b1.content, 1, 40) as content 
 			FROM tbl_blog_boards b1 INNER JOIN tbl_blog_categories c1 ON b1.category_id = c1.category_id 
-			WHERE b1.deleted_at IS NULL 
+			WHERE b1.deleted_at IS NULL AND b1.view_type = 0
 			ORDER BY b1.created_at DESC LIMIT $main_view_count 
 		";
 
@@ -50,30 +50,55 @@ class Board_model extends Base_Model {
 		$total_count = $this->_getBoardTotalCount($categoryId);
 		$paging_info = $this->getPagingInfo($current_page, $total_count);
 
+		$param_array = array($categoryId);
+
 		$sql  = "
 			SELECT 
 				b.seq, b.category_id, c.category_name, b.writer, b.title,b.view_count, FN_GET_THUMBNAIL(b.thumbnail_seq) thumbnail, 
 				b.like_count, b.view_type, DATE_FORMAT(b.created_at, '%Y-%m-%d') as created_at, SUBSTRING(b.content, 1, 40) as content 
 				FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 
-			WHERE b.deleted_at IS NULL AND b.category_id = ? 
+			WHERE b.deleted_at IS NULL AND b.category_id = ? ";
+
+		if ($this->session->userdata('is_login')) {
+			$sql .= " AND (b.view_type = 0 OR (b.view_type = 2 AND b.writer = ? ) )";
+			array_push($param_array, $this->session->userdata('user_id'));
+		}
+		else {
+			$sql .= " AND b.view_type = 0 ";
+		}
+		
+		$sql .= "
 			ORDER BY b.seq DESC
 			LIMIT ?, ?
 		";
 
+		array_push($param_array, $paging_info['page_db']);
+		array_push($param_array, $this->ITEM_ROW_COUNT);
+
 		return array(
-			'board_list' => $this->db->query($sql, array($categoryId, $paging_info['page_db'], $this->ITEM_ROW_COUNT))->result_array(), 
+			'board_list' => $this->db->query($sql, $param_array)->result_array(), 
 			'page_info' => $paging_info
 		);
 	}
 
 	private function _getBoardTotalCount($categoryId) {
+		$retTotalCount = 0;
+
 		$sql = "
 			SELECT count(*) as total_count
 			FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 
-			WHERE b.deleted_at IS NULL AND b.category_id = ? 
-		";
+			WHERE b.deleted_at IS NULL AND b.category_id = ? ";
 
-		return intVal($this->db->query($sql, array($categoryId))->row()->total_count);
+		if ($this->session->userdata('is_login')) {
+			$sql .= " AND (b.view_type = 0 OR (b.view_type = 2 AND b.writer = ? ) )";
+			$retTotalCount = intVal($this->db->query($sql, array($categoryId, $this->session->userdata('user_id')))->row()->total_count);
+		}
+		else {
+			$sql .= " AND b.view_type = 0 ";
+			$retTotalCount = intVal($this->db->query($sql, array($categoryId))->row()->total_count);
+		}
+
+		return $retTotalCount;
 	}
 
 	public function getBoardListBySearch($search_text, $current_page = 1) {

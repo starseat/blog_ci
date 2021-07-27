@@ -7,28 +7,25 @@ class Category_model extends Base_Model {
 	}
 
 	public function gets() {
-		// 부모 먼저 list 만든 후
-		$sql  = "SELECT seq, owner_id, category_id, category_name, level, parent_id, view_type, sort_index ";
-		$sql .= "FROM tbl_blog_categories tbc ";
-		$sql .= "WHERE deleted_at IS NULL AND level = 0 ";
-		$sql .= "ORDER BY sort_index, seq";
 
-		$parent_list = $this->db->query($sql)->result_array();
+		$temp_array = null;
+		if($this->session->userdata('is_login')) {
+			$temp_array = $this->_gets_viewTyps_me();
+		}
+		else {
+			$temp_array = $this->_gets_viewType_all();			
+		}
 
+		$parent_list = $temp_array['parent'];
+		$child_list = $temp_array['child'];
+		
 		// 자식을 부모에 매핑
-		$sql  = "SELECT seq, owner_id, category_id, category_name, level, parent_id, view_type, sort_index ";
-		$sql .= "FROM tbl_blog_categories tbc ";
-		$sql .= "WHERE deleted_at IS NULL AND level = 1 ";
-		$sql .= "ORDER BY sort_index, seq";
-
-		$children_list = $this->db->query($sql)->result_array();
-
 		// 왜 이런지는 모르겠지만.. 이렇게 해야되네...
 		for ($i = 0; $i < count($parent_list); $i++) {
 			$parent = $parent_list[$i];
 			$child_temp_list = array();
 
-			foreach ($children_list as $child) {
+			foreach ($child_list as $child) {
 				if ($child['parent_id'] == $parent['category_id']) {
 					array_push($child_temp_list, $child);
 				}
@@ -39,6 +36,46 @@ class Category_model extends Base_Model {
 		}
 
 		return $parent_list;
+	}
+
+	private function _gets_viewType_all() {		
+		$sql  = " 
+		SELECT seq, owner_id, category_id, category_name, level, parent_id, view_type, sort_index 
+		FROM tbl_blog_categories tbc 
+		WHERE deleted_at IS NULL AND level = ? AND view_type = 0 
+		ORDER BY sort_index, seq
+		";
+
+		// 부모 먼저 list 만든 후
+		$parent_list = $this->db->query($sql, array(0))->result_array();
+
+		// 자식 list 가져오기
+		$child_list = $this->db->query($sql, array(1))->result_array();
+
+		return array(
+			'parent' => $parent_list, 
+			'child' => $child_list
+		);
+	}
+
+	private function _gets_viewTyps_me() {
+		$sql  = "
+		SELECT seq, owner_id, category_id, category_name, level, parent_id, view_type, sort_index 
+		FROM tbl_blog_categories tbc 
+		WHERE deleted_at IS NULL AND level = ? AND (view_type = 0 OR (view_type = 2 AND owner_id = ? ) )
+		ORDER BY sort_index, seq
+		";
+
+		// 부모 먼저 list 만든 후
+		$parent_list = $this->db->query($sql, array(0, $this->session->userdata('user_id')))->result_array();
+
+		// 자식 list 가져오기
+		$child_list = $this->db->query($sql, array(1, $this->session->userdata('user_id')))->result_array();
+
+		return array(
+			'parent' => $parent_list,
+			'child' => $child_list
+		);
 	}
 
 	public function getById($categoryId) {

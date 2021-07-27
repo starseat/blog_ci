@@ -82,6 +82,13 @@ if(count($board_list) > 0) {
 									</span>
 									<span class="entry__meta-date">
 										<a href="<?= base_url('/blog/view/' . $board['seq']); ?>"><?= $board['created_at'] ?></a>
+										<?php 
+											// 나만보기 항목은 눈동자 아이콘 표출
+											if($this->session->userdata('is_login')) {
+												if( $board['view_type'] == 2 && $this->session->userdata('user_id') == $board['writer']) {
+										?>
+										<strong><i class="fa fa-eye-slash" aria-hidden="true"></i></strong>
+										<?php  } } ?>											 
 									</span>
 								</div>
 

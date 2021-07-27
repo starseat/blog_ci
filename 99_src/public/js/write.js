@@ -22,7 +22,6 @@ function exitWritePage(event, categoryId) {
 	location.href = next;
 }
 
-
 function toastui_init() {
 	const Editor = toastui.Editor;
 
@@ -45,6 +44,8 @@ function toastui_init() {
 		initialEditType: 'markdown',
 		// initialEditType: 'wysiwyg',
 		previewStyle: 'vertical', 
+		previewHighlight: true, 
+		usageStatistics: true, 
 		//initialValue: '<p>sdfsdfsdf<br>\nsdfsdafsdf<br>\n.</p>\n<h1>123</h1>\n<h2>456</h2>', 
 		plugins: [colorSyntax, [codeSyntaxHighlight, { highlighter: Prism } ], tableMergedCell, uml, [chart, chartOptions] ], 
 		hooks: {

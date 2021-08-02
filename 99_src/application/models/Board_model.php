@@ -15,10 +15,10 @@ class Board_model extends Base_Model {
 			b1.like_count, b1.view_type, DATE_FORMAT(b1.created_at, '%Y-%m-%d') as created_at, SUBSTRING(b1.content, 1, 40) as content 
 			FROM tbl_blog_boards b1 INNER JOIN tbl_blog_categories c1 ON b1.category_id = c1.category_id 
 			WHERE b1.deleted_at IS NULL AND b1.view_type = ?
-			ORDER BY b1.created_at DESC LIMIT $main_view_count 
+			ORDER BY b1.created_at DESC LIMIT ?
 		";
 
-		return $this->db->query($sql, array(Category_model::VIEW_TYPE_ALL))->result_array();
+		return $this->db->query($sql, array(Category_model::VIEW_TYPE_ALL, $main_view_count))->result_array();
 	}
 
 	public function getBoardListByHome_bak() {
@@ -50,8 +50,6 @@ class Board_model extends Base_Model {
 		$total_count = $this->_getBoardTotalCount($categoryId);
 		$paging_info = $this->getPagingInfo($current_page, $total_count);
 
-		$param_array = array($categoryId);
-
 		$sql  = "
 			SELECT 
 				b.seq, b.category_id, c.category_name, b.writer, b.title,b.view_count, FN_GET_THUMBNAIL(b.thumbnail_seq) thumbnail, 
@@ -59,21 +57,25 @@ class Board_model extends Base_Model {
 				FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 
 			WHERE b.deleted_at IS NULL AND b.category_id = ? ";
 
+		$param_array = array($categoryId);
 		if ($this->session->userdata('is_login')) {
+			// $sql .= " AND (b.view_type = 0 OR (b.view_type = 2 AND b.writer = ? ) )";
 			$sql .= " AND (b.view_type = ? OR (b.view_type = ? AND b.writer = ? ) )";
-			array_push($param_array, Category_model::VIEW_TYPE_ADMIN);
-			array_push($param_array, Category_model::VIEW_TYPE_ONLY_ME);
+			array_push($param_array, intVal(Category_model::VIEW_TYPE_ALL));
+			array_push($param_array, intVal(Category_model::VIEW_TYPE_ONLY_ME));
 			array_push($param_array, $this->session->userdata('user_id'));
 		}
 		else {
+			// $sql .= " AND b.view_type = 0 ";
 			$sql .= " AND b.view_type = ? ";
-			array_push($param_array, Category_model::VIEW_TYPE_ADMIN);
+			array_push($param_array, intVal(Category_model::VIEW_TYPE_ALL));
 		}
 		
 		$sql .= "
 			ORDER BY b.seq DESC
 			LIMIT ?, ?
 		";
+		// log_message('blog', '[getBoardList] param_array > ' . json_encode($param_array, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 		array_push($param_array, $paging_info['page_db']);
 		array_push($param_array, $this->ITEM_ROW_COUNT);
@@ -96,7 +98,7 @@ class Board_model extends Base_Model {
 			$sql .= " AND (b.view_type = ? OR (b.view_type = ? AND b.writer = ? ) )";
 			$retTotalCount = intVal($this->db->query($sql, array(
 				$categoryId, 
-				Category_model::VIEW_TYPE_ADMIN,
+				Category_model::VIEW_TYPE_ALL,
 				Category_model::VIEW_TYPE_ONLY_ME,
 				$this->session->userdata('user_id')
 			))->row()->total_count);
@@ -105,7 +107,7 @@ class Board_model extends Base_Model {
 			$sql .= " AND b.view_type = ? ";
 			$retTotalCount = intVal($this->db->query($sql, array(
 				$categoryId, 
-				Category_model::VIEW_TYPE_ADMIN
+				Category_model::VIEW_TYPE_ALL
 			))->row()->total_count);
 		}
 

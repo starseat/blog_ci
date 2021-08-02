@@ -7,6 +7,7 @@ class Base_Controller extends CI_Controller {
 		parent::__construct();
 
 		$this->load->database();
+		$this->load->model('board_model');
 		$this->load->model('category_model');
 		
 		$this->load->helper(array('url', 'date', 'result'));
@@ -17,18 +18,30 @@ class Base_Controller extends CI_Controller {
 
 		// view page 에서는 category 를 가져올 수 없으므로 새롭게 구함.
 		$pageType = $this->uri->segment(2);
-		if($pageType == 'view') {
+		$boardSummary = null;
+		if($pageType == 'view') {  // http://starseat.net/blog/view/6
 			$boardSeq = intVal($this->uri->segment(3));
+			$boardSummary = $this->board_model->getBoardData($boardSeq, true);
+			$boardSummary['url'] = '/blog/view/' . $boardSeq;
 			$categoryId = $this->category_model->getCategoryIdByBoardSeq($boardSeq);
 		}
-		else {  // if($pageType == 'list')
+		else {  // if($pageType == 'list')  // http://starseat.net/blog/list/php
 			if (!empty($this->uri->segment(3))) {
 				$categoryId = $this->uri->segment(3);
 			}
+
+			$boardSummary = array(
+				'title' => $categoryId,
+				'category_id' => $categoryId,
+				'thumbnail' => '',
+				'url' => '/blog/list/' . $categoryId
+			);
 		}
+
+		// log_message('blog', '[_header] summary:: ' . json_encode($boardSummary, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 		
 		//log_message('blog', 'categoryId: ' . $categoryId);
-		$this->load->view('fragments/head');
+		$this->load->view('fragments/head', array('summary' => $boardSummary));
 		$this->load->view('fragments/header', array('categories' => $this->_categories(), 'navi_id' => $this->_getCategoryNaviId($categoryId)));
 	}
 

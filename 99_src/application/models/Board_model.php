@@ -166,14 +166,20 @@ class Board_model extends Base_Model {
 		}		
 	}
 
-	public function getBoardData($board_seq) {
+	public function getBoardData($board_seq, $is_summary = false) {
 		$sql  = "
 			SELECT 
 				b.seq, b.category_id, c.category_name, b.writer, b.title, FN_GET_THUMBNAIL(b.thumbnail_seq) thumbnail, 
 				b.view_count, b.like_count, b.view_type, 
 				DATE_FORMAT(b.created_at, '%Y-%m-%d %H:%i:%s') as created_at, 
-				DATE_FORMAT(b.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at, 
-				b.content
+				DATE_FORMAT(b.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at 
+		";
+
+		if(!$is_summary) {
+			$sql .= " , b.content ";
+		}
+
+		$sql .= "
 			FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 
 			WHERE b.seq = ? AND b.deleted_at IS NULL 
 		";

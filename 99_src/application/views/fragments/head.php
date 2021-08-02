@@ -6,9 +6,13 @@
 	<!--- basic page needs
     ================================================== -->
 	<meta charset="utf-8">
-	
+
 	<!-- Require SEO -->
-	<title><?= $summary['title']; ?> | Scribble - jw's blog.</title>
+	<?php if (!empty($summary)) { ?>
+		<title><?= $summary['title']; ?> | Scribble - jw's blog.</title>
+	<?php } else { ?>
+		<title>Scribble - jw's blog.</title>
+	<?php } ?>
 	<meta name="description" content="IT 정보 및 여러가지를 작성한 개인 블로그 입니다.">
 	<meta name="author" content="starseat">
 
@@ -18,42 +22,62 @@
 	<meta property="og:description" content="IT 정보 및 여러가지를 작성한 개인 블로그 입니다.">
 	<meta property="og:locale" content="ko-KR">
 
-	<?php if ($summary['category_id'] == 'home') { ?>
-		<meta property="og:url" content="http://starseat.net/">
-	<?php } else { ?>
-		<meta property="og:url" content="<?= $summary['url']; ?>">
-	<?php } ?>
+	<?php if (!empty($summary)) { ?>
+		<?php if ($summary['category_id'] == 'home') { ?>
+			<meta property="og:url" content="http://starseat.net/">
+		<?php } else { ?>
+			<meta property="og:url" content="<?= $summary['url']; ?>">
+		<?php } ?>
 
-	<?php if ($summary['thumbnail'] != '') { ?>
-		<meta property="og:image" content="<?= $summary['thumbnail']; ?>" />
-		<meta property="og:image:secure_url" content="<?= $summary['thumbnail']; ?>" />
-	<?php } else {  ?>
+		<?php if ($summary['thumbnail'] != '') { ?>
+			<meta property="og:image" content="<?= $summary['thumbnail']; ?>" />
+			<meta property="og:image:secure_url" content="<?= $summary['thumbnail']; ?>" />
+		<?php } else {  ?>
+			<meta property="og:image" content="/public/imgs/og-image.png" />
+			<meta property="og:image:secure_url" content="/public/imgs/og-image.png" />
+		<?php } ?>
+	<?php } else { /* else of if(!empty($summary)) */ ?>
+		<meta property="og:url" content="http://starseat.net/">
 		<meta property="og:image" content="/public/imgs/og-image.png" />
 		<meta property="og:image:secure_url" content="/public/imgs/og-image.png" />
 	<?php } ?>
+
+
 	<!-- og tag end -->
 
 	<!-- twitter og tag start -->
 	<meta name="twitter:card" content="summary">
-	<meta name="twitter:title" content="<?= $summary['title']; ?> | Scribble - jw's blog.">
-	<meta name="twitter:description" content="IT 정보 및 여러가지를 작성한 개인 블로그 입니다.">
-	<?php if ($summary['thumbnail'] != '') { ?>
-		<meta name="twitter:image" content="<?= $summary['thumbnail']; ?>" />
-		<meta name="twitter:image:secure_url" content="<?= $summary['thumbnail']; ?>" />
-	<?php } else {  ?>
+	<?php if (!empty($summary)) { ?>
+		<meta name="twitter:title" content="<?= $summary['title']; ?> | Scribble - jw's blog.">
+		<meta name="twitter:description" content="IT 정보 및 여러가지를 작성한 개인 블로그 입니다.">
+		<?php if ($summary['thumbnail'] != '') { ?>
+			<meta name="twitter:image" content="<?= $summary['thumbnail']; ?>" />
+			<meta name="twitter:image:secure_url" content="<?= $summary['thumbnail']; ?>" />
+		<?php } else {  ?>
+			<meta name="twitter:image" content="/public/imgs/og-image.png" />
+			<meta name="twitter:image:secure_url" content="/public/imgs/og-image.png" />
+		<?php } ?>
+	<?php } else { /* else of if(!empty($summary)) */ ?>
+		<meta name="twitter:title" content="Scribble - jw's blog.">
 		<meta name="twitter:image" content="/public/imgs/og-image.png" />
 		<meta name="twitter:image:secure_url" content="/public/imgs/og-image.png" />
 	<?php } ?>
+
 	<meta name="twitter:site" content="@scribble">
 	<meta name="twitter:lcreator" content="@scribble">
 	<!-- twitter og tag end -->
 
 	<!-- google+ og tag start -->
-	<meta property="itemprop:title" content="<?= $summary['title']; ?> | Scribble - jw's blog.">
 	<meta property="itemprop:description" content="IT 정보 및 여러가지를 작성한 개인 블로그 입니다.">
-	<?php if ($summary['thumbnail'] != '') { ?>
-		<meta property="itemprop:image" content="<?= $summary['thumbnail']; ?>" />
-	<?php } else {  ?>
+	<?php if (!empty($summary)) { ?>
+		<meta property="itemprop:title" content="<?= $summary['title']; ?> | Scribble - jw's blog.">
+		<?php if ($summary['thumbnail'] != '') { ?>
+			<meta property="itemprop:image" content="<?= $summary['thumbnail']; ?>" />
+		<?php } else {  ?>
+			<meta property="itemprop:image" content="/public/imgs/og-image.png" />
+		<?php } ?>
+	<?php } else { /* else of if(!empty($summary)) */ ?>
+		<meta property="itemprop:title" content="Scribble - jw's blog.">
 		<meta property="itemprop:image" content="/public/imgs/og-image.png" />
 	<?php } ?>
 	<!-- google+ og tag end -->

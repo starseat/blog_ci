@@ -347,7 +347,13 @@ class Write extends Base_Controller {
 
 	// 필요한 것만 사용하려고 재정의
 	protected function _header() {
-		$this->load->view('fragments/head');
+		$summary = array(
+			'title' => '글쓰기',
+			'category_id' => 'write',
+			'thumbnail' => '',
+			'url' => '/write'
+		);
+		$this->load->view('fragments/head', array('summary' => $summary));
 	}
 
 	// 필요한 것만 사용하려고 재정의

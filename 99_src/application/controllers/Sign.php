@@ -101,7 +101,25 @@ class Sign extends Base_Controller {
 	// 필요한 것만 사용하려고 재정의
 	protected function _header()
 	{
-		$this->load->view('fragments/head');
+		$summary = null;
+		if ($this->uri->segment(2) == 'in') {
+			$summary = array(
+				'title' => '로그인',
+				'category_id' => 'signin',
+				'thumbnail' => '',
+				'url' => '/sign/in'
+			);
+		}
+		else {
+			$summary = array(
+				'title' => '로그아웃',
+				'category_id' => 'signout',
+				'thumbnail' => '',
+				'url' => '/sign/out'
+			);
+		}
+
+		$this->load->view('fragments/head', array('summary' => $summary));
 	}
 
 	// 필요한 것만 사용하려고 재정의

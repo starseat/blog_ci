@@ -14,11 +14,11 @@ class Board_model extends Base_Model {
 		SELECT b1.seq, b1.category_id, c1.category_name, b1.writer, b1.title, b1.view_count, FN_GET_THUMBNAIL(b1.thumbnail_seq) thumbnail, 
 			b1.like_count, b1.view_type, DATE_FORMAT(b1.created_at, '%Y-%m-%d') as created_at, SUBSTRING(b1.content, 1, 40) as content 
 			FROM tbl_blog_boards b1 INNER JOIN tbl_blog_categories c1 ON b1.category_id = c1.category_id 
-			WHERE b1.deleted_at IS NULL AND b1.view_type = 0
+			WHERE b1.deleted_at IS NULL AND b1.view_type = ?
 			ORDER BY b1.created_at DESC LIMIT $main_view_count 
 		";
 
-		return $this->db->query($sql)->result_array();
+		return $this->db->query($sql, array(Category_model::VIEW_TYPE_ALL))->result_array();
 	}
 
 	public function getBoardListByHome_bak() {
@@ -60,11 +60,14 @@ class Board_model extends Base_Model {
 			WHERE b.deleted_at IS NULL AND b.category_id = ? ";
 
 		if ($this->session->userdata('is_login')) {
-			$sql .= " AND (b.view_type = 0 OR (b.view_type = 2 AND b.writer = ? ) )";
+			$sql .= " AND (b.view_type = ? OR (b.view_type = ? AND b.writer = ? ) )";
+			array_push($param_array, Category_model::VIEW_TYPE_ADMIN);
+			array_push($param_array, Category_model::VIEW_TYPE_ONLY_ME);
 			array_push($param_array, $this->session->userdata('user_id'));
 		}
 		else {
-			$sql .= " AND b.view_type = 0 ";
+			$sql .= " AND b.view_type = ? ";
+			array_push($param_array, Category_model::VIEW_TYPE_ADMIN);
 		}
 		
 		$sql .= "
@@ -90,12 +93,20 @@ class Board_model extends Base_Model {
 			WHERE b.deleted_at IS NULL AND b.category_id = ? ";
 
 		if ($this->session->userdata('is_login')) {
-			$sql .= " AND (b.view_type = 0 OR (b.view_type = 2 AND b.writer = ? ) )";
-			$retTotalCount = intVal($this->db->query($sql, array($categoryId, $this->session->userdata('user_id')))->row()->total_count);
+			$sql .= " AND (b.view_type = ? OR (b.view_type = ? AND b.writer = ? ) )";
+			$retTotalCount = intVal($this->db->query($sql, array(
+				$categoryId, 
+				Category_model::VIEW_TYPE_ADMIN,
+				Category_model::VIEW_TYPE_ONLY_ME,
+				$this->session->userdata('user_id')
+			))->row()->total_count);
 		}
 		else {
-			$sql .= " AND b.view_type = 0 ";
-			$retTotalCount = intVal($this->db->query($sql, array($categoryId))->row()->total_count);
+			$sql .= " AND b.view_type = ? ";
+			$retTotalCount = intVal($this->db->query($sql, array(
+				$categoryId, 
+				Category_model::VIEW_TYPE_ADMIN
+			))->row()->total_count);
 		}
 
 		return $retTotalCount;

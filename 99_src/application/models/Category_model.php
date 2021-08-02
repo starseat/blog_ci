@@ -2,6 +2,12 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Category_model extends Base_Model {
+
+	const VIEW_TYPE_ALL = 0;
+	const VIEW_TYPE_FRIEND = 1;
+	const VIEW_TYPE_ONLY_ME = 2;
+	const VIEW_TYPE_ADMIN = 9;
+
 	public function __construct() {
 		parent::__construct();
 	}
@@ -42,15 +48,15 @@ class Category_model extends Base_Model {
 		$sql  = " 
 		SELECT seq, owner_id, category_id, category_name, level, parent_id, view_type, sort_index 
 		FROM tbl_blog_categories tbc 
-		WHERE deleted_at IS NULL AND level = ? AND view_type = 0 
+		WHERE deleted_at IS NULL AND level = ? AND view_type = ?
 		ORDER BY sort_index, seq
 		";
 
 		// 부모 먼저 list 만든 후
-		$parent_list = $this->db->query($sql, array(0))->result_array();
+		$parent_list = $this->db->query($sql, array(0, Category_model::VIEW_TYPE_ALL))->result_array();
 
 		// 자식 list 가져오기
-		$child_list = $this->db->query($sql, array(1))->result_array();
+		$child_list = $this->db->query($sql, array(1, Category_model::VIEW_TYPE_ALL))->result_array();
 
 		return array(
 			'parent' => $parent_list, 
@@ -62,15 +68,15 @@ class Category_model extends Base_Model {
 		$sql  = "
 		SELECT seq, owner_id, category_id, category_name, level, parent_id, view_type, sort_index 
 		FROM tbl_blog_categories tbc 
-		WHERE deleted_at IS NULL AND level = ? AND (view_type = 0 OR (view_type = 2 AND owner_id = ? ) )
+		WHERE deleted_at IS NULL AND level = ? AND (view_type = ? OR (view_type = ? AND owner_id = ? ) )
 		ORDER BY sort_index, seq
 		";
 
 		// 부모 먼저 list 만든 후
-		$parent_list = $this->db->query($sql, array(0, $this->session->userdata('user_id')))->result_array();
+		$parent_list = $this->db->query($sql, array(0, Category_model::VIEW_TYPE_ALL, Category_model::VIEW_TYPE_ONLY_ME, $this->session->userdata('user_id')))->result_array();
 
 		// 자식 list 가져오기
-		$child_list = $this->db->query($sql, array(1, $this->session->userdata('user_id')))->result_array();
+		$child_list = $this->db->query($sql, array(1, Category_model::VIEW_TYPE_ALL, Category_model::VIEW_TYPE_ONLY_ME, $this->session->userdata('user_id')))->result_array();
 
 		return array(
 			'parent' => $parent_list,

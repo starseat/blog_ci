@@ -107,10 +107,10 @@
 						<label for="blog_viewType">보기 설정</label>
 						<div class="ss-custom-select">
 							<select class="full-width cursor-pointer" id="blog_viewType" name="blog_viewType">
-								<option value="0">전체보기</option>
-								<!-- <option value="1">친구만 보기</option> -->
-								<option value="2">나만보기</option>
-								<!-- <option value="9">관리자용</option> -->
+								<option value="<?= Category_model::VIEW_TYPE_ALL ?>">전체보기</option>
+								<!-- <option value="<?= Category_model::VIEW_TYPE_FRIEND ?>">친구만 보기</option> -->
+								<option value="<?= Category_model::VIEW_TYPE_ONLY_ME ?>">나만보기</option>
+								<!-- <option value="<?= Category_model::VIEW_TYPE_ADMIN ?>">관리자용</option> -->
 							</select>
 						</div>
 					</div>

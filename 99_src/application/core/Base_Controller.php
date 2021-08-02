@@ -21,7 +21,15 @@ class Base_Controller extends CI_Controller {
 		$boardSummary = null;
 		if($pageType == 'view') {  // http://starseat.net/blog/view/6
 			$boardSeq = intVal($this->uri->segment(3));
-			$boardSummary = $this->board_model->getBoardData($boardSeq, true);
+			$boardSummary = $this->board_model->getBoardData($boardSeq, true);			
+			if (is_null($boardSummary) || empty($boardSummary)) {
+				$boardSummary = array(
+					'title' => '페이를 찾을 수 없습니다.',
+					'category_id' => 'error',
+					'thumbnail' => ''
+				);
+			}
+
 			$boardSummary['url'] = '/blog/view/' . $boardSeq;
 			$categoryId = $this->category_model->getCategoryIdByBoardSeq($boardSeq);
 		}

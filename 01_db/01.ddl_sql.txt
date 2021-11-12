@@ -136,6 +136,17 @@ COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
 
+CREATE TABLE `tbl_blog_visit` (
+	`date` VARCHAR(8) NOT NULL, -- YYYYMMDD
+	`category_id` VARCHAR(16) NOT NULL,	
+	`board_seq` BIGINT(11) NOT NULL, 
+	`count` INT NOT NULL DEFAULT 0,
+	PRIMARY KEY (`date`, `category_id`, `board_seq` )
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
 -- ci 메뉴얼 에서 제공하는 테이블
 -- http://www.ciboard.co.kr/user_guide/kr/libraries/sessions.html
 -- CREATE TABLE IF NOT EXISTS `ci_sessions` (

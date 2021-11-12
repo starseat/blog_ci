@@ -35,6 +35,37 @@ else {
 				<a class="btn btn--stroke" href="/write">새글작성</a>
 			</div>
 		</header>
+		<!--
+		<style>
+			.btn_action_w {position:absolute; right:320px; top:3.2rem;}
+			.btn_admin {display:block; width:40px; height:40px; border:2px solid #000; border-radius:100%;}
+			.svg_admin {display:inline-block; width:23px; height:23px;}
+			.btn_action_box {display:none; position:absolute; right:0; top:50px; border:1px solid #eaeaea; border-radius:10px; background-color:#fff;}
+			.btn_action_w.current .btn_action_box {display:block;}
+			.btn_action_box [class^="btn_action_"] {display:block; text-align:center; min-width:180px; width:100%; padding:10px 15px; color:#000; border-top:1px solid #eaeaea; box-sizing:border-box; font-size:14px;}
+			.btn_action_box [class^="btn_action_"]:first-child {border-top:0;}
+			.btn_action_box [class^="btn_action_"]:hover {text-decoration:underline; font-weight:700;}
+		</style>
+		<div class="btn_action_w"> // current
+			<button type="button" class="btn_admin">
+				<span class="svg_admin">
+					<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						viewBox="0 0 258.75 258.75" style="enable-background:new 0 0 258.75 258.75;" xml:space="preserve">
+						<g>
+							<circle cx="129.375" cy="60" r="60"/>
+							<path d="M129.375,150c-60.061,0-108.75,48.689-108.75,108.75h217.5C238.125,198.689,189.436,150,129.375,150z"/>
+						</g>
+						<g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+					</svg>
+
+				</span>
+			</button>
+			<div class="btn_action_box">
+				<a href="#none" class="btn_action_writer" >글쓰기</a>
+				<a href="#none" class="btn_action_log" >로그아웃</a>
+			</div>
+		</div>
+	-->
 <?php
 	} // end of if($this->session->userdata('is_login'))
 }

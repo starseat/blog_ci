@@ -146,7 +146,7 @@ class Board_model extends Base_Model {
 		return intVal($this->db->query($sql, array($search_text, $search_text))->row()->total_count);
 	}
 
-	public function plusViewCount($board_seq) {
+	public function plusViewCount($board_seq, $category_id) {
 		$this->load->helper('cookie');
 
 		$VIEW_COUNT_COOKIE = 'blog_view_' . $board_seq;
@@ -161,6 +161,8 @@ class Board_model extends Base_Model {
 			$this->db->trans_start();
 			$this->db->query($sql, array($board_seq));
 			$this->db->trans_complete();
+
+			$this->_updateVisit($category_id, $board_seq);
 			
 			set_cookie($VIEW_COUNT_COOKIE, '1');
 		}		
@@ -283,22 +285,43 @@ class Board_model extends Base_Model {
 		return $resultId;
 	}
 
-	public function deleteBoard($boardSeq) {
+	public function deleteBoard($board_seq) {
 		// $update_data = array(
 		// 	'deleted_at' => date('Y-m-d H:i:s')
 		// );
 
 		// $this->db->trans_start();
-		// $this->db->where('seq', $boardSeq);
+		// $this->db->where('seq', $board_seq);
 		// $deleteResult = $this->db->update('tbl_blog_boards', $update_data);
 		// $this->db->trans_complete();
 
 		
 		$sql = "UPDATE tbl_blog_boards SET deleted_at = now() WHERE seq = ?";
 		$this->db->trans_start();
-		$deleteResult = $this->db->query($sql, array($boardSeq));
+		$deleteResult = $this->db->query($sql, array($board_seq));
 		$this->db->trans_complete();
 
 		return $deleteResult;
+	}
+
+	private function _updateVisit($category_id, $board_seq) {
+		$today = date("Ymd");
+
+		$sql = "
+			INSERT INTO tbl_blog_visit (
+				date, category_id, board_seq, count
+			) VALUES(
+				?, ?, ?, 1
+			)
+			ON DUPLICATE KEY UPDATE count = count + 1
+		";
+
+		$this->db->trans_start();
+		$updateResult = $this->db->query($sql, array(
+			$today, 
+			$category_id,
+			$board_seq
+		));
+		$this->db->trans_complete();
 	}
 }

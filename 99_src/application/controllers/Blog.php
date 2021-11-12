@@ -114,7 +114,7 @@ class Blog extends Base_Controller {
 			);
 		}
 
-		$this->board_model->plusViewCount($board_seq);
+		$this->board_model->plusViewCount($board_seq, $boardData['category_id']);
 
 		//var_dump($boardData);
 		return $this->load->view('view', array(

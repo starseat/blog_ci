@@ -114,6 +114,15 @@ class Blog extends Base_Controller {
 			);
 		}
 
+		// 현재는 전체보기, 나만보기 기능만 있으므로
+		// 나만보기 일 경우는 로그인 계정이 같아야만 보임.
+		if($boardData['view_type'] == Category_model::VIEW_TYPE_ONLY_ME) {
+			if ( !$this->session->userdata('is_login') 
+				|| $this->session->userdata('user_id') != $boardData['writer']) {
+				return $this->load->view('errors/error_404', array('page_result' => false));
+			}
+		}
+
 		$this->board_model->plusViewCount($board_seq, $boardData['category_id']);
 
 		//var_dump($boardData);

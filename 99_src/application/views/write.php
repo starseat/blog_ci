@@ -105,8 +105,8 @@
 
 					<div class="column large-4 tab-full">
 						<label for="blog_viewType">보기 설정</label>
-						<input class="full-width" type="hidden" id="blog_viewType" name="blog_viewType" value="Category_model::VIEW_TYPE_ONLY_ME">
-						<input class="full-width" type="hidden" id="blog_viewType_view_text" value="작성중인 포스트">
+						<input class="full-width" type="hidden" id="blog_viewType" name="blog_viewType" value="<?= Category_model::VIEW_TYPE_ONLY_ME ?>">
+						<input class="full-width" type="text" id="blog_viewType_view_text" value="작성중인 포스트" readonly>
 						<div class="ss-custom-select" style="display: none;">
 							<select class="full-width cursor-pointer" id="blog_viewType_bak" name="blog_viewType_bak">
 								<option value="<?= Category_model::VIEW_TYPE_ALL ?>">전체보기</option>

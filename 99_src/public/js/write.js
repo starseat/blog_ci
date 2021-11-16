@@ -154,6 +154,9 @@ function submitBlog(event) {
 		return false;
 	}
 	
+	// 임시로 저장된 글이므로 앞에 구분자 추가
+	let tempTitle = '(temp) ' + $('#blog_title').val();
+	$('#blog_title').val(tempTitle);
 	$('#blog_content').val(blog_content);
 	$('#writeForm').submit();
 	setSpinner(0);

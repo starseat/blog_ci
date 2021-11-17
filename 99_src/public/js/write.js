@@ -154,8 +154,14 @@ function submitBlog(event) {
 		return false;
 	}
 	
-	// 임시로 저장된 글이므로 앞에 구분자 추가
-	let tempTitle = '(temp) ' + $('#blog_title').val();
+	// 글 최초 작성시 임시로 저장될 글이므로 앞에 구분자 추가
+	let tempTitle = '';
+	if($('#saved_blog_seq').val() == '0') {
+		tempTitle = '(temp) ' + $('#blog_title').val();
+	}
+	else {
+		tempTitle = $('#blog_title').val();
+	}
 	$('#blog_title').val(tempTitle);
 	$('#blog_content').val(blog_content);
 	$('#writeForm').submit();

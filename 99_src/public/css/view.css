@@ -1,2 +1,2 @@
 @charset "utf-8";
-.entry__content ul li { margin: 0; }
+.entry__content ul p { margin-bottom: 8px; }

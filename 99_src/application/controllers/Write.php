@@ -132,7 +132,8 @@ class Write extends Base_Controller {
 			'title' => $title,
 			'view_type' => $view_type,
 			'thumbnail_seq' => $uploadThumbnailSeq, 
-			'content' => $this->_changeTempImagePath($category_id, $content)
+			// 'content' => $this->_changeTempImagePath($category_id, $content)  // _changeTempImagePath 버그가 있어 임시 디렉토리가 아닌 날짜별로 구분해서 저장
+			'content' => $content
 		);		
 		
 		$resultSubmitId = 0;

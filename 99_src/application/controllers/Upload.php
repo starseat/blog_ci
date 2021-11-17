@@ -64,7 +64,8 @@ class Upload extends Base_Controller {
 		
 		$today = date("Ymd");
 		//log_message('error', '[_uploadImage] upload file name : ' . $_FILES['uploadFile']['name']);
-		$upload_path = 'uploads' . '/_temp/' . $today . '/';
+		// $upload_path = 'uploads' . '/_temp/' . $today . '/';
+		$upload_path = 'uploads' . '/' . $today . '/';  // controllers/Write.php 의 _changeTempImagePath 버그가 있어 임시 디렉토리가 아닌 날짜별로 구분해서 저장
 		if (!is_dir($upload_path)) {
 			mkdir($upload_path, 0755, true);
 		}

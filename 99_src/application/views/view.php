@@ -1,5 +1,7 @@
 <!-- site content
         ================================================== -->
+<link rel="stylesheet" href="/public/css/view.css" />
+
 <div class="s-content content">
 	<main class="row content__page">
 		<article class="column large-full entry format-standard">
@@ -25,11 +27,11 @@
 					</li>
 				</ul>
 
-				<?php if($this->session->userdata('is_login')) { ?>
-				<ul class="entry__header-meta" style="text-align: right;">
-					<li><a href="/write?seq=<?= $board_data['seq']; ?>">수정</a></li>
-					<li>
-						<?php
+				<?php if ($this->session->userdata('is_login')) { ?>
+					<ul class="entry__header-meta" style="text-align: right;">
+						<li><a href="/write?seq=<?= $board_data['seq']; ?>">수정</a></li>
+						<li>
+							<?php
 							// csrf 
 							$attributes = array(
 								'id' => 'deleteBlogForm',
@@ -37,11 +39,11 @@
 							);
 
 							echo form_open('/blog/delete/' . $board_data['seq'], $attributes);
-						?>
+							?>
 							<a href="javascript:void(0);" onclick="deleteBlog(event)">삭제</a>
-						</form>
-					</li>
-				</ul>
+							</form>
+						</li>
+					</ul>
 				<?php } ?>
 
 			</div> <!-- end entry__header -->
@@ -108,9 +110,3 @@
 	</main>
 
 </div> <!-- end s-content -->
-
-<script>
-	function deleteBlog() {
-
-	}
-</script>

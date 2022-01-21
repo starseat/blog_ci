@@ -104,3 +104,19 @@ li.nofocus {
 .toastui-editor-contents h2 {
   border-bottom: 0;
 }
+
+.radio-inline {
+    position: relative;
+    display: inline-block;
+    padding-left: 20px;
+    margin-bottom: 0;
+	margin-right: 10px;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.radio-inline input[type=radio] {
+    position: absolute;
+    margin-left: -20px;
+}

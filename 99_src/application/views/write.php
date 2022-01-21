@@ -85,7 +85,7 @@
 					</div>
 
 					<?php if (!$is_modify) { ?>
-						<div class="column large-6 tab-full">
+						<div class="column large-4 tab-full">
 							<label for="addCategory">카테고리 추가</label>
 							<!-- <button class="btn btn--stroke" id="addCategory" onclick="showAddCategoryModal(event)">+</button> -->
 							<button class="pgn__num" id="addCategory" onclick="showAddCategoryModal(event)">+</button>
@@ -93,6 +93,18 @@
 							&nbsp;<small id="category_comment">(카테고리 추가시 Contents 내용은 지워집니다.)</small>
 						</div>
 					<?php } ?>
+
+					<div class="column large-2 tab-full">
+						<label for="blog_writeType_html">작성 타입</label>
+						<div>
+							<label class="radio-inline">
+								<input type="radio" name="writeType" class="blog_writeType" id="blog_writeType_html" value="html" checked> html
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="writeType" class="blog_writeType" id="blog_writeType_md" value="md"> md
+							</label>
+						</div>
+					</div>
 				</div>
 
 				<br>
@@ -107,13 +119,13 @@
 						<label for="blog_viewType">보기 설정</label>
 						<?php if ($is_modify) { ?>
 							<div class="ss-custom-select">
-							<select class="full-width cursor-pointer" id="blog_viewType" name="blog_viewType">
-								<option value="<?= Category_model::VIEW_TYPE_ALL ?>">전체보기</option>
-								<!-- <option value="<?= Category_model::VIEW_TYPE_FRIEND ?>">친구만 보기</option> -->
-								<option value="<?= Category_model::VIEW_TYPE_ONLY_ME ?>">나만보기</option>
-								<!-- <option value="<?= Category_model::VIEW_TYPE_ADMIN ?>">관리자용</option> -->
-							</select>
-						</div>
+								<select class="full-width cursor-pointer" id="blog_viewType" name="blog_viewType">
+									<option value="<?= Category_model::VIEW_TYPE_ALL ?>">전체보기</option>
+									<!-- <option value="<?= Category_model::VIEW_TYPE_FRIEND ?>">친구만 보기</option> -->
+									<option value="<?= Category_model::VIEW_TYPE_ONLY_ME ?>">나만보기</option>
+									<!-- <option value="<?= Category_model::VIEW_TYPE_ADMIN ?>">관리자용</option> -->
+								</select>
+							</div>
 						<?php } else { ?>
 							<input class="full-width" type="hidden" id="blog_viewType" name="blog_viewType" value="<?= Category_model::VIEW_TYPE_ONLY_ME ?>">
 							<input class="full-width" type="text" id="blog_viewType_view_text" value="작성중인 포스트" readonly>
@@ -150,6 +162,7 @@
 					<input type="hidden" id="saved_blog_category" value="<?= $board_data['category_id']; ?>" />
 					<input type="hidden" id="saved_blog_title" value="<?= $board_data['title']; ?>" />
 					<input type="hidden" id="saved_blog_view_type" value="<?= $board_data['view_type']; ?>" />
+					<input type="hidden" id="saved_blog_write_type" value="<?= $board_data['write_type']; ?>" />
 					<input type="hidden" id="saved_blog_thumbnail" value="<?= $board_data['thumbnail']; ?>" />
 					<input type="hidden" id="saved_blog_seq" name="blog_seq" value="<?= $board_data['seq']; ?>" />
 					<input type="hidden" name="blog_writer" value="<?= $board_data['writer']; ?>" />

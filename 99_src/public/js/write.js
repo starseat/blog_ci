@@ -106,7 +106,8 @@ function load_data() {
 
 	$('#blog_category').val($('#saved_blog_category').val());
 	$('#blog_title').val($('#saved_blog_title').val());
-	$('#blog_viewType').val($('#saved_blog_view_type').val());
+	$('#blog_viewType').val($('#saved_blog_view_type').val());	
+
 	const savedThumbnail = $('#saved_blog_thumbnail').val();
 	if(savedThumbnail) {
 		$('#blog_thumbnail_temp').attr('src', savedThumbnail);
@@ -115,7 +116,15 @@ function load_data() {
 		$('#blog_thumbnail_temp').attr('src', '/public/imgs/thumbnail_box.svg');		
 	}
 
-	__editor.setHTML($('#blog_content').val())
+	const writeType = $('#saved_blog_write_type').val();
+	if(writeType && writeType == 'md') {
+		$('#blog_writeType_md').prop('checked', true);
+		__editor.setMarkdown($('#blog_content').val())
+	}
+	else {
+		$('#blog_writeType_html').prop('checked', true);
+		__editor.setHTML($('#blog_content').val())
+	}
 }
 
 
@@ -147,7 +156,15 @@ function submitBlog(event) {
 
 	// console.log('[submitBlog] contents getHTML :: ', __editor.getHTML());
 	// console.log('[submitBlog] contents getMarkdown:: ', __editor.getMarkdown());
-	const blog_content = __editor.getHTML();
+	let blog_content = '';
+	const writeType = $('.blog_writeType:checked').val();
+	if(writeType && writeType == 'md') {
+		blog_content = __editor.getMarkdown();
+	}
+	else {
+		blog_content = __editor.getHTML();
+	}
+	
 	if(blog_content == '') {
 		alert('내용이 비어있습니다.');
 		setSpinner(0);

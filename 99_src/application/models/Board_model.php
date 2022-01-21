@@ -172,7 +172,7 @@ class Board_model extends Base_Model {
 		$sql  = "
 			SELECT 
 				b.seq, b.category_id, c.category_name, b.writer, b.title, FN_GET_THUMBNAIL(b.thumbnail_seq) thumbnail, 
-				b.view_count, b.like_count, b.view_type, 
+				b.view_count, b.like_count, b.view_type, b.write_type, 
 				DATE_FORMAT(b.created_at, '%Y-%m-%d %H:%i:%s') as created_at, 
 				DATE_FORMAT(b.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at 
 		";
@@ -211,7 +211,16 @@ class Board_model extends Base_Model {
 			WHERE b.seq < ? AND b.deleted_at IS NULL 
 		";
 
-		$prevBoardSeq = $this->db->query($sql, array($board_seq, $board_seq))->row()->prev_seq;
+		$param_array = array($board_seq, $board_seq);
+		if ($this->session->userdata('is_login')) {
+			$sql .= " AND b.writer = ?";
+			array_push($param_array, $this->session->userdata('user_id'));
+		} else {
+			$sql .= " AND b.view_type = ? ";
+			array_push($param_array, intVal(Category_model::VIEW_TYPE_ALL));
+		}
+
+		$prevBoardSeq = $this->db->query($sql, $param_array)->row()->prev_seq;
 		if($prevBoardSeq > 0) {
 			return $this->_getBoardSimpleData($prevBoardSeq);
 		}
@@ -229,7 +238,16 @@ class Board_model extends Base_Model {
 			WHERE b.seq > ? AND b.deleted_at IS NULL 
 		";
 
-		$nextBoardSeq = $this->db->query($sql, array($board_seq, $board_seq))->row()->next_seq;
+		$param_array = array($board_seq, $board_seq);
+		if ($this->session->userdata('is_login')) {
+			$sql .= " AND b.writer = ?";
+			array_push($param_array, $this->session->userdata('user_id'));
+		} else {
+			$sql .= " AND b.view_type = ? ";
+			array_push($param_array, intVal(Category_model::VIEW_TYPE_ALL));
+		}
+
+		$nextBoardSeq = $this->db->query($sql, $param_array)->row()->next_seq;
 		if ($nextBoardSeq > 0) {
 			return $this->_getBoardSimpleData($nextBoardSeq);
 		} else {

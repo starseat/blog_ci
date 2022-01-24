@@ -1,0 +1,70 @@
+<h3>표시하고싶은 문구</h3> <h4> - 이건 html 파일로 확인하기</h4>
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /
+	RewriteCond $1 !^(index\.php|css|js|images|captcha|data|include|uploads|robots\.txt)
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ /index.php?/$1 [L]
+</IfModule>
+
+<hr>
+<h3>test 1</h3>
+<pre>
+	<IfModule mod_rewrite.c>
+		RewriteEngine On
+		RewriteBase /
+		RewriteCond $1 !^(index\.php|css|js|images|captcha|data|include|uploads|robots\.txt)
+		RewriteCond %{REQUEST_FILENAME} !-f
+		RewriteCond %{REQUEST_FILENAME} !-d
+		RewriteRule ^(.*)$ /index.php?/$1 [L]
+	</IfModule>
+</pre>
+
+<hr>
+<h3>test 2</h3>
+<pre>
+	<code>
+		<IfModule mod_rewrite.c>
+			RewriteEngine On
+			RewriteBase /
+			RewriteCond $1 !^(index\.php|css|js|images|captcha|data|include|uploads|robots\.txt)
+			RewriteCond %{REQUEST_FILENAME} !-f
+			RewriteCond %{REQUEST_FILENAME} !-d
+			RewriteRule ^(.*)$ /index.php?/$1 [L]
+		</IfModule>
+	</code>
+</pre>
+
+<hr>
+<h3>test 3</h3>
+<pre>"
+	<code>
+		<IfModule mod_rewrite.c>
+			RewriteEngine On
+			RewriteBase /
+			RewriteCond $1 !^(index\.php|css|js|images|captcha|data|include|uploads|robots\.txt)
+			RewriteCond %{REQUEST_FILENAME} !-f
+			RewriteCond %{REQUEST_FILENAME} !-d
+			RewriteRule ^(.*)$ /index.php?/$1 [L]
+		</IfModule>
+	</code>"
+</pre>
+
+<hr>
+<h3>test 4</h3>
+<pre>
+	<code>
+		<xmp>
+		<IfModule mod_rewrite.c>
+			RewriteEngine On
+			RewriteBase /
+			RewriteCond $1 !^(index\.php|css|js|images|captcha|data|include|uploads|robots\.txt)
+			RewriteCond %{REQUEST_FILENAME} !-f
+			RewriteCond %{REQUEST_FILENAME} !-d
+			RewriteRule ^(.*)$ /index.php?/$1 [L]
+		</IfModule>
+		</xmp>
+	</code>
+</pre>
+

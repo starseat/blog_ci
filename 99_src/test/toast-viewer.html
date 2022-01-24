@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+	<meta charset="UTF-8" />
+	<title>Editor</title>
+	<!-- Editor -->
+	<link rel="stylesheet" href="https://uicdn.toast.com/editor/3.1.2/toastui-editor-viewer.min.css" />
+</head>
+
+<body>
+
+	<div class="code-html">
+		<div id="viewer"></div>
+	</div>
+
+	<!-- Editor -->
+	<script src="https://uicdn.toast.com/editor/3.1.2/toastui-editor-viewer.js"></script>
+	<script class="code-js">
+		const Editor = toastui.Editor;
+
+		let sample_md = "\n\
+> md testsetset (md)\n\
+\n\
+# 111\n\
+## 222\n\
+### 333\n\
+\n\
+| id | val |\n\
+| -- | -- |\n\
+| 1 | test |\n\
+| 2 | test 2 |\n\
+\n\
+```java\n\
+int i=0;\n\
+```\n\
+";
+		const viewer = new Editor({
+			el: document.querySelector('#viewer'),
+			// previewStyle: 'vertical',
+			// height: '500px',
+			// initialEditType: 'markdown',
+			// viewer: true,
+			initialValue: sample_md,
+			
+		});
+	</script>
+</body>
+
+</html>

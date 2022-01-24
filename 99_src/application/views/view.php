@@ -1,5 +1,6 @@
-<!-- site content
-        ================================================== -->
+<!-- TOAST UI Editor -->
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/3.1.2/toastui-editor-viewer.min.css" />
+<!-- site content ================================================== -->
 <link rel="stylesheet" href="/public/css/view.css" />
 
 <div class="s-content content">
@@ -48,7 +49,7 @@
 
 			</div> <!-- end entry__header -->
 
-			<div class="entry__content">
+			<div class="entry__content" id="entry_content">
 				<!--
 					태그 기능 추가시 아래 내용 추가
 				<p class="entry__tags">
@@ -64,8 +65,13 @@
 				<hr>
 				-->
 
-				<?= $board_data['content'] ?>
+				<div id="entry_content_viewer"></div>
 			</div> <!-- end entry content -->
+			<div id="temp_entry_content">
+				<input type="hidden" id="temp_writeType" value="<?= $board_data['write_type']; ?>">
+				<textarea id="temp_content"><?= $board_data['content'] ?></textarea>
+			</div>
+
 
 			<div class="entry__pagenav">
 				<div class="entry__nav">
@@ -110,3 +116,18 @@
 	</main>
 
 </div> <!-- end s-content -->
+
+<script src="https://uicdn.toast.com/editor/3.1.2/toastui-editor-viewer.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		if (document.querySelector('#temp_writeType').value == 'md') {
+			const Viewer = toastui.Editor;
+			const viewer = new Viewer({
+				el: document.querySelector('#entry_content_viewer'),
+				initialValue: document.querySelector('#temp_content').textContent,
+			});
+		} else {
+			document.querySelector('#entry_content_viewer').innerHTML = document.querySelector('#temp_content').textContent
+		}
+	});
+</script>

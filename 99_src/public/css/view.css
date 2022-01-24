@@ -1,2 +1,20 @@
 @charset "utf-8";
 .entry__content ul p { margin-bottom: 8px; }
+
+#temp_entry_content * { display: none; }
+#temp_entry_content { display: none; }
+
+code { border: 0; }
+input, textarea, select, pre, blockquote, figure, p, ul, ol, dl, form, .video-container, .ss-custom-select {
+	margin-bottom: 1rem !important;
+}
+
+table {
+	margin-bottom: 1.6rem !important;
+}
+
+pre {
+    padding: 2.4rem 3.2rem 3.2rem !important;
+    background: #efefef !important;
+    overflow-x: auto !important;
+}

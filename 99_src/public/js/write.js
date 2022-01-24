@@ -119,11 +119,11 @@ function load_data() {
 	const writeType = $('#saved_blog_write_type').val();
 	if(writeType && writeType == 'md') {
 		$('#blog_writeType_md').prop('checked', true);
-		__editor.setMarkdown($('#blog_content').val())
+		__editor.setMarkdown($('#blog_content').val().trim())
 	}
 	else {
 		$('#blog_writeType_html').prop('checked', true);
-		__editor.setHTML($('#blog_content').val())
+		__editor.setHTML($('#blog_content').val().trim())
 	}
 }
 

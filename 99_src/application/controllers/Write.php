@@ -96,6 +96,7 @@ class Write extends Base_Controller {
 		$this->form_validation->set_rules('blog_category', 'Blog Category', 'required');
 		$this->form_validation->set_rules('blog_title', 'Blog Title', 'required|min_length[2]|max_length[64]');
 		$this->form_validation->set_rules('blog_viewType', 'Blog View Type', 'required');
+		$this->form_validation->set_rules('blog_writeType', 'Blog Write Type', 'required');
 		// $this->form_validation->set_rules('blog_content', 'Blog Contents', 'required|min_length[1]');
 
 		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
@@ -118,6 +119,7 @@ class Write extends Base_Controller {
 		$category_id = $this->input->post('blog_category', TRUE);
 		$title = $this->input->post('blog_title', TRUE);
 		$view_type = intVal($this->input->post('blog_viewType', TRUE));
+		$write_type = $this->input->post('blog_writeType', TRUE);
 		//$content = $this->input->post('blog_content', TRUE);
 		$content = $this->input->post('blog_content');  // 내용 내 태그 존재시 attribute 없어져서 xss_clean 제거... xss_clean 처리 추가 필요...
 		// log_message('blog', '[_submitBlog] content: ' . $content);
@@ -130,6 +132,7 @@ class Write extends Base_Controller {
 		$boardInfo = array(
 			'category_id' => $category_id,
 			'title' => $title,
+			'write_type' => $write_type,
 			'view_type' => $view_type,
 			'thumbnail_seq' => $uploadThumbnailSeq, 
 			// 'content' => $this->_changeTempImagePath($category_id, $content)  // _changeTempImagePath 버그가 있어 임시 디렉토리가 아닌 날짜별로 구분해서 저장

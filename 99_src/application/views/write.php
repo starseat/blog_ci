@@ -1,5 +1,5 @@
 <!-- TOAST UI Editor -->
-<link rel="stylesheet" href="https://uicdn.toast.com/editor/3.0.1/toastui-editor.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/3.1.2/toastui-editor.css" />
 
 <!-- TOAST UI Editor's Plugin -->
 <link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/v2.2.6/tui-color-picker.css" />
@@ -98,10 +98,10 @@
 						<label for="blog_writeType_html">작성 타입</label>
 						<div>
 							<label class="radio-inline">
-								<input type="radio" name="writeType" class="blog_writeType" id="blog_writeType_html" value="html" checked> html
+								<input type="radio" name="blog_writeType" class="blog_writeType" id="blog_writeType_html" value="html" checked> html
 							</label>
 							<label class="radio-inline">
-								<input type="radio" name="writeType" class="blog_writeType" id="blog_writeType_md" value="md"> md
+								<input type="radio" name="blog_writeType" class="blog_writeType" id="blog_writeType_md" value="md"> md
 							</label>
 						</div>
 					</div>
@@ -269,8 +269,8 @@
 
 	<!-- TOAST UI Editor -->
 	<!-- https://github.com/nhn/tui.editor/tree/v3.0.0 -->
-	<script src="https://uicdn.toast.com/editor/3.0.1/toastui-editor-all.min.js"></script>
-	<script src="https://uicdn.toast.com/editor/3.0.1/i18n/ko-kr.js"></script>
+	<script src="https://uicdn.toast.com/editor/3.1.2/toastui-editor-all.min.js"></script>
+	<script src="https://uicdn.toast.com/editor/3.1.2/i18n/ko-kr.js"></script>
 
 	<!-- TOAST UI Editor's Plugin -->
 	<!-- https://github.com/nhn/tui.editor/tree/v3.0.0/plugins -->

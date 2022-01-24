@@ -278,6 +278,7 @@ class Board_model extends Base_Model {
 			UPDATE tbl_blog_boards SET 
 			category_id = ?, 
 			title = ?,
+			write_type = ?, 
 			view_type = ? ";
 
 		if($boardInfo['thumbnail_seq'] > 0) {
@@ -290,6 +291,7 @@ class Board_model extends Base_Model {
 		$updateResult = $this->db->query($sql, array(
 			$boardInfo['category_id'],
 			$boardInfo['title'],
+			$boardInfo['write_type'],
 			$boardInfo['view_type'],
 			$boardInfo['content'],
 			$boardInfo['seq']

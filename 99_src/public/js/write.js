@@ -180,7 +180,7 @@ function submitBlog(event) {
 		tempTitle = $('#blog_title').val();
 	}
 	$('#blog_title').val(tempTitle);
-	$('#blog_content').val(blog_content);
+	$('#blog_content').val(blog_content.trim());
 	$('#writeForm').submit();
 	setSpinner(0);
 }

@@ -143,9 +143,18 @@
 		gtag('config', 'UA-200366886-1');
 	</script>
 
-
 	<!-- Google AdSense -->
 	<script data-ad-client="ca-pub-1835044006045704" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+	<!-- Naver Analytics -->
+	<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+	<script type="text/javascript">
+		if (!wcs_add) var wcs_add = {};
+		wcs_add["wa"] = "8792e55fbe43f8";
+		if (window.wcs) {
+			wcs_do();
+		}
+	</script>
 
 	<!-- ==================================================================================================== -->
 	<!-- ==================================================================================================== -->

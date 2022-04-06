@@ -74,7 +74,7 @@ CREATE TABLE `tbl_blog_boards` (
 	`seq` BIGINT(11) NOT NULL AUTO_INCREMENT,
 	`category_id` VARCHAR(16) NOT NULL,
 	`writer` VARCHAR(32) NOT NULL,
-	`title` VARCHAR(64) NOT NULL,
+	`title` VARCHAR(128) NOT NULL,
 --	`thumbnail` VARCHAR(256) NULL DEFAULT NULL,
 	`thumbnail_seq` BIGINT(11) NOT NULL DEFAULT 0, 
 	`view_count` INT(11) NOT NULL DEFAULT 0,

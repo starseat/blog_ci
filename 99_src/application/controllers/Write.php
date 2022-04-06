@@ -94,7 +94,7 @@ class Write extends Base_Controller {
 
 		$this->form_validation->set_rules('blog_seq', 'seq', 'required');
 		$this->form_validation->set_rules('blog_category', 'Blog Category', 'required');
-		$this->form_validation->set_rules('blog_title', 'Blog Title', 'required|min_length[2]|max_length[64]');
+		$this->form_validation->set_rules('blog_title', 'Blog Title', 'required|min_length[2]|max_length[128]');
 		$this->form_validation->set_rules('blog_viewType', 'Blog View Type', 'required');
 		$this->form_validation->set_rules('blog_writeType', 'Blog Write Type', 'required');
 		// $this->form_validation->set_rules('blog_content', 'Blog Contents', 'required|min_length[1]');

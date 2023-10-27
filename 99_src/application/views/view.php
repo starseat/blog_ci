@@ -21,10 +21,14 @@
 			<div class="content__page-header entry__header">
 				<h1 class="display-1 entry__title"><?= $board_data['title'] ?></h1>
 				<ul class="entry__header-meta">
-					<li class="author">By <a href="#0"><?= $board_data['writer'] ?></a></li>
+					<li class="author">By <a href="javascript: void(0);"><?= $board_data['writer'] ?></a></li>
 					<li class="date"><?= $board_data['created_at'] ?></li>
 					<li class="cat-links">
 						<a href="/blog/list/<?= $board_data['category_id'] ?>"><?= $board_data['category_name'] ?></a>
+					</li>
+					<li class="viewer" style="font-size: small;">
+<!--						<embed src="/public/imgs/book-open-reader-solid.svg">-->
+						(view <strong><?= $board_data['view_count'] ?></strong>)
 					</li>
 				</ul>
 

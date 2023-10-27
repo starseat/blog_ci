@@ -16,7 +16,7 @@ CREATE TABLE `tbl_blog_members` (
 	`member_type` VARCHAR(1) NOT NULL DEFAULT 'B',
 	`introduction` VARCHAR(256) NULL DEFAULT NULL,
 	`created_at` DATETIME NOT NULL DEFAULT NOW(),
-	`updated_at` DATETIME NOT NULL DEFAULT NOW(),,
+	`updated_at` DATETIME NOT NULL DEFAULT NOW(),
 	`deleted_at` DATETIME NULL DEFAULT NULL,
 	PRIMARY KEY (`seq`, `user_id`, `email`),
 	UNIQUE INDEX `user_id` (`user_id`)

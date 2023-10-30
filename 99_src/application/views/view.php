@@ -27,7 +27,8 @@
 						<a href="/blog/list/<?= $board_data['category_id'] ?>"><?= $board_data['category_name'] ?></a>
 					</li>
 					<li class="viewer" style="font-size: small;">
-<!--						<embed src="/public/imgs/book-open-reader-solid.svg">-->
+						<!-- <embed src="/public/imgs/book-open-reader-solid.svg"> -->
+						<!-- <embed src="/public/imgs/imgs/icon/document_magnifier/icon-document_magnifier_black_32.png"> -->
 						(view <strong><?= $board_data['view_count'] ?></strong>)
 					</li>
 				</ul>

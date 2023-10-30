@@ -12,6 +12,17 @@ class Category_model extends Base_Model {
 		parent::__construct();
 	}
 
+	public static function getViewTypeName($type) {
+		switch(intVal($type)) {
+			case Category_model::VIEW_TYPE_ALL: $result = '전체보기'; break;
+			case Category_model::VIEW_TYPE_FRIEND: $result = '친구만 보기'; break;
+			case Category_model::VIEW_TYPE_ONLY_ME: $result = '나만보기'; break;
+			case Category_model::VIEW_TYPE_ADMIN: $result = '관리자용'; break;
+			default: $result = $type; break;
+		}
+		return $result;
+	}
+
 	public function gets() {
 
 		$temp_array = null;
@@ -19,7 +30,7 @@ class Category_model extends Base_Model {
 			$temp_array = $this->_gets_viewTyps_me();
 		}
 		else {
-			$temp_array = $this->_gets_viewType_all();			
+			$temp_array = $this->_gets_viewType_all();
 		}
 
 		$parent_list = $temp_array['parent'];

@@ -26,11 +26,14 @@
 					<li class="cat-links">
 						<a href="/blog/list/<?= $board_data['category_id'] ?>"><?= $board_data['category_name'] ?></a>
 					</li>
-					<li class="viewer" style="font-size: small;">
-						<!-- <embed src="/public/imgs/book-open-reader-solid.svg"> -->
+<?php if ($this->session->userdata('is_login')) { ?>
+					<li class="viewer">
+						 <embed class="viewer-icon" src="/public/imgs/book-open-reader-solid.svg">
 						<!-- <embed src="/public/imgs/imgs/icon/document_magnifier/icon-document_magnifier_black_32.png"> -->
-						(view <strong><?= $board_data['view_count'] ?></strong>)
+						<?= $board_data['view_count'] ?>
 					</li>
+					<li class="only-me">(<?= Category_model::getViewTypeName($board_data['view_type']); ?>)</li>
+<?php } /* end of if ($this->session->userdata('is_login')) */ ?>
 				</ul>
 
 				<?php if ($this->session->userdata('is_login')) { ?>

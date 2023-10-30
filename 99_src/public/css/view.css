@@ -18,3 +18,23 @@ pre {
     background: #efefef !important;
     overflow-x: auto !important;
 }
+
+.entry__header-meta .viewer {
+  display: inline-flex;
+  align-items: center;
+  font-size: small;
+  line-height: 32px;
+}
+
+.entry__header-meta .viewer-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+.entry__header-meta .only-me {
+  display: inline-flex;
+  align-items: center;
+  font-size: small;
+  line-height: 32px;
+}

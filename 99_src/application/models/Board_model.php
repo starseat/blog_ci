@@ -115,36 +115,64 @@ class Board_model extends Base_Model {
 	}
 
 	public function getBoardListBySearch($search_text, $current_page = 1) {
-		$total_count = $this->_getBoardTotalCountBySearch($search_text);
+		$condition = $this->_getBoardListBySearchCondition($search_text);
+
+		$total_count = $this->_getBoardTotalCountBySearch($condition['sql'], $condition['params']);
 		$paging_info = $this->getPagingInfo($current_page, $total_count);
 
-		$sql  = "
-			SELECT 
-				b.seq, b.category_id, c.category_name, b.writer, b.title, b.view_count, FN_GET_THUMBNAIL(b.thumbnail_seq) thumbnail, 
-				b.like_count, b.view_type, DATE_FORMAT(b.created_at, '%Y-%m-%d') as created_at, SUBSTRING(b.content, 1, 40) as content 
-			FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 
-			WHERE b.deleted_at IS NULL 
-			  AND (b.title LIKE concat('%', ?, '%') OR b.content LIKE concat('%', ?, '%') )
-			ORDER BY b.seq DESC
-			LIMIT ?, ?
-		";
-
 		return array(
-			'board_list' => $this->db->query($sql, array($search_text, $search_text, $paging_info['page_db'], $this->ITEM_ROW_COUNT))->result_array(),
+			'board_list' => $this->_getBoardListBySearch(
+				$condition['sql'], $condition['params'],
+				$paging_info['page_db'], $this->ITEM_ROW_COUNT),
 			'page_info' => $paging_info
 		);
 	}
 
-	private function _getBoardTotalCountBySearch($search_text) {
-		$sql = "
-			SELECT count(*) as total_count
+	private function _getBoardListBySearchCondition($search_text) {
+		$condition_sql = "
 			FROM tbl_blog_boards b INNER JOIN tbl_blog_categories c ON b.category_id = c.category_id 
-			WHERE b.deleted_at IS NULL 
-			  AND (b.title LIKE concat('%', ?, '%') OR b.content LIKE concat('%', ?, '%') )
+			WHERE b.deleted_at IS NULL AND b.view_type = ? ";
+		$condition_params = array(Category_model::VIEW_TYPE_ALL);
+
+		if ($this->session->userdata('is_login')) {
+			$condition_sql .= " OR writer = ? ";
+			array_push($condition_params, $this->session->userdata('user_id'));
+		}
+
+		$condition_sql .= " AND (b.title LIKE concat('%', ?, '%') OR b.content LIKE concat('%', ?, '%') )";
+		array_push($condition_params, $search_text, $search_text);
+
+		return array(
+			'sql' => $condition_sql,
+			'params' => $condition_params
+		);
+	}
+
+	private function _getBoardTotalCountBySearch($condition_sql, $condition_params) {
+		$sql  = " SELECT count(*) as total_count ";
+		$sql .= $condition_sql;
+
+		return intVal($this->db->query($sql, $condition_params)->row()->total_count);
+	}
+
+	private function _getBoardListBySearch($condition_sql, $condition_params, $page, $row_count) {
+		$sql  = "
+			SELECT 
+				b.seq, b.category_id, c.category_name, b.writer, b.title, b.view_count, FN_GET_THUMBNAIL(b.thumbnail_seq) thumbnail, 
+				b.like_count, b.view_type, DATE_FORMAT(b.created_at, '%Y-%m-%d') as created_at, SUBSTRING(b.content, 1, 40) as content 
 		";
 
-		return intVal($this->db->query($sql, array($search_text, $search_text))->row()->total_count);
+		$sql .= $condition_sql;
+
+		$sql .= " 
+			ORDER BY b.seq DESC
+			LIMIT ?, ?
+		";
+		array_push($condition_params, $page, $row_count);
+
+		return $this->db->query($sql, $condition_params)->result_array();
 	}
+
 
 	public function plusViewCount($board_seq, $category_id) {
 		$this->load->helper('cookie');
@@ -154,9 +182,7 @@ class Board_model extends Base_Model {
 
 		// 쿠키가 없으면
 		if( !(isset($cookie_data) && !is_null($cookie_data) && !empty($cookie_data)) ) {
-			$sql = "
-				UPDATE tbl_blog_boards SET view_count = view_count+1 WHERE seq = ?
-			";
+			$sql = " UPDATE tbl_blog_boards SET view_count = view_count+1 WHERE seq = ? ";
 
 			$this->db->trans_start();
 			$this->db->query($sql, array($board_seq));
@@ -165,7 +191,7 @@ class Board_model extends Base_Model {
 			$this->_updateVisit($category_id, $board_seq);
 			
 			set_cookie($VIEW_COUNT_COOKIE, '1');
-		}		
+		}
 	}
 
 	public function getBoardData($board_seq, $is_summary = false) {
@@ -224,9 +250,7 @@ class Board_model extends Base_Model {
 		if($prevBoardSeq > 0) {
 			return $this->_getBoardSimpleData($prevBoardSeq);
 		}
-		else {
-			return null;
-		}
+		return null;
 	}
 
 	public function getNextBoardData($board_seq) {
@@ -250,9 +274,8 @@ class Board_model extends Base_Model {
 		$nextBoardSeq = $this->db->query($sql, $param_array)->row()->next_seq;
 		if ($nextBoardSeq > 0) {
 			return $this->_getBoardSimpleData($nextBoardSeq);
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	public function insertBoard($boardInfo) {

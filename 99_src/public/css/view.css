@@ -3,6 +3,7 @@
 
 #temp_entry_content * { display: none; }
 #temp_entry_content { display: none; }
+/*#hashtag-box { display: none; }*/
 
 code { border: 0; }
 input, textarea, select, pre, blockquote, figure, p, ul, ol, dl, form, .video-container, .ss-custom-select {
@@ -37,8 +38,4 @@ pre {
   align-items: center;
   font-size: small;
   line-height: 32px;
-}
-
-#hashtag-box {
-	display: none;
 }

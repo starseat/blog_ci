@@ -95,30 +95,32 @@ ENGINE=InnoDB
 -- ALTER TABLE `tbl_blog_boards` ADD `write_type` VARCHAR(8) NOT NULL DEFAULT 'html' COMMENT '게시글 작성 타입' AFTER `view_type`;
 
 CREATE TABLE `tbl_blog_hashtags` (
-	`title` VARCHAR(64) NOT NULL,
-	`created_at` DATETIME NOT NULL,
-	`updated_at` DATETIME NOT NULL,
+    `id` BIGINT(11) NOT NULL AUTO_INCREMENT,
+	`tag` VARCHAR(64) NOT NULL,
+	`created_at` DATETIME NOT NULL DEFAULT now(),
+	-- `updated_at` DATETIME NOT NULL,
 	`deleted_at` DATETIME NULL DEFAULT NULL,
-	PRIMARY KEY (`title`),
-	UNIQUE INDEX `title` (`title`)
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `unique_tag` (`tag`)
 )
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
 
 CREATE TABLE `tbl_blog_board_hashtag` (
-	`tbl_blog_board_seq` BIGINT(11) NOT NULL,
-	`tbl_blog_hashtag_title` VARCHAR(64) NOT NULL,
-	`created_at` DATETIME NOT NULL,
-	`updated_at` DATETIME NOT NULL,	
-	PRIMARY KEY (`tbl_blog_board_seq`, `tbl_blog_hashtag_title`),
-	INDEX `tbl_blog_hashtag_title` (`tbl_blog_hashtag_title`),
-	CONSTRAINT `tbl_blog_board_hashtag_ibfk_1` FOREIGN KEY (`tbl_blog_board_seq`) REFERENCES `tbl_blog_boards` (`seq`) ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT `tbl_blog_board_hashtag_ibfk_2` FOREIGN KEY (`tbl_blog_hashtag_title`) REFERENCES `tbl_blog_hashtags` (`title`) ON UPDATE CASCADE ON DELETE CASCADE
+	`board_seq` BIGINT(11) NOT NULL,
+	`hashtag_id` BIGINT(11) NOT NULL,
+	PRIMARY KEY (`board_seq`, `hashtag_id`),
+	-- INDEX `tbl_blog_hashtag_title` (`tbl_blog_hashtag_title`),
+	-- CONSTRAINT `tbl_blog_board_hashtag_ibfk_1` FOREIGN KEY (`tbl_blog_board_seq`) REFERENCES `tbl_blog_boards` (`seq`) ON UPDATE CASCADE ON DELETE CASCADE,
+	-- CONSTRAINT `tbl_blog_board_hashtag_ibfk_2` FOREIGN KEY (`tbl_blog_hashtag_title`) REFERENCES `tbl_blog_hashtags` (`title`) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (`board_seq`) REFERENCES `tbl_blog_boards` (`seq`) ON DELETE CASCADE,
+    FOREIGN KEY (`hashtag_id`) REFERENCES `tbl_blog_hashtags` (`id`) ON DELETE CASCADE
 )
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
+
 
 CREATE TABLE `tbl_blog_images` (
 	`seq` BIGINT(11) NOT NULL AUTO_INCREMENT,

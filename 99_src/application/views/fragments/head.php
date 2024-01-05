@@ -91,12 +91,21 @@
     ================================================== -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+	<!-- google adsense
+    ================================================== -->
+	<meta name="google-adsense-account" content="ca-pub-1835044006045704">
+
 	<!-- CSS
     ================================================== -->
 	<link rel="stylesheet" href="/public/template/css/base.css">
 	<link rel="stylesheet" href="/public/template/css/vendor.css">
 	<link rel="stylesheet" href="/public/template/css/main.css">
 	<link rel="stylesheet" href="/public/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
+
+	<!-- google adsense
+    ================================================== -->
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1835044006045704"
+     crossorigin="anonymous"></script>
 
 	<!-- script
     ================================================== -->

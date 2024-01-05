@@ -14,10 +14,13 @@
 <!-- TOAST UI Editor's Plugin - Chart -->
 <link rel="stylesheet" href="https://uicdn.toast.com/chart/v4.1.4/toastui-chart.min.css" />
 
-
 <!-- jQuery Modal / https://www.npmjs.com/package/jquery-modal -->
 <!-- https://stove99.github.io/javascript/2019/04/16/jquery-modal-plugin/ -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
+<!-- tagify -->
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" />
+
 <link rel="stylesheet" href="/public/css/write.css" />
 
 <div id="top" class="s-wrap site-wrapper">
@@ -141,6 +144,13 @@
 
 					</div>
 				</div>
+				<div class="row">
+					<div class="column tab-full">
+						<label for="blog_tags">Tag</label>
+						<input class="full-width" type="text" placeholder="태그를 입력해 주세요." id="blog_tags">
+					</div>
+				</div>
+				<br>
 
 				<div class="row" style="padding-left: 20px; padding-right: 20px;">
 					<label for="blog_content_view">Contents</label>
@@ -178,7 +188,8 @@
 				);
 				?>
 				<input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>" />
-
+				<input type="hidden" id="blog_save_tags" name="save_tags" value="" />
+				<input type="hidden" id="blog_saved_tags" value="<?= $board_tags; ?>" />
 				<br>
 
 				<div class="row">
@@ -290,7 +301,10 @@
 	<script src="https://uicdn.toast.com/chart/v4.1.4/toastui-chart.js"></script>
 	<script src="https://uicdn.toast.com/editor-plugin-chart/3.0.1/toastui-editor-plugin-chart.min.js"></script>
 
-
 	<!-- jQuery Modal -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+
+	<!-- tagify -->
+	<script src="https://unpkg.com/@yaireo/tagify"></script>
+
 	<script src="/public/js/write.js"></script>

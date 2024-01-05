@@ -37,6 +37,10 @@ class Write extends Base_Controller {
 			$this->load->model('board_model');
 			$boardData = $this->board_model->getBoardData($board_seq);
 			$viewInfo['board_data'] = $boardData;
+
+			$this->load->model('hashtag_model');
+			$tags = $this->hashtag_model->getBoardHashTagsOnlyString($board_seq);
+			$viewInfo['board_tags'] = urlencode(json_encode($tags));
 		}
 
 		$this->load->view('write', $viewInfo);
@@ -170,11 +174,19 @@ class Write extends Base_Controller {
 			}
 		}
 
-		if ($resultSubmitId > 0) {
-			return alert($resultMessage, $resultUrl);
-		} else {
+		if ($resultSubmitId == 0) {
 			return alert_history_back($resultMessage);
 		}
+
+		// blog 정상 등록 되었으니 hashtag 등록
+		$tags = $this->input->post('save_tags');
+		$arrTags = json_decode($tags, true);
+		if(count($arrTags) > 0) {
+			$this->load->model('hashtag_model');
+			$this->hashtag_model->mapping($resultSubmitId, $arrTags);
+		}
+
+		return alert($resultMessage, $resultUrl);
 	}
 
 	private function _insertThumbnail($category_id) {
@@ -341,6 +353,10 @@ class Write extends Base_Controller {
 		} // end of for($i=0; $i<$split_count; $i++)
 
 		return $retContents;		
+	}
+
+	private function _saveHashTags() {
+
 	}
 
 	// public function test() {

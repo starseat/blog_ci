@@ -1,6 +1,7 @@
 $(document).ready(function() {	
 	toastui_init();
 
+	tag_init();
 	form_init();
 	spin_init();
 
@@ -99,6 +100,18 @@ function spin_init() {
 	hideSpinner();
 }
 
+let __tagify = null;
+function tag_init() {
+	const $tags = document.querySelector('#blog_tags');
+	__tagify = new Tagify($tags);
+	__tagify.on('add', function () {
+		// console.log(__tagify.value); // 입력된 태그 정보 객체
+	});
+}
+function getHashTags() {
+	return __tagify.value.map(tag => tag.value);
+}
+
 function load_data() {
 	if($('#saved_blog_seq').val() == 0) {
 		return;
@@ -125,6 +138,8 @@ function load_data() {
 		$('#blog_writeType_html').prop('checked', true);
 		__editor.setHTML($('#blog_content').val().trim())
 	}
+
+	__tagify.addTags(JSON.parse(decodeURIComponent($('#blog_saved_tags').val())));
 }
 
 
@@ -181,6 +196,8 @@ function submitBlog(event) {
 	}
 	$('#blog_title').val(tempTitle);
 	$('#blog_content').val(blog_content.trim());
+	$('#blog_save_tags').val(JSON.stringify(getHashTags()));
+
 	$('#writeForm').submit();
 	setSpinner(0);
 }

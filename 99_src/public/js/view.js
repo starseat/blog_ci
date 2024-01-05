@@ -3,6 +3,7 @@ $(document).ready(function() {
 });
 
 function tag_init() {
+	$('#hashtag-box').hide();d
 	const tagData = $('#temp_tags').val();
 	if(tagData == "") {
 		return;

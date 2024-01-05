@@ -32,7 +32,8 @@ class Write extends Base_Controller {
 		}
 
 		$viewInfo = array('categories' => $this->_categories());
-		$viewInfo['is_modify'] = $isModify;	
+		$viewInfo['is_modify'] = $isModify;
+		$boardTags = "[]";
 		if($isModify) {
 			$this->load->model('board_model');
 			$boardData = $this->board_model->getBoardData($board_seq);
@@ -40,8 +41,9 @@ class Write extends Base_Controller {
 
 			$this->load->model('hashtag_model');
 			$tags = $this->hashtag_model->getBoardHashTagsOnlyString($board_seq);
-			$viewInfo['board_tags'] = urlencode(json_encode($tags));
+			$boardTags = json_encode($tags);
 		}
+		$viewInfo['board_tags'] = urlencode($boardTags);
 
 		$this->load->view('write', $viewInfo);
 	}

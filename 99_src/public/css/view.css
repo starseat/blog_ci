@@ -38,3 +38,7 @@ pre {
   font-size: small;
   line-height: 32px;
 }
+
+#hashtag-box {
+	display: none;
+}

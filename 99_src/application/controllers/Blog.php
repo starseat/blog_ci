@@ -7,6 +7,7 @@ class Blog extends Base_Controller {
         parent::__construct();
 		
 		$this->load->model('board_model');
+		$this->load->model('hashtag_model');
 
 		// view page 에서 delete button 할때 필요
 		$this->load->helper('form');
@@ -125,10 +126,12 @@ class Blog extends Base_Controller {
 
 		$this->board_model->plusViewCount($board_seq, $boardData['category_id']);
 
+		$tags = $this->hashtag_model->getBoardHashTagsOnlyString($board_seq);
 		//var_dump($boardData);
 		return $this->load->view('view', array(
 					'page_result' => true, 
-					'board_data' => $boardData, 
+					'board_data' => $boardData,
+					'board_tags' => urlencode(json_encode($tags)),
 					'prev_data' => $this->board_model->getPrevBoardData($board_seq), 
 					'next_data' => $this->board_model->getNextBoardData($board_seq), 
 				)
@@ -172,6 +175,8 @@ class Blog extends Base_Controller {
 		$resultUrl = '';
 		$resultMessage = '';
 		if($deleteResult) {
+			$this->hashtag_model->deleteMapping($board_seq);
+
 			$resultUrl = '/blog/list/' . $boardData['category_id'];
 			$resultMessage = '게시글이 삭제되었습니다.';
 		}

@@ -58,25 +58,16 @@
 			</div> <!-- end entry__header -->
 
 			<div class="entry__content" id="entry_content">
-				<!--
-					태그 기능 추가시 아래 내용 추가
-				<p class="entry__tags">
+				<p class="entry__tags" id="hashtag-box">
 					<span>Post Tags</span>
-
-					<span class="entry__tag-list">
-						<a href="#0">orci</a>
-						<a href="#0">lectus</a>
-						<a href="#0">varius</a>
-						<a href="#0">turpis</a>
-					</span>
+					<span class="entry__tag-list" id="hashtag-list"></span>
 				</p>
-				<hr>
-				-->
 
 				<div id="entry_content_viewer"></div>
 			</div> <!-- end entry content -->
 			<div id="temp_entry_content">
 				<input type="hidden" id="temp_writeType" value="<?= $board_data['write_type']; ?>">
+				<input type="hidden" id="temp_tags" value="<?= $board_tags; ?>">
 				<textarea id="temp_content"><?= $board_data['content'] ?></textarea>
 			</div>
 
@@ -125,6 +116,7 @@
 
 </div> <!-- end s-content -->
 
+<script src="/public/js/view.js"></script>
 <script src="https://uicdn.toast.com/editor/3.1.2/toastui-editor-viewer.js"></script>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {

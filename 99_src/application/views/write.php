@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
 <!-- tagify -->
-<link rel="stylesheet" type="text/css" href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" />
+<link rel="stylesheet" type="text/css" href="/public/vendor/tagify/tagify.css" />
 
 <link rel="stylesheet" href="/public/css/write.css" />
 
@@ -226,7 +226,7 @@
 					);
 
 					$hidden = array(
-						'addCategoryModal_boardSeq' => 0
+							'addCategoryModal_boardSeq' => 0
 					);
 
 					echo form_open('/write/addCategory', $attributes, $hidden);
@@ -305,6 +305,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 
 	<!-- tagify -->
-	<script src="https://unpkg.com/@yaireo/tagify"></script>
+	<script src="/public/vendor/tagify/tagify.js"></script>
+	<script src="/public/vendor/tagify/tagify.polyfills.min.js"></script>
 
 	<script src="/public/js/write.js"></script>
